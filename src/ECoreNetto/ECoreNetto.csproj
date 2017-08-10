@@ -14,7 +14,7 @@
 	  <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
 	  <RepositoryUrl>https://github.com/RHEAGROUP/reqifsharp.git</RepositoryUrl>
 	  <RepositoryType>Git</RepositoryType>
-	  <PackageIconUrl>https://reqifsharp.org/assets/images/ecorenetto-logo-small.png</PackageIconUrl>
+	  <PackageIconUrl>https://raw.githubusercontent.com/RHEAGROUP/EcoreNetto/master/src/ECoreNetto/Assets/ecorenetto-logo-small.png</PackageIconUrl>
     <AssemblyTitle>EcoreNetto</AssemblyTitle>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Authors>Naron Phou;Sam Gerene;Merlin Bieze</Authors>
