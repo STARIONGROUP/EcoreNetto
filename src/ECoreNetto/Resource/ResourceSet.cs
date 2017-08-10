@@ -37,11 +37,6 @@ namespace ECoreNetto.Resource
     public class ResourceSet : Notifier
     {
         /// <summary>
-        /// The Cache containing all parsed <see cref="EObject"/>
-        /// </summary>
-        private readonly Dictionary<string, EObject> cache = new Dictionary<string, EObject>();
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ResourceSet"/> class.
         /// </summary>
         public ResourceSet()
@@ -73,8 +68,7 @@ namespace ECoreNetto.Resource
         {
             var resource = new Resource()
             {
-                URI = uri,
-                Cache = this.cache
+                URI = uri
             };
             
             this.Resources.Add(resource);
