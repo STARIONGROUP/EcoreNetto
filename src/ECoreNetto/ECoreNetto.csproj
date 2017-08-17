@@ -3,9 +3,7 @@
 
   <PropertyGroup>
 	  <TargetFramework>netstandard1.6</TargetFramework>
-	  <Version>1.0.0</Version>
-	  <AssemblyVersion>0.9.0</AssemblyVersion>
-    <FileVersion>0.9.0</FileVersion>
+	  <Version>1.0.1</Version>
 	  <Description>C# Ecore model parser</Description>
 	  <PackageId>ECoreNetto</PackageId>
 	  <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
@@ -14,12 +12,12 @@
 	  <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
 	  <RepositoryUrl>https://github.com/RHEAGROUP/reqifsharp.git</RepositoryUrl>
 	  <RepositoryType>Git</RepositoryType>
-	  <PackageIconUrl>https://raw.githubusercontent.com/RHEAGROUP/EcoreNetto/master/src/ECoreNetto/Assets/ecorenetto-logo-small.png</PackageIconUrl>
+	  <PackageIconUrl>https://raw.githubusercontent.com/RHEAGROUP/EcoreNetto/master/src/ECoreNetto/Assets/ecorenetto-Icon.png</PackageIconUrl>
     <AssemblyTitle>EcoreNetto</AssemblyTitle>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Authors>Naron Phou;Sam Gerene;Merlin Bieze</Authors>
     <PackageTags>Ecore</PackageTags>
-    <PackageReleaseNotes>[Release] version 1.0.0</PackageReleaseNotes>
+    <PackageReleaseNotes>[Update] nuget icon</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
