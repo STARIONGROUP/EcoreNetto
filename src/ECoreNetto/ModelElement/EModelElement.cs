@@ -20,9 +20,6 @@
 
 namespace ECoreNetto
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Xml;
     
     /// <summary>
@@ -50,6 +47,18 @@ namespace ECoreNetto
         /// Gets the <see cref="EAnnotation"/>s that are contained by this <see cref="EModelElement"/>
         /// </summary>
         public ContainerList<EAnnotation> EAnnotations { get; private set; }
+
+        /// <summary>
+        /// Set the properties of this <see cref="EModelElement"/>
+        /// </summary>
+        internal override void SetProperties()
+        {
+            // Ensure invocation of setProperties on contained EAnnotations collection
+            foreach (var annotation in this.EAnnotations)
+            {
+                annotation.SetProperties();
+            }
+        }
 
         /// <summary>
         /// Instantiate new <see cref="EModelElement"/> from the current node of the <see cref="XmlReader"/>

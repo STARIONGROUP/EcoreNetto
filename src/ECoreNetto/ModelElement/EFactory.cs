@@ -20,8 +20,6 @@
 
 namespace ECoreNetto
 {
-    using System.Collections.Generic;
-
     /// <summary>
     /// The type representing a 
     /// </summary>

@@ -25,8 +25,6 @@ namespace ECoreNetto
     using System.Linq;
     using System.Xml;
 
-    using ECoreNetto.Resource;
-
     /// <summary>
     /// An EObject is the base of all modeled objects. All the method names start with "e" to distinguish the EMF methods from the client methods.
     /// It provides support for the behaviors and features common to all modeled objects.
@@ -329,9 +327,7 @@ namespace ECoreNetto
         /// <summary>
         /// Set the properties of this <see cref="EObject"/>
         /// </summary>
-        internal virtual void SetProperties()
-        {
-        }
+        internal abstract void SetProperties();
 
         /// <summary>
         /// Read the attributes of the current node to set the properties of this <see cref="EModelElement"/>

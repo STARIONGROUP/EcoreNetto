@@ -74,11 +74,12 @@ namespace ECoreNetto
         }
 
         /// <summary>
-        /// Read the attributes of the current node
+        /// Set the properties of this <see cref="EClassifier"/>
         /// </summary>
         internal override void SetProperties()
         {
             base.SetProperties();
+
             string output;
             if (this.Attributes.TryGetValue("instanceClassName", out output))
             {

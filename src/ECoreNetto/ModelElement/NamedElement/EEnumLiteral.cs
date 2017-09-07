@@ -20,8 +20,6 @@
 
 namespace ECoreNetto
 {
-    using System.Collections.Generic;
-
     /// <summary>
     /// Represents the literal of an enumeration
     /// </summary>

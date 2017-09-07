@@ -20,8 +20,6 @@
 
 namespace ECoreNetto
 {
-    using System.Collections.Generic;
-
     /// <summary>
     /// The ECORE parameter class.
     /// </summary>

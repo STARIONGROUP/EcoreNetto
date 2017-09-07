@@ -20,9 +20,6 @@
 
 namespace ECoreNetto
 {
-    using System;
-    using System.Collections.Generic;
-
     /// <summary>
     /// A representation of the model object <see cref="EReference"/>. 
     /// </summary>
