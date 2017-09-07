@@ -17,7 +17,7 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <Authors>Naron Phou;Sam Gerene;Merlin Bieze</Authors>
     <PackageTags>Ecore</PackageTags>
-    <PackageReleaseNotes>[Update] nuget icon</PackageReleaseNotes>
+    <PackageReleaseNotes>[Fix] EAnnotation Set Properties</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
