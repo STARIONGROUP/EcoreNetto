@@ -1,0 +1,32 @@
+image: Visual Studio 2017
+environment:
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+for:
+# configuration for "master" branch, build in Release mode
+-
+  branches:
+    only:
+      - master
+  configuration: Release
+# configuration for "development" branch, build in Dev mode
+-
+  branches:
+    only:
+      - development
+  configuration: Dev
+# "fall back" configuration for all other branches
+# no "branches" section defined
+configuration: Debug
+before_build:
+  - cmd: nuget install NUnit.Console -Version 3.8.0 -OutputDirectory tools
+  - cmd: nuget restore
+build:
+  project: EcoreNetto.sln
+test:
+  assemblies:
+    only:
+      - '**\*.Tests.dll'
+  categories:
+    except:
+      - AppVeyorExclusion
