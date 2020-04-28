@@ -1,7 +1,7 @@
 ﻿// -------------------------------------------------------------------------------------------------
 // <copyright file="EPackage.cs" company="RHEA System S.A.">
 //
-//   Copyright 2017 RHEA System S.A.
+//   Copyright 2017-2020 RHEA System S.A.
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -109,8 +109,7 @@ namespace ECoreNetto
         {
             base.SetProperties();
 
-            string output;
-            if (this.Attributes.TryGetValue("nsURI", out output))
+            if (this.Attributes.TryGetValue("nsURI", out var output))
             {
                 this.NsUri = output;
             }
@@ -189,7 +188,7 @@ namespace ECoreNetto
                 superPackage = superPackage.ESuperPackage;
             }
 
-            packageHierarchy[packageHierarchy.Count - 1] = string.Format("{0}.ecore#/", packageHierarchy.Last());
+            packageHierarchy[packageHierarchy.Count - 1] = $"{packageHierarchy.Last()}.ecore#/";
             packageHierarchy.Reverse();
 
             return string.Join("/", packageHierarchy);

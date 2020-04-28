@@ -109,7 +109,6 @@ namespace ECoreNetto.Utils
         /// </summary>
         public EClass EAnnotation { get; private set; }
 
-        #region ENamedElement
         /// <summary>
         /// Gets the <see cref="EClassifier"/> instance
         /// </summary>
@@ -130,9 +129,6 @@ namespace ECoreNetto.Utils
         /// </summary>
         public EClass ETypedElement { get; private set; }
 
-        #endregion
-
-        #region EClassifier
         /// <summary>
         /// Gets the <see cref="EClass"/> instance
         /// </summary>
@@ -147,9 +143,7 @@ namespace ECoreNetto.Utils
         /// Gets the <see cref="EEnum"/> instance
         /// </summary>
         public EClass EEnum { get; private set; }
-        #endregion
 
-        #region ETypedElement
         /// <summary>
         /// Gets the <see cref="EOperation"/> instance
         /// </summary>
@@ -164,9 +158,7 @@ namespace ECoreNetto.Utils
         /// Gets the <see cref="EStructuralFeature"/> instance
         /// </summary>
         public EClass EStructuralFeature { get; private set; }
-        #endregion
-
-        #region EStructuralFeature
+        
         /// <summary>
         /// Gets the <see cref="EAttribute"/> instance
         /// </summary>
@@ -176,7 +168,5 @@ namespace ECoreNetto.Utils
         /// Gets the <see cref="EReference"/> instance
         /// </summary>
         public EClass EReference { get; private set; }
-        #endregion
-
     }
 }

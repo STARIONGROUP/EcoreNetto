@@ -1,7 +1,7 @@
 ﻿// -------------------------------------------------------------------------------------------------
 // <copyright file="ETypedElement.cs" company="RHEA System S.A.">
 //
-//   Copyright 2017 RHEA System S.A.
+//   Copyright 2017-2020 RHEA System S.A.
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -82,8 +82,8 @@ namespace ECoreNetto
         internal override void SetProperties()
         {
             base.SetProperties();
-            string output;
-            if (this.Attributes.TryGetValue("ordered", out output))
+
+            if (this.Attributes.TryGetValue("ordered", out var output))
             {
                 this.Ordered = bool.Parse(output);
             }

@@ -80,8 +80,7 @@ namespace ECoreNetto
         {
             base.SetProperties();
 
-            string output;
-            if (this.Attributes.TryGetValue("instanceClassName", out output))
+            if (this.Attributes.TryGetValue("instanceClassName", out var output))
             {
                 this.InstanceClassName = output;
             }

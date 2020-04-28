@@ -86,8 +86,7 @@ namespace ECoreNetto
         {
             base.SetProperties();
 
-            string output;
-            if (this.Attributes.TryGetValue("changeable", out output))
+            if (this.Attributes.TryGetValue("changeable", out var output))
             {
                 this.Changeable = bool.Parse(output);
             }

@@ -118,8 +118,8 @@ namespace ECoreNetto
         internal override void SetProperties()
         {
             base.SetProperties();
-            string output;
-            if (this.Attributes.TryGetValue(EcoreAbstractKeyword, out output))
+
+            if (this.Attributes.TryGetValue(EcoreAbstractKeyword, out var output))
             {
                 this.Abstract = bool.Parse(output);
             }
