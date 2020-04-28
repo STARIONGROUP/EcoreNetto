@@ -5,14 +5,12 @@
     <Company>RHEA System S.A.</Company>
     <Authors>Sam Gerene, Naron Phou, Merlin Bieze</Authors>
     <AssemblyName>ECoreNetto.Tests</AssemblyName>
-    <PackageId>ECoreNetto.Tests</PackageId>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Copyright>RHEA System S.A.</Copyright>
     <PackageProjectUrl>https://ecorenetto.org</PackageProjectUrl>
-    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/RHEAGROUP/EcoreNetto.git</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageTags>Ecore</PackageTags>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
