@@ -1,7 +1,8 @@
-image: Visual Studio 2017
+image: Visual Studio 2019
 environment:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+
 for:
 # configuration for "master" branch, build in Release mode
 -
@@ -9,17 +10,16 @@ for:
     only:
       - master
   configuration: Release
-# configuration for "development" branch, build in Dev mode
+# configuration for "development" branch, build in Debug mode
 -
   branches:
     only:
       - development
-  configuration: Dev
+  configuration: Debug
 # "fall back" configuration for all other branches
 # no "branches" section defined
 configuration: Debug
 before_build:
-  - cmd: nuget install NUnit.Console -Version 3.8.0 -OutputDirectory tools
   - cmd: nuget restore
 build:
   project: EcoreNetto.sln
@@ -30,3 +30,7 @@ test:
   categories:
     except:
       - AppVeyorExclusion
+notifications:
+  - provider: Email
+    to:
+      - cdp_devs@rheagroup.com

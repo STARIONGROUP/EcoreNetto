@@ -1,16 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{145FE7E6-E2D7-4EDC-967B-B8D3F503A639}"
 EndProject
-
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{5662619E-05FF-4012-9D76-C5D11E67593C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECoreNetto", "src\ECoreNetto\ECoreNetto.csproj", "{7F843BF6-7758-40E4-ADA9-E7EA9EF908DB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECoreNetto.Tests", "test\ECoreNetto.Tests\ECoreNetto.Tests.csproj", "{5A0876BE-FDA6-4F60-84B4-93350EB76F81}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FFF8E3BF-4741-418B-AB6E-D7ABD8AA75F7}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		appveyor.yml = appveyor.yml
+		LICENSE = LICENSE
+		Nuget.Config = Nuget.Config
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,5 +42,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{7F843BF6-7758-40E4-ADA9-E7EA9EF908DB} = {145FE7E6-E2D7-4EDC-967B-B8D3F503A639}
 		{5A0876BE-FDA6-4F60-84B4-93350EB76F81} = {5662619E-05FF-4012-9D76-C5D11E67593C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EFCC2F13-0A13-4538-A018-1EE8B4B8950E}
 	EndGlobalSection
 EndGlobal
