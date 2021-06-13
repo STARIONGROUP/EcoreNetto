@@ -28,6 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Data\wizardEcore.ecore">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="ecore.ecore">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

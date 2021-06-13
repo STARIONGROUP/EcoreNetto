@@ -5,7 +5,7 @@
 	  <TargetFramework>netstandard1.6</TargetFramework>
     <Company>RHEA System S.A.</Company>
     <Title>EcoreNetto</Title>
-    <Version>1.0.3</Version>
+    <Version>1.1.0</Version>
     <Description>C# Ecore model parser</Description>
     <PackageId>ECoreNetto</PackageId>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
@@ -22,7 +22,7 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <Authors>Naron Phou;Sam Gerene;Merlin Bieze</Authors>
     <PackageTags>Ecore</PackageTags>
-    <PackageReleaseNotes>[Cleanup] Code; Add symbols and sources</PackageReleaseNotes>
+    <PackageReleaseNotes>[Add] DataTypes to EcoreObjectInstantiator and Resource</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
