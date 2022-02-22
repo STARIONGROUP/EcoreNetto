@@ -15,7 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
-		appveyor.yml = appveyor.yml
 		CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md
 		.github\CONTRIBUTING.md = .github\CONTRIBUTING.md
 		.github\ISSUE_TEMPLATE.md = .github\ISSUE_TEMPLATE.md
@@ -23,6 +22,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Nuget.Config = Nuget.Config
 		.github\PULL_REQUEST_TEMPLATE.md = .github\PULL_REQUEST_TEMPLATE.md
 		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{AF0E6899-90F9-429B-B263-84B4CDA21C24}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\codeql-analysis.yml = .github\workflows\codeql-analysis.yml
+		.github\workflows\CodeQuality.yml = .github\workflows\CodeQuality.yml
 	EndProjectSection
 EndProject
 Global
@@ -46,6 +51,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{7F843BF6-7758-40E4-ADA9-E7EA9EF908DB} = {145FE7E6-E2D7-4EDC-967B-B8D3F503A639}
 		{5A0876BE-FDA6-4F60-84B4-93350EB76F81} = {5662619E-05FF-4012-9D76-C5D11E67593C}
+		{AF0E6899-90F9-429B-B263-84B4CDA21C24} = {FFF8E3BF-4741-418B-AB6E-D7ABD8AA75F7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EFCC2F13-0A13-4538-A018-1EE8B4B8950E}
