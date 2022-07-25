@@ -6,7 +6,7 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<Company>RHEA System S.A.</Company>
 		<Title>EcoreNetto</Title>
-		<Version>1.1.0</Version>
+		<Version>2.0.0</Version>
 		<Description>C# Ecore model parser</Description>
 		<PackageId>ECoreNetto</PackageId>
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
@@ -23,7 +23,10 @@
 		<NeutralLanguage>en-US</NeutralLanguage>
 		<Authors>Naron Phou;Sam Gerene;Merlin Bieze</Authors>
 		<PackageTags>Ecore</PackageTags>
-		<PackageReleaseNotes>[Add] DataTypes to EcoreObjectInstantiator and Resource</PackageReleaseNotes>
+		<PackageReleaseNotes>
+			[Update] TargetFramework to netstandard2.0; fixes #6
+			[Refactor] BuildIdentifier for EOperation and EStructuralFeature; fixes #7
+		</PackageReleaseNotes>
 	</PropertyGroup>
 
 </Project>
