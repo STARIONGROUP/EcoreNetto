@@ -1,15 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30011.22
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{145FE7E6-E2D7-4EDC-967B-B8D3F503A639}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECoreNetto", "ECoreNetto\ECoreNetto.csproj", "{7F843BF6-7758-40E4-ADA9-E7EA9EF908DB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{5662619E-05FF-4012-9D76-C5D11E67593C}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECoreNetto", "src\ECoreNetto\ECoreNetto.csproj", "{7F843BF6-7758-40E4-ADA9-E7EA9EF908DB}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECoreNetto.Tests", "test\ECoreNetto.Tests\ECoreNetto.Tests.csproj", "{5A0876BE-FDA6-4F60-84B4-93350EB76F81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECoreNetto.Tests", "ECoreNetto.Tests\ECoreNetto.Tests.csproj", "{5A0876BE-FDA6-4F60-84B4-93350EB76F81}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FFF8E3BF-4741-418B-AB6E-D7ABD8AA75F7}"
 	ProjectSection(SolutionItems) = preProject
@@ -49,8 +45,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{7F843BF6-7758-40E4-ADA9-E7EA9EF908DB} = {145FE7E6-E2D7-4EDC-967B-B8D3F503A639}
-		{5A0876BE-FDA6-4F60-84B4-93350EB76F81} = {5662619E-05FF-4012-9D76-C5D11E67593C}
 		{AF0E6899-90F9-429B-B263-84B4CDA21C24} = {FFF8E3BF-4741-418B-AB6E-D7ABD8AA75F7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

@@ -17,7 +17,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <RepositoryUrl>https://github.com/RHEAGROUP/reqifsharp.git</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageIconUrl>https://raw.githubusercontent.com/RHEAGROUP/EcoreNetto/master/src/ECoreNetto/Assets/ecorenetto-Icon.png</PackageIconUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/RHEAGROUP/EcoreNetto/master/ECoreNetto/Assets/ecorenetto-Icon.png</PackageIconUrl>
     <AssemblyTitle>EcoreNetto</AssemblyTitle>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Authors>Naron Phou;Sam Gerene;Merlin Bieze</Authors>
