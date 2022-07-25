@@ -32,7 +32,7 @@ namespace ECoreNetto
         /// <summary>
         /// The <see cref="Resource.Resource"/> that is populated using the current <see cref="ECoreParser"/>
         /// </summary>
-        private Resource.Resource resource;
+        private readonly Resource.Resource resource;
         
         /// <summary>
         /// Initializes a new instance of the <see cref="ECoreParser"/> class.
