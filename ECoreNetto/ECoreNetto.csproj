@@ -6,7 +6,7 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<Company>RHEA System S.A.</Company>
 		<Title>EcoreNetto</Title>
-		<Version>2.0.0</Version>
+		<Version>2.0.1</Version>
 		<Description>C# Ecore model parser</Description>
 		<PackageId>ECoreNetto</PackageId>
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
@@ -16,9 +16,9 @@
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 		<IncludeSource>true</IncludeSource>
 		<IncludeSymbols>true</IncludeSymbols>
-		<RepositoryUrl>https://github.com/RHEAGROUP/reqifsharp.git</RepositoryUrl>
+		<RepositoryUrl>https://github.com/RHEAGROUP/EcoreNetto</RepositoryUrl>
 		<RepositoryType>Git</RepositoryType>
-		<PackageIconUrl>https://raw.githubusercontent.com/RHEAGROUP/EcoreNetto/master/ECoreNetto/Assets/ecorenetto-Icon.png</PackageIconUrl>
+		<PackageIcon>ecorenetto-Icon.png</PackageIcon>
 		<AssemblyTitle>EcoreNetto</AssemblyTitle>
 		<NeutralLanguage>en-US</NeutralLanguage>
 		<Authors>Naron Phou;Sam Gerene;Merlin Bieze</Authors>
@@ -28,5 +28,9 @@
 			[Refactor] BuildIdentifier for EOperation and EStructuralFeature; fixes #7
 		</PackageReleaseNotes>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="Assets\ecorenetto-Icon.png" Pack="true" PackagePath="" />
+	</ItemGroup>
 
 </Project>
