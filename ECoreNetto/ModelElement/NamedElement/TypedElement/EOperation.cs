@@ -84,7 +84,7 @@ namespace ECoreNetto
         /// </returns>
         protected override string BuildIdentifier()
         {
-            return $"{this.EContainingClass.Identifier}/{this.Name}";
+            return $"EOperation::{this.EContainingClass.Identifier}/{this.Name}";
         }
 
         /// <summary>
