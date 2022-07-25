@@ -1,32 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-	  <TargetFramework>netstandard1.6</TargetFramework>
-    <Company>RHEA System S.A.</Company>
-    <Title>EcoreNetto</Title>
-    <Version>1.1.0</Version>
-    <Description>C# Ecore model parser</Description>
-    <PackageId>ECoreNetto</PackageId>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <Copyright>Copyright © RHEA System S.A.</Copyright>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageProjectUrl>https://ecorenetto.org</PackageProjectUrl>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <IncludeSource>true</IncludeSource>
-    <IncludeSymbols>true</IncludeSymbols>
-    <RepositoryUrl>https://github.com/RHEAGROUP/reqifsharp.git</RepositoryUrl>
-    <RepositoryType>Git</RepositoryType>
-    <PackageIconUrl>https://raw.githubusercontent.com/RHEAGROUP/EcoreNetto/master/ECoreNetto/Assets/ecorenetto-Icon.png</PackageIconUrl>
-    <AssemblyTitle>EcoreNetto</AssemblyTitle>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <Authors>Naron Phou;Sam Gerene;Merlin Bieze</Authors>
-    <PackageTags>Ecore</PackageTags>
-    <PackageReleaseNotes>[Add] DataTypes to EcoreObjectInstantiator and Resource</PackageReleaseNotes>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<Company>RHEA System S.A.</Company>
+		<Title>EcoreNetto</Title>
+		<Version>1.1.0</Version>
+		<Description>C# Ecore model parser</Description>
+		<PackageId>ECoreNetto</PackageId>
+		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+		<Copyright>Copyright © RHEA System S.A.</Copyright>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<PackageProjectUrl>https://ecorenetto.org</PackageProjectUrl>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<IncludeSource>true</IncludeSource>
+		<IncludeSymbols>true</IncludeSymbols>
+		<RepositoryUrl>https://github.com/RHEAGROUP/reqifsharp.git</RepositoryUrl>
+		<RepositoryType>Git</RepositoryType>
+		<PackageIconUrl>https://raw.githubusercontent.com/RHEAGROUP/EcoreNetto/master/ECoreNetto/Assets/ecorenetto-Icon.png</PackageIconUrl>
+		<AssemblyTitle>EcoreNetto</AssemblyTitle>
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<Authors>Naron Phou;Sam Gerene;Merlin Bieze</Authors>
+		<PackageTags>Ecore</PackageTags>
+		<PackageReleaseNotes>[Add] DataTypes to EcoreObjectInstantiator and Resource</PackageReleaseNotes>
+	</PropertyGroup>
 
 </Project>
