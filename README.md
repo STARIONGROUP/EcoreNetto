@@ -30,13 +30,6 @@ Branch | Build Status
 Master | ![Build Status](https://github.com/RHEAGROUP/EcoreNetto/actions/workflows/CodeQuality.yml/badge.svg?branch=master)
 Development | ![Build Status](https://github.com/RHEAGROUP/EcoreNetto/actions/workflows/CodeQuality.yml/badge.svg?branch=development)
 
-# CodeCov - Code Coverage
-
-Branch      | Build Status
------------ | ------------
-Master      | [![codecov](https://codecov.io/gh/RHEAGROUP/EcoreNetto/branch/master/graph/badge.svg?token=2kfZrIOUtI)](https://codecov.io/gh/RHEAGROUP/EcoreNetto)
-Development | [![codecov](https://codecov.io/gh/RHEAGROUP/EcoreNetto/branch/development/graph/badge.svg?token=2kfZrIOUtI)](https://codecov.io/gh/RHEAGROUP/EcoreNetto)
-
 ## Ecore Documentation
 
 http://download.eclipse.org/modeling/emf/emf/javadoc/2.10.0/index.html?org/eclipse/emf/ecore/EObject.html
