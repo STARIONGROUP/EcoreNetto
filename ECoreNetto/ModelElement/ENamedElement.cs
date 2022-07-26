@@ -80,7 +80,7 @@ namespace ECoreNetto
             
             base.ReadXml(reader);
         }
-
+        
         /// <summary>
         /// Build the <see cref="EModelElement.Identifier"/> property
         /// </summary>

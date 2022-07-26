@@ -37,36 +37,49 @@ namespace ECoreNetto
         }
 
         /// <summary>
-        /// Gets a value indicating whether changeable.
+        /// Gets a value indicating whether this feature is changeable.
         /// </summary>
+        /// <remarks>
+        /// When true, the value of this feature can be changed.
+        /// </remarks>
         public bool Changeable { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether volatile.
+        /// Gets a value indicating whether this feature is Volatile.
         /// </summary>
+        /// <remarks>
+        /// When true, no field will be generated for this feature.
+        /// </remarks>
         public bool Volatile { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether transient.
+        /// Gets a value indicating whether this feature is Transient.
         /// </summary>
+        /// <remarks>
+        /// When true, the value of this feature is serialized.
+        /// </remarks>
         public bool Transient { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether it can be unset.
+        /// Gets a value indicating whether this feature can be unset.
         /// </summary>
+        /// <remarks>
+        /// When true, the value space for this feature includes the state of being unset.
+        /// </remarks>
         public bool Unsettable { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether derived.
+        /// Gets a value indicating whether this feature is Derived.
         /// </summary>
+        /// <remarks>
+        /// When true, the value is true it is derived of other features.
+        /// </remarks>
         public bool Derived { get; private set; }
 
         /// <summary>
         /// Gets the default value literal.
         /// </summary>
         public string DefaultValueLiteral { get; private set; }
-
-        // todo defaultvalue
 
         /// <summary>
         /// Gets the containing <see cref="EClass"/>

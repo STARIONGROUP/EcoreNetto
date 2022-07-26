@@ -64,7 +64,10 @@ namespace ECoreNetto
         public virtual string Identifier { get; set; }
 
         /// <summary>
-        /// Gets the collection of attributes in the ECORE file
+        /// Gets the collection of xml-attributes of this object that are present
+        /// in the ECore file. The xml-attributes are stored here as key-value pair
+        /// key: attribute name
+        /// value: attribute value
         /// </summary>
         protected Dictionary<string, string> Attributes { get; private set; }
 

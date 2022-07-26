@@ -75,7 +75,6 @@ namespace ECoreNetto
         /// <summary>
         /// Gets the <see cref="EFactoryInstance"/>
         /// </summary>
-        /// TODO not sure what this is
         public EFactory EFactoryInstance { get; private set; }
 
         /// <summary>
@@ -118,8 +117,6 @@ namespace ECoreNetto
             {
                 this.NsPrefix = output;
             }
-
-            // todo factory instance
         }
 
         /// <summary>

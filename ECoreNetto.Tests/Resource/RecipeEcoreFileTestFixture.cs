@@ -18,6 +18,8 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace ECoreNetto.Tests.Resource
 {
     using System;
@@ -25,12 +27,12 @@ namespace ECoreNetto.Tests.Resource
 
     using ECoreNetto.Resource;
     using NUnit.Framework;
-    
+
     /// <summary>
-    /// Suite of tests to verify that the wizardEcore.ecore file can be loaded
+    /// Suite of tests to verify that the recipe.ecore file can be loaded
     /// </summary>
     [TestFixture]
-    public class WizardEcoreFileTestFixture
+    public class RecipeEcoreFileTestFixture
     {
         private string filePath;
         private Uri uri;
@@ -40,7 +42,7 @@ namespace ECoreNetto.Tests.Resource
         [SetUp]
         public void SetUp()
         {
-            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "wizardEcore.ecore");
+            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "recipe.ecore");
             this.filePath = Path.GetFullPath(path);
             this.uri = new System.Uri(this.filePath);
         }
@@ -50,8 +52,18 @@ namespace ECoreNetto.Tests.Resource
         {
             this.resourceSet = new ResourceSet();
             this.resource = this.resourceSet.CreateResource(this.uri);
+
+            EPackage rootPackage = null;
+
+            Assert.DoesNotThrow(() => rootPackage = this.resource.Load(null));
+
+            var eEnum = rootPackage.EClassifiers.OfType<EEnum>().Single(x => x.Name == "Unit");
+
+            var decagram = eEnum.ELiterals.Single(x => x.Name == "DECAGRAM");
+            Assert.That(decagram.Value, Is.EqualTo(0));
             
-            Assert.DoesNotThrow(() => this.resource.Load(null));
+            var teaspoon = eEnum.ELiterals.Single(x => x.Name == "TEASPOON");
+            Assert.That(teaspoon.Value, Is.EqualTo(5));
         }
     }
 }

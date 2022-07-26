@@ -34,7 +34,7 @@ namespace ECoreNetto
         public EEnumLiteral(Resource.Resource resource) : base(resource)
         {
         }
-
+        
         /// <summary>
         /// Gets the containing <see cref="EEnum"/>
         /// </summary>
@@ -47,13 +47,21 @@ namespace ECoreNetto
         }
 
         /// <summary>
+        /// Gets or sets int value of an enumerator. 
+        /// </summary>
+        public int Value { get; private set; }
+
+        /// <summary>
         /// The set properties.
         /// </summary>
         internal override void SetProperties()
         {
             base.SetProperties();
 
-            // todo literal
+            if (this.Attributes.TryGetValue("value", out var output))
+            {
+                this.Value = int.Parse(output);
+            }
         }
 
         /// <summary>
