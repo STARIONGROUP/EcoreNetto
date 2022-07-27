@@ -44,6 +44,15 @@ namespace ECoreNetto
         /// <summary>
         /// Gets a value indicating whether containment.
         /// </summary>
+        /// <remarks>
+        /// Containment applies only for references. A containment reference always
+        /// has an implicit opposite, even if there is no explicit opposite and that
+        /// opposite is effectively a view on <see cref="EObject.eContainer()"/>.
+        /// Whenever an object is added to a containment reference, it will be removed
+        /// from any other containment reference currently holding it.
+        /// That’s because an object can only have one container,so adding it to a
+        /// new container must remove it from the old container.
+        /// </remarks>
         public bool IsContainment { get; private set; }
 
         /// <summary>
@@ -54,6 +63,15 @@ namespace ECoreNetto
         /// <summary>
         /// Gets a value indicating whether resolve proxies.
         /// </summary>
+        /// <remarks>
+        /// ResolveProxies only applies to both containment or non-containment references,
+        /// but the generator respects them in the latter case only if ‘Containment Proxies’
+        /// are set to true in the generator. ResolveProxies implies that the reference may
+        /// span documents, and therefore needs proxy checking and resolution in the get
+        /// accessor. You can optimize the generated get pattern for references that you
+        /// know will never be used in a cross document scenario by setting resolveProxies
+        /// to false. In that case, the generated get method will be optimally efficient.
+        /// </remarks>
         public bool IsResolveProxies { get; private set; }
 
         /// <summary>

@@ -35,12 +35,21 @@ namespace ECoreNetto
         {
             this.Changeable = true;
         }
-
+        
         /// <summary>
         /// Gets a value indicating whether this feature is changeable.
         /// </summary>
         /// <remarks>
-        /// When true, the value of this feature can be changed.
+        /// A feature that is not changeable will not include a
+        /// generated set method, and the reflective eSet()
+        /// method will throw an exception if you try to set it.
+        /// Declaring one end of a bi-directional relationship to
+        /// be not changeable is a good way to force clients to
+        /// always set the reference from the other end, but still
+        /// provide convenient navigation methods from either end.
+        /// Declaring one-way references or attributes to be not
+        /// changeable usually implies that the feature will be set or
+        /// changed by some other(user-written) code
         /// </remarks>
         public bool Changeable { get; private set; }
 
@@ -48,7 +57,13 @@ namespace ECoreNetto
         /// Gets a value indicating whether this feature is Volatile.
         /// </summary>
         /// <remarks>
-        /// When true, no field will be generated for this feature.
+        /// A feature that is declared volatile is generated without
+        /// storage fields and with empty implementation method
+        /// bodies, which you are required to complete.Volatile
+        /// is commonly used for a feature whose value is derived
+        /// from some other feature, or for a feature that is to be
+        /// implemented by hand using a different storage and
+        /// implementation pattern.
         /// </remarks>
         public bool Volatile { get; private set; }
 
@@ -56,7 +71,11 @@ namespace ECoreNetto
         /// Gets a value indicating whether this feature is Transient.
         /// </summary>
         /// <remarks>
-        /// When true, the value of this feature is serialized.
+        /// Transient features are used to declare (modeled) data
+        /// whose lifetime never spans application invocations and
+        /// therefore doesn't need to be persisted. The (default XMI)
+        /// serializer will not save features that are declared to be
+        /// transient.
         /// </remarks>
         public bool Transient { get; private set; }
 
@@ -72,7 +91,13 @@ namespace ECoreNetto
         /// Gets a value indicating whether this feature is Derived.
         /// </summary>
         /// <remarks>
-        /// When true, the value is true it is derived of other features.
+        /// The value of a derived feature is computed from other
+        /// features, so it doesn't represent any additional object
+        /// state.Framework classes, such as EcoreUtil.Copier,
+        /// that copy model objects will not attempt to copy such
+        /// features.The generated code is unaffected by the value
+        /// of the derived flag.Derived features are typically also
+        /// marked volatile and transient
         /// </remarks>
         public bool Derived { get; private set; }
 
@@ -103,7 +128,7 @@ namespace ECoreNetto
             {
                 this.Changeable = bool.Parse(output);
             }
-
+            
             if (this.Attributes.TryGetValue("volatile", out output))
             {
                 this.Volatile = bool.Parse(output);
