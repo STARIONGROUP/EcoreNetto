@@ -57,8 +57,11 @@ namespace ECoreNetto
         public int LowerBound { get; private set; }
 
         /// <summary>
-        /// Gets the upper bound of this this <see cref="ETypedElement"/>
+        /// Gets the upper bound of this <see cref="ETypedElement"/>
         /// </summary>
+        /// <remarks>
+        /// the value -1 is equal to *
+        /// </remarks>
         public int UpperBound { get; private set; }
 
         /// <summary>

@@ -95,7 +95,18 @@ namespace ECoreNetto
         /// </remarks>
         public IEnumerable<EStructuralFeature> AllEStructuralFeatures
         {
-            get { return this.EStructuralFeatures.Union(this.ESuperTypes.SelectMany(x => x.AllEStructuralFeatures)); }
+            get { return this.EStructuralFeatures.Union(this.ESuperTypes.SelectMany(x => x.AllEStructuralFeatures)) ; }
+        }
+
+        /// <summary>
+        /// Gets all <see cref="EStructuralFeature"/> from this <see cref="EClass"/> and all its <see cref="ESuperTypes"/> ordered by name
+        /// </summary>
+        /// <remarks>
+        /// There might be duplicates depending on the model
+        /// </remarks>
+        public IEnumerable<EStructuralFeature> AllEStructuralFeaturesOrderByName
+        {
+            get { return this.AllEStructuralFeatures.OrderBy(x => x.Name); }
         }
 
         /// <summary>
