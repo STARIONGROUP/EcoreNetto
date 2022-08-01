@@ -83,9 +83,25 @@ namespace ECoreNetto
         public ContainerList<EOperation> EOperations { get; private set; }
 
         /// <summary>
+        /// Gets the collection of <see cref="EOperation"/> ordered by Name
+        /// </summary>
+        public IEnumerable<EOperation> EOperationsOrderByName
+        {
+            get { return this.EOperations.OrderBy(x => x.Name); }
+        }
+
+        /// <summary>
         /// Gets the collection of <see cref="EStructuralFeature"/>
         /// </summary>
         public ContainerList<EStructuralFeature> EStructuralFeatures { get; private set; }
+
+        /// <summary>
+        /// Gets the collection of <see cref="EStructuralFeature"/> ordered by Name
+        /// </summary>
+        public IEnumerable<EStructuralFeature> EStructuralFeaturesOrderByName
+        {
+            get { return this.EStructuralFeatures.OrderBy(x => x.Name); }
+        }
 
         /// <summary>
         /// Gets all <see cref="EStructuralFeature"/> from this <see cref="EClass"/> and all its <see cref="ESuperTypes"/>
