@@ -1,4 +1,4 @@
-# ECoreNetto
+<img src="https://ecorenetto.org/assets/images/Ecorenetto-Logo-text.png" width="350">
 
 ## Introduction
 
