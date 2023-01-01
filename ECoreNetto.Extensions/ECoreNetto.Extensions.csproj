@@ -30,4 +30,8 @@
 		<ProjectReference Include="..\ECoreNetto\ECoreNetto.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<None Include="..\ecorenetto-Icon.png" Pack="true" PackagePath="" />
+	</ItemGroup>
+
 </Project>

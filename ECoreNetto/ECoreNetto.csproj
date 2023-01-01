@@ -30,7 +30,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="Assets\ecorenetto-Icon.png" Pack="true" PackagePath="" />
+		<None Include="..\ecorenetto-Icon.png" Pack="true" PackagePath="" />
 	</ItemGroup>
 
 </Project>
