@@ -18,7 +18,7 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
-ECoreNetto.HandleBars
+namespace ECoreNetto.HandleBars
 {
     using System;
     using System.Linq;

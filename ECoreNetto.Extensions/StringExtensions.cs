@@ -43,6 +43,8 @@ namespace ECoreNetto.Extensions
         /// </returns>
         public static IEnumerable<string> SplitToLines(this string input, int maximumLineLength)
         {
+            input = input.Replace("\r\n", " ").Trim();
+
             var words = input.Split(' ');
             var line = words.First();
             foreach (var word in words.Skip(1))

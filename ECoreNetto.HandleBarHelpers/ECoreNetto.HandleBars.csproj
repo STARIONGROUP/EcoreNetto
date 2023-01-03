@@ -5,7 +5,7 @@
 		<Company>RHEA System S.A.</Company>
 		<Copyright>Copyright © RHEA System S.A.</Copyright>
 		<Title>ECoreNetto.HandleBars</Title>
-		<Version>0.2.0</Version>
+		<Version>0.3.0</Version>
 		<Description>HandleBarHelpers for use in combination with the ECoreNetto library to support HandleBarHelpers based code generation</Description>
 		<PackageId>ECoreNetto.HandleBars</PackageId>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
