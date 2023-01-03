@@ -36,15 +36,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="Data\recipe.ecore">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="Data\wizardEcore.ecore">
+	  <Folder Include="Data\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\TestData\ecore.ecore" Link="Data\ecore.ecore">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="ecore.ecore">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
+		<None Include="..\TestData\recipe.ecore" Link="Data\recipe.ecore">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Include="..\TestData\wizardEcore.ecore" Link="Data\wizardEcore.ecore">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 </Project>

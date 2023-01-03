@@ -18,12 +18,11 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
-using System.Linq;
-
 namespace ECoreNetto.Tests.Resource
 {
     using System;
     using System.IO;
+    using System.Linq;
 
     using ECoreNetto.Resource;
     using NUnit.Framework;

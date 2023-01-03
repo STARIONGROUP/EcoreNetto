@@ -47,7 +47,7 @@ namespace ECoreNetto.HandleBars
 
                 if (eClass.ESuperTypes.Any())
                 {
-                    var result = $": {string.Join(",", eClass.ESuperTypes.Select(x => $"I{x.Name}"))}";
+                    var result = $": {string.Join(", ", eClass.ESuperTypes.Select(x => $"I{x.Name}"))}";
 
                     writer.WriteSafeString(result);
                 }

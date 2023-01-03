@@ -39,7 +39,7 @@ namespace ECoreNetto.Tests.Resource
         [SetUp]
         public void SetUp()
         {
-            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "ecore.ecore");
+            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "ecore.ecore");
             this.filePath = Path.GetFullPath(path);
             var uri = new System.Uri(this.filePath);
 

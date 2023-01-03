@@ -26,11 +26,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\CodeQuality.yml = .github\workflows\CodeQuality.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECoreNetto.Extensions", "ECoreNetto.Extensions\ECoreNetto.Extensions.csproj", "{8B87991E-3EA1-4C46-A83C-46FF3D3405BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECoreNetto.Extensions", "ECoreNetto.Extensions\ECoreNetto.Extensions.csproj", "{8B87991E-3EA1-4C46-A83C-46FF3D3405BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECoreNetto.Extensions.Tests", "ECoreNetto.Extensions.Tests\ECoreNetto.Extensions.Tests.csproj", "{EA665361-48DD-4CFB-A127-449572D215FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECoreNetto.Extensions.Tests", "ECoreNetto.Extensions.Tests\ECoreNetto.Extensions.Tests.csproj", "{EA665361-48DD-4CFB-A127-449572D215FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECoreNetto.HandleBars", "ECoreNetto.HandleBarHelpers\ECoreNetto.HandleBars.csproj", "{3233007F-9DCC-4FC8-8E97-8B962E44A8FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECoreNetto.HandleBars", "ECoreNetto.HandleBars\ECoreNetto.HandleBars.csproj", "{3233007F-9DCC-4FC8-8E97-8B962E44A8FA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECoreNetto.HandleBars.Tests", "ECoreNetto.HandleBars.Tests\ECoreNetto.HandleBars.Tests.csproj", "{27928286-CB28-448F-8C3E-C7F34C86BF3F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestData", "TestData", "{9F1D7ED1-4894-44B8-8E8D-31B98F58915F}"
+	ProjectSection(SolutionItems) = preProject
+		TestData\ecore.ecore = TestData\ecore.ecore
+		TestData\recipe.ecore = TestData\recipe.ecore
+		TestData\wizardEcore.ecore = TestData\wizardEcore.ecore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,12 +67,17 @@ Global
 		{3233007F-9DCC-4FC8-8E97-8B962E44A8FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3233007F-9DCC-4FC8-8E97-8B962E44A8FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3233007F-9DCC-4FC8-8E97-8B962E44A8FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27928286-CB28-448F-8C3E-C7F34C86BF3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27928286-CB28-448F-8C3E-C7F34C86BF3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27928286-CB28-448F-8C3E-C7F34C86BF3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27928286-CB28-448F-8C3E-C7F34C86BF3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{AF0E6899-90F9-429B-B263-84B4CDA21C24} = {FFF8E3BF-4741-418B-AB6E-D7ABD8AA75F7}
+		{9F1D7ED1-4894-44B8-8E8D-31B98F58915F} = {FFF8E3BF-4741-418B-AB6E-D7ABD8AA75F7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EFCC2F13-0A13-4538-A018-1EE8B4B8950E}

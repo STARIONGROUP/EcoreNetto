@@ -20,7 +20,6 @@
 
 namespace ECoreNetto.Extensions.Tests
 {
-    using System;
     using System.IO;
     using System.Linq;
 
@@ -29,7 +28,6 @@ namespace ECoreNetto.Extensions.Tests
 
     using NUnit.Framework;
     
-
     /// <summary>
     /// Suite of tests for the <see cref="ModelElementExtensions"/> class
     /// </summary>

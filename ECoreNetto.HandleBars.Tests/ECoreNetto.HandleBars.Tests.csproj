@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFramework>net6.0</TargetFramework>
+	  <Company>RHEA System S.A.</Company>
+	  <Authors>Sam Gerene</Authors>
+	  <AssemblyName>ECoreNetto.HandleBars.Tests</AssemblyName>
+	  <Copyright>RHEA System S.A.</Copyright>
+	  <PackageProjectUrl>https://ecorenetto.org</PackageProjectUrl>
+	  <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+	  <RepositoryUrl>https://github.com/RHEAGROUP/EcoreNetto.git</RepositoryUrl>
+	  <RepositoryType>Git</RepositoryType>
+	  <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
+		<PackageReference Include="NUnit" Version="3.13.3" />
+		<PackageReference Include="NUnit3TestAdapter" Version="4.3.1" />
+		<PackageReference Include="NUnit.Analyzers" Version="3.5.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="coverlet.collector" Version="3.2.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\ECoreNetto.HandleBars\ECoreNetto.HandleBars.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Data\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\TestData\recipe.ecore" Link="Data\recipe.ecore">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="..\TestData\wizardEcore.ecore" Link="Data\wizardEcore.ecore">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+</Project>
