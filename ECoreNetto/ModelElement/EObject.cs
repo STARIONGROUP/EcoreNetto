@@ -26,7 +26,7 @@ namespace ECoreNetto
     using System.Xml;
 
     /// <summary>
-    /// An EObject is the base of all modeled objects. All the method names start with "e" to distinguish the EMF methods from the client methods.
+    /// An <see cref="EObject"/> is the base of all modeled objects. All the method names start with "e" to distinguish the EMF methods from the client methods.
     /// It provides support for the behaviors and features common to all modeled objects.
     /// <see cref="EObject"/> is the equivalent of <see cref="System.Object"/>.
     /// </summary>

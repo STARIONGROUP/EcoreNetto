@@ -25,7 +25,7 @@ namespace ECoreNetto
     using System.Xml;
 
     /// <summary>
-    /// The ECORE operation class.
+    /// The ECore operation class.
     /// </summary>
     public class EOperation : ETypedElement
     {

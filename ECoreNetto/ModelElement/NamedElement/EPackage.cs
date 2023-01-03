@@ -26,7 +26,7 @@ namespace ECoreNetto
     using System.Xml;
 
     /// <summary>
-    /// The e package.
+    /// The ECore package.
     /// </summary>
     public class EPackage : ENamedElement
     {

@@ -21,7 +21,7 @@
 namespace ECoreNetto
 {
     /// <summary>
-    /// The type representing a 
+    /// The type representing a ECore Factory
     /// </summary>
     public class EFactory : EModelElement
     {

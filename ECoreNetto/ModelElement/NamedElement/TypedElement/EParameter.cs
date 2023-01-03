@@ -21,7 +21,7 @@
 namespace ECoreNetto
 {
     /// <summary>
-    /// The ECORE parameter class.
+    /// The ECore parameter class.
     /// </summary>
     public class EParameter : ETypedElement
     {

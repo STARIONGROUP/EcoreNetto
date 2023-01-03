@@ -6,7 +6,7 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<Company>RHEA System S.A.</Company>
 		<Title>EcoreNetto</Title>
-		<Version>2.3.0</Version>
+		<Version>2.3.1</Version>
 		<Description>ECoreNetto is a dotnet core library that is used to deserialize an Ecore meta-model for the purpose of code generation. Ecore is a meta-model used to represent models in the Eclipse Modelling Framework. EMF is a powerful framework and code generation facility for building Java applications based on simple model definitions. The intention of ECoreNetto is not to be a port of EMF, it aims at bridging the gap to the .NET world to facilitate code generation of C# class libraries based on an Ecore model using the .NET code available tooling and libraries.</Description>
 		<PackageId>ECoreNetto</PackageId>
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
@@ -21,11 +21,11 @@
 		<PackageIcon>ecorenetto-Icon.png</PackageIcon>
 		<AssemblyTitle>EcoreNetto</AssemblyTitle>
 		<NeutralLanguage>en-US</NeutralLanguage>
-		<Authors>Naron Phou;Sam Gerene;Merlin Bieze</Authors>
+		<Authors>Sam Gerene; Naron Phou; Merlin Bieze</Authors>
 		<PackageTags>Ecore</PackageTags>
 		<PackageReleaseNotes>
-			[Add] EClass.EStructuralFeaturesOrderByName helper property
-			[Add] EClass.EOperationsOrderByName helper property
+			[Cleanup] using statements
+			[Update] header - copyright statement
 		</PackageReleaseNotes>
 	</PropertyGroup>
 

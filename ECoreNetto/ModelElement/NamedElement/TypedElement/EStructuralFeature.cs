@@ -21,7 +21,7 @@
 namespace ECoreNetto
 {
     /// <summary>
-    /// The abstract ECORE structural feature class.
+    /// The abstract ECore structural feature class.
     /// </summary>
     public abstract class EStructuralFeature : ETypedElement
     {

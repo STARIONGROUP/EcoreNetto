@@ -24,6 +24,7 @@ namespace ECoreNetto.Tests.Resource
     using System.IO;
 
     using ECoreNetto.Resource;
+
     using NUnit.Framework;
     
     /// <summary>

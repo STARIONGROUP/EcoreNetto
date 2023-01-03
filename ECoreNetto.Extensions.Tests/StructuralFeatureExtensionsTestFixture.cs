@@ -20,7 +20,6 @@
 
 namespace ECoreNetto.Extensions.Tests
 {
-    using System;
     using System.IO;
     using System.Linq;
 

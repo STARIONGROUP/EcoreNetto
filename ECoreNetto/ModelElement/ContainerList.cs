@@ -22,6 +22,7 @@ namespace ECoreNetto
 {
     using System;
     using System.Collections.Generic;
+
     using ECoreNetto.Utils;
 
     /// <summary>
