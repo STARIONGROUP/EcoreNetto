@@ -6,7 +6,7 @@
 		<Company>RHEA System S.A.</Company>
 		<Copyright>Copyright © RHEA System S.A.</Copyright>
 		<Title>ECoreNetto.Extensions</Title>
-		<Version>0.2.1</Version>
+		<Version>0.3.0</Version>
 		<Description>Extension methods for the ECoreNetto library that are typically used to support code generation</Description>
 		<PackageId>ECoreNetto.Extensions</PackageId>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -22,7 +22,7 @@
 		<Authors>Sam Gerene</Authors>
 		<PackageTags>Ecore</PackageTags>
 		<PackageReleaseNotes>
-			[Initial] release
+			[Add] QueryClass extension method to EStructuralFeature
 		</PackageReleaseNotes>
 	</PropertyGroup>
 

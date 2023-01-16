@@ -45,6 +45,21 @@ namespace ECoreNetto.Extensions
         }
 
         /// <summary>
+        /// Queries the <see cref="EClass"/> that represents the Type of the feature.
+        /// </summary>
+        /// <param name="eStructuralFeature">
+        /// The subject <see cref="EStructuralFeature"/>
+        /// </param>
+        /// <returns>
+        /// An instance of <see cref="EClass"/> when the <see cref="EStructuralFeature"/> is
+        /// an <see cref="EReference"/>, null in case it is not.
+        /// </returns>
+        public static EClass QueryClass(this EStructuralFeature eStructuralFeature)
+        {
+            return eStructuralFeature is EReference { EType: EClass eClass } ? eClass : null;
+        }
+
+        /// <summary>
         /// Queries whether the <see cref="EStructuralFeature"/> is Enumerable
         /// </summary>
         /// <param name="eStructuralFeature">

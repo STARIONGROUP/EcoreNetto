@@ -126,5 +126,23 @@ namespace ECoreNetto.Extensions.Tests
 
             Assert.That(unitStructuralFeature.QueryHasDefaultValue, Is.True);
         }
+
+        [Test]
+        public void Verify_that_QueryClass_returns_expected_result()
+        {
+            var containerClass = this.rootPackage.EClassifiers.OfType<EClass>().Single(x => x.Name == "Container");
+
+            var capacityStructuralFeature = containerClass.EStructuralFeatures.Single(x => x.Name == "capacity");
+
+            var capacityClass = capacityStructuralFeature.QueryClass();
+
+            Assert.That(capacityClass.Name, Is.EqualTo("Amount"));
+
+            var timeTriggerClass = this.rootPackage.EClassifiers.OfType<EClass>().Single(x => x.Name == "TimeTrigger");
+
+            var minutesStructuralFeature = timeTriggerClass.EStructuralFeatures.Single(x => x.Name == "minutes");
+            
+            Assert.That(minutesStructuralFeature.QueryClass(), Is.Null);
+        }
     }
 }
