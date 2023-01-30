@@ -21,7 +21,7 @@
 		<Authors>Sam Gerene</Authors>
 		<PackageTags>Ecore HandleBars</PackageTags>
 		<PackageReleaseNotes>
-			[Update] to Ecorentto.Extensions version 0.4.0
+			[Update] to Ecorentto.Extensions version 0.5.0
 			[Update] to Handlebars.Net.Helpers version 2.3.13
 		</PackageReleaseNotes>
 	</PropertyGroup>
