@@ -5,7 +5,7 @@
 		<Company>RHEA System S.A.</Company>
 		<Copyright>Copyright © RHEA System S.A.</Copyright>
 		<Title>ECoreNetto.HandleBars</Title>
-		<Version>0.4.0</Version>
+		<Version>0.5.0</Version>
 		<Description>HandleBarHelpers for use in combination with the ECoreNetto library to support HandleBarHelpers based code generation</Description>
 		<PackageId>ECoreNetto.HandleBars</PackageId>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -21,12 +21,13 @@
 		<Authors>Sam Gerene</Authors>
 		<PackageTags>Ecore HandleBars</PackageTags>
 		<PackageReleaseNotes>
-			[Update] to Ecorentto.Extensions version 0.3.0
+			[Update] to Ecorentto.Extensions version 0.4.0
+			[Update] to Handlebars.Net.Helpers version 2.3.13
 		</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Handlebars.Net.Helpers" Version="2.3.12" />
+		<PackageReference Include="Handlebars.Net.Helpers" Version="2.3.13" />
 	</ItemGroup>
 
 	<ItemGroup>
