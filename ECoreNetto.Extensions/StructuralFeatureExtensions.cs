@@ -102,6 +102,26 @@ namespace ECoreNetto.Extensions
         }
 
         /// <summary>
+        /// Queries whether the <see cref="EStructuralFeature"/> is of type containment (which may only be the case
+        /// for an <see cref="EReference"/>, not for an <see cref="EAttribute"/>)
+        /// </summary>
+        /// <param name="structuralFeature">
+        /// The subject <see cref="EStructuralFeature"/>
+        /// </param>
+        /// <returns>
+        /// True when it is, false when not
+        /// </returns>
+        public static bool QueryIsContainment(this EStructuralFeature structuralFeature)
+        {
+            if (structuralFeature is EReference reference)
+            {
+                return reference.IsContainment;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Queries whether the <see cref="EStructuralFeature.Name"/> is equal to the name of the containing <see cref="EClass"/>
         /// </summary>
         /// <param name="structuralFeature">

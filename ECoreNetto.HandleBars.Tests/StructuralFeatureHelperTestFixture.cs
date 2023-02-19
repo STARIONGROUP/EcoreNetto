@@ -155,5 +155,27 @@ namespace ECoreNetto.HandleBars.Tests
 
             Assert.That(result, Is.EqualTo("True"));
         }
+
+        [Test]
+        public void Verify_that_StructuralFeature_QueryIsContainment_returns_expected_result()
+        {
+            var template = "{{ #StructuralFeature.QueryIsContainment this }}";
+
+            var action = this.handlebarsContenxt.Compile(template);
+            
+            var eClass = this.root.EClassifiers.OfType<EClass>().Single(x => x.Name == "Ingredient");
+            var eStructuralFeature = eClass.EStructuralFeatures.Single(x => x.Name == "amount");
+
+            var result = action(eStructuralFeature);
+
+            Assert.That(result, Is.EqualTo("True"));
+
+            eClass = this.root.EClassifiers.OfType<EClass>().Single(x => x.Name == "TimeTrigger");
+            eStructuralFeature = eClass.EStructuralFeatures.Single(x => x.Name == "minutes");
+
+            result = action(eStructuralFeature);
+
+            Assert.That(result, Is.EqualTo("False"));
+        }
     }
 }

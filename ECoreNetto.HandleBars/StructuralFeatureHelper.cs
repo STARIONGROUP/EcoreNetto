@@ -198,6 +198,18 @@ namespace ECoreNetto.HandleBars
 
                 return eStructuralFeature.QueryHasDefaultValue();
             });
+
+            handlebars.RegisterHelper("StructuralFeature.QueryIsContainment", (context, arguments) =>
+            {
+                if (arguments.Length != 1)
+                {
+                    throw new HandlebarsException("{{#StructuralFeature.QueryIsContainment}} helper must have exactly one argument");
+                }
+
+                var eStructuralFeature = arguments.Single() as EStructuralFeature;
+
+                return eStructuralFeature.QueryIsContainment();
+            });
         }
     }
 }

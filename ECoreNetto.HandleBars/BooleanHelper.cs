@@ -1,0 +1,51 @@
+﻿// -------------------------------------------------------------------------------------------------
+// <copyright file="BooleanHelper.cs" company="RHEA System S.A.">
+// 
+//   Copyright 2017-2023 RHEA System S.A.
+// 
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+// 
+//        http://www.apache.org/licenses/LICENSE-2.0
+// 
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+// 
+// </copyright>
+// ------------------------------------------------------------------------------------------------
+
+namespace ECoreNetto.HandleBars
+{
+    using HandlebarsDotNet;
+
+    /// <summary>
+    /// A block helper that supports operations on boolean data types
+    /// </summary>
+    public static class BooleanHelper
+    {
+        /// <summary>
+        /// Registers the <see cref="BooleanHelper"/>
+        /// </summary>
+        /// <param name="handlebars">
+        /// The <see cref="IHandlebars"/> context with which the helper needs to be registered
+        /// </param>
+        public static void RegisterBooleanHelper(this IHandlebars handlebars)
+        {
+            handlebars.RegisterHelper("Boolean.ToLowerCase", (writer, context, parameters) =>
+            {
+                if (parameters.Length != 1)
+                {
+                    throw new HandlebarsException("{{#Boolean.ToLowerCase}} helper must have exactly one argument");
+                }
+
+                var value = (bool)parameters[0];
+
+                writer.WriteSafeString(value.ToString().ToLowerInvariant());
+            });
+        }
+    }
+}
