@@ -1,37 +1,42 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
-		<LangVersion>10.0</LangVersion>
-		<Company>RHEA System S.A.</Company>
-		<Copyright>Copyright © RHEA System S.A.</Copyright>
-		<Title>ECoreNetto.Extensions</Title>
-		<Version>0.6.0</Version>
-		<Description>Extension methods for the ECoreNetto library that are typically used to support code generation</Description>
-		<PackageId>ECoreNetto.Extensions</PackageId>
-		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-		<PackageProjectUrl>https://ecorenetto.org</PackageProjectUrl>
-		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-		<IncludeSource>true</IncludeSource>
-		<IncludeSymbols>true</IncludeSymbols>
-		<RepositoryUrl>https://github.com/RHEAGROUP/EcoreNetto</RepositoryUrl>
-		<RepositoryType>Git</RepositoryType>
-		<PackageIcon>ecorenetto-Icon.png</PackageIcon>
-		<AssemblyTitle>EcoreNetto.Extensions</AssemblyTitle>
-		<NeutralLanguage>en-US</NeutralLanguage>
-		<Authors>Sam Gerene</Authors>
-		<PackageTags>Ecore</PackageTags>
-		<PackageReleaseNotes>
-			[Add] StructuralFeatureExtensions.QueryIsContainment extension method
-		</PackageReleaseNotes>
-	</PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>10.0</LangVersion>
+        <Company>RHEA System S.A.</Company>
+        <Copyright>Copyright © RHEA System S.A.</Copyright>
+        <Title>ECoreNetto.Extensions</Title>
+        <Version>1.0.0</Version>
+        <Description>Extension methods for the ECoreNetto library that are typically used to support code generation</Description>
+        <PackageId>ECoreNetto.Extensions</PackageId>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <PackageProjectUrl>https://ecorenetto.org</PackageProjectUrl>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <IncludeSource>true</IncludeSource>
+        <IncludeSymbols>true</IncludeSymbols>
+        <RepositoryUrl>https://github.com/RHEAGROUP/EcoreNetto</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
+        <PackageIcon>ecorenetto-Icon.png</PackageIcon>
+        <AssemblyTitle>EcoreNetto.Extensions</AssemblyTitle>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <Authors>Sam Gerene</Authors>
+        <PackageTags>Ecore</PackageTags>
+        <PackageReleaseNotes>
+            [Add] StructuralFeatureExtensions.QueryIsContainment extension method
+        </PackageReleaseNotes>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\ECoreNetto\ECoreNetto.csproj" />
-	</ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\ECoreNetto\ECoreNetto.csproj" />
+    </ItemGroup>
 
-	<ItemGroup>
-		<None Include="..\ecorenetto-Icon.png" Pack="true" PackagePath="" />
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
+        <PackageReference Include="System.Memory" Version="4.5.5" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="..\ecorenetto-Icon.png" Pack="true" PackagePath="" />
+    </ItemGroup>
 
 </Project>
