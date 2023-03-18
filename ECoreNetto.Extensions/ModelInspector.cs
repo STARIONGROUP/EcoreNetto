@@ -68,7 +68,7 @@ namespace ECoreNetto.Extensions
                 sb.AppendLine($"reference type: {referenceType}");
             }
 
-            var orderedEnums = this.enums.OrderBy(x => x);;
+            var orderedEnums = this.enums.OrderBy(x => x);
 
             foreach (var @enum in orderedEnums)
             {
