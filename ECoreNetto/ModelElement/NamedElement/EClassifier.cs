@@ -86,8 +86,6 @@ namespace ECoreNetto
             }
         }
 
-        // todo instanceclass, default value?
-
         /// <summary>
         /// Build the <see cref="EModelElement.Identifier"/> property
         /// </summary>

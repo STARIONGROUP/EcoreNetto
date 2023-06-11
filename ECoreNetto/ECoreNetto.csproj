@@ -2,35 +2,35 @@
 
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
-		<Company>RHEA System S.A.</Company>
-		<Title>EcoreNetto</Title>
-		<Version>2.3.1</Version>
-		<Description>ECoreNetto is a dotnet core library that is used to deserialize an Ecore meta-model for the purpose of code generation. Ecore is a meta-model used to represent models in the Eclipse Modelling Framework. EMF is a powerful framework and code generation facility for building Java applications based on simple model definitions. The intention of ECoreNetto is not to be a port of EMF, it aims at bridging the gap to the .NET world to facilitate code generation of C# class libraries based on an Ecore model using the .NET code available tooling and libraries.</Description>
-		<PackageId>ECoreNetto</PackageId>
-		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-		<Copyright>Copyright © RHEA System S.A.</Copyright>
-		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-		<PackageProjectUrl>https://ecorenetto.org</PackageProjectUrl>
-		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-		<IncludeSource>true</IncludeSource>
-		<IncludeSymbols>true</IncludeSymbols>
-		<RepositoryUrl>https://github.com/RHEAGROUP/EcoreNetto</RepositoryUrl>
-		<RepositoryType>Git</RepositoryType>
-		<PackageIcon>ecorenetto-Icon.png</PackageIcon>
-		<AssemblyTitle>EcoreNetto</AssemblyTitle>
-		<NeutralLanguage>en-US</NeutralLanguage>
-		<Authors>Sam Gerene; Naron Phou; Merlin Bieze</Authors>
-		<PackageTags>Ecore</PackageTags>
-		<PackageReleaseNotes>
-			[Cleanup] using statements
-			[Update] header - copyright statement
-		</PackageReleaseNotes>
-	</PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <Company>RHEA System S.A.</Company>
+        <Title>EcoreNetto</Title>
+        <Version>2.3.1</Version>
+        <Description>ECoreNetto is a dotnet core library that is used to deserialize an Ecore meta-model for the purpose of code generation. Ecore is a meta-model used to represent models in the Eclipse Modelling Framework. EMF is a powerful framework and code generation facility for building Java applications based on simple model definitions. The intention of ECoreNetto is not to be a port of EMF, it aims at bridging the gap to the .NET world to facilitate code generation of C# class libraries based on an Ecore model using the .NET code available tooling and libraries.</Description>
+        <PackageId>ECoreNetto</PackageId>
+        <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+        <Copyright>Copyright © RHEA System S.A.</Copyright>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <PackageProjectUrl>https://ecorenetto.org</PackageProjectUrl>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <IncludeSource>true</IncludeSource>
+        <IncludeSymbols>true</IncludeSymbols>
+        <RepositoryUrl>https://github.com/RHEAGROUP/EcoreNetto</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
+        <PackageIcon>ecorenetto-Icon.png</PackageIcon>
+        <AssemblyTitle>EcoreNetto</AssemblyTitle>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <Authors>Sam Gerene; Naron Phou; Merlin Bieze</Authors>
+        <PackageTags>Ecore</PackageTags>
+        <PackageReleaseNotes>
+            [Cleanup] using statements
+            [Update] header - copyright statement
+        </PackageReleaseNotes>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<None Include="..\ecorenetto-Icon.png" Pack="true" PackagePath="" />
-	</ItemGroup>
+    <ItemGroup>
+        <None Include="..\ecorenetto-Icon.png" Pack="true" PackagePath="" />
+    </ItemGroup>
 
 </Project>
