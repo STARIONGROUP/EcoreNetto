@@ -32,7 +32,7 @@ namespace ECoreNetto.Extensions.Tests
     {
         private EPackage rootPackage;
 
-        private IModelInspector modelInspector;
+        private ModelInspector modelInspector;
 
         [SetUp]
         public void SetUp()
