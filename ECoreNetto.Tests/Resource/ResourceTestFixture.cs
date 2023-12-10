@@ -54,7 +54,7 @@ namespace ECoreNetto.Tests.Resource
         {
             var root = this.resource.Load(null);
 
-            Assert.AreEqual(20, root.EClassifiers.OfType<EClass>().Count()); 
+            Assert.That(root.EClassifiers.OfType<EClass>().Count(), Is.EqualTo(20));
         }
     }
 }

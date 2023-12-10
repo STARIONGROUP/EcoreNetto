@@ -6,7 +6,7 @@
         <Company>RHEA System S.A.</Company>
         <Copyright>Copyright © RHEA System S.A.</Copyright>
         <Title>ECoreNetto.Extensions</Title>
-        <Version>1.0.0</Version>
+        <Version>1.1.0</Version>
         <Description>Extension methods for the ECoreNetto library that are typically used to support code generation</Description>
         <PackageId>ECoreNetto.Extensions</PackageId>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -22,7 +22,7 @@
         <Authors>Sam Gerene</Authors>
         <PackageTags>Ecore</PackageTags>
         <PackageReleaseNotes>
-            [Add] StructuralFeatureExtensions.QueryIsContainment extension method
+            [Update] HtmlAgilityPack
         </PackageReleaseNotes>
     </PropertyGroup>
 
@@ -31,7 +31,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.54" />
         <PackageReference Include="System.Memory" Version="4.5.5" />
     </ItemGroup>
 

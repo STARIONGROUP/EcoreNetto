@@ -58,9 +58,11 @@ namespace ECoreNetto.Tests.Resource
 
             var resource = this.resourceSet.CreateResource(uri);
 
-            CollectionAssert.Contains(this.resourceSet.Resources, resource);
+            //CollectionAssert.Contains(this.resourceSet.Resources, resource);
 
-            Assert.AreEqual(uri, resource.URI);
+            Assert.That(this.resourceSet.Resources, Does.Contain(resource));
+
+            Assert.That(uri, Is.EqualTo(resource.URI));
         }
 
         [Test]
@@ -75,7 +77,7 @@ namespace ECoreNetto.Tests.Resource
 
             var result = this.resourceSet.Resource(uri, false);
 
-            Assert.AreEqual(resource, result);
+            Assert.That(resource, Is.EqualTo(result));
         }
     }
 }
