@@ -1,8 +1,18 @@
-<img src="https://ecorenetto.org/assets/images/Ecorenetto-Logo-text.png" width="350">
+<img src="https://github.com/RHEAGROUP/EcoreNetto/raw/development/Ecorenetto-Logo-text.png" width="350">
 
 ## Introduction
 
-ECoreNetto is a dotnet core library that is used to deserialize an Ecore meta-model for the purpose of code generation. Ecore is a meta-model used to represent models in the Eclipse Modelling Framework. EMF is a powerful framework and code generation facility for building Java applications based on simple model definitions. The intention of ECoreNetto is not to be a port of EMF, it aims at bridging the gap to the .NET world to facilitate code generation of C# class libraries based on an Ecore model using the .NET code available tooling and libraries.
+ECoreNetto is a suite of dotnet core libraries that are used to deserialize an Ecore meta-model for the purpose of code generation. Ecore is a meta-model used to represent models in the Eclipse Modelling Framework. EMF is a powerful framework and code generation facility for building Java applications based on simple model definitions. The intention of ECoreNetto is not to be a port of EMF, it aims at bridging the gap to the .NET world to facilitate code generation of C# class libraries based on an Ecore model using the .NET code available tooling and libraries.
+
+## ECoreNetto.Extensions
+
+The ECoreNetto.Extensions library provides extensions methods to the EcoreNetto library to support code generation. This library is part of the EcoreNetto ecosystem.
+
+## ECoreNetto.HandleBars
+
+The ECoreNetto.HandleBars library provides [HandleBars](https://github.com/Handlebars-Net/Handlebars.Net) helpers to support code generation. This library is part of the EcoreNetto ecosystem.
+
+## Code Qualiry
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_EcoreNetto&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_EcoreNetto)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_EcoreNetto&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_EcoreNetto)
@@ -17,13 +27,15 @@ ECoreNetto is a dotnet core library that is used to deserialize an Ecore meta-mo
 
 ## Installation
 
-The package is available on Nuget at https://www.nuget.org/packages/ECoreNetto/
+The package are available on Nuget at:
 
-[![NuGet Badge](https://buildstats.info/nuget/ECoreNetto)](https://buildstats.info/nuget/ECoreNetto)
+  - ECoreNetto: [![NuGet Badge](https://buildstats.info/nuget/ECoreNetto)](https://buildstats.info/nuget/ECoreNetto)
+  - ECoreNetto.Extensions: [![NuGet Badge](https://buildstats.info/nuget/ECoreNetto.Extensions)](https://buildstats.info/nuget/ECoreNetto.Extensions)
+  - ECoreNetto.HandleBars: [![NuGet Badge](https://buildstats.info/nuget/ECoreNetto.HandleBars)](https://buildstats.info/nuget/ECoreNetto.HandleBars)
 
 ## Build Status
 
-GitHub actions are used to build and test the library
+GitHub actions are used to build and test the EcoreNetto libraries
 
 Branch | Build Status
 ------- | :------------
