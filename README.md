@@ -6,11 +6,11 @@ ECoreNetto is a suite of dotnet core libraries that are used to deserialize an E
 
 ## ECoreNetto.Extensions
 
-The ECoreNetto.Extensions library provides extensions methods to the EcoreNetto library to support code generation. This library is part of the EcoreNetto ecosystem.
+The **ECoreNetto.Extensions** library provides extensions methods to the EcoreNetto library to support code generation. This library is part of the EcoreNetto ecosystem.
 
 ## ECoreNetto.HandleBars
 
-The ECoreNetto.HandleBars library provides [HandleBars](https://github.com/Handlebars-Net/Handlebars.Net) helpers to support code generation. This library is part of the EcoreNetto ecosystem.
+The **ECoreNetto.HandleBars** library provides [HandleBars](https://github.com/Handlebars-Net/Handlebars.Net) helpers to support code generation. This library is part of the EcoreNetto ecosystem.
 
 ## Code Qualiry
 
