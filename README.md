@@ -12,7 +12,7 @@ The **ECoreNetto.Extensions** library provides extensions methods to the EcoreNe
 
 The **ECoreNetto.HandleBars** library provides [HandleBars](https://github.com/Handlebars-Net/Handlebars.Net) helpers to support code generation. This library is part of the EcoreNetto ecosystem.
 
-## Code Qualiry
+## Code Quality
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_EcoreNetto&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_EcoreNetto)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_EcoreNetto&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_EcoreNetto)
