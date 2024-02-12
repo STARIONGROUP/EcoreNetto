@@ -31,7 +31,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="HtmlAgilityPack" Version="1.11.54" />
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.58" />
         <PackageReference Include="System.Memory" Version="4.5.5" />
     </ItemGroup>
 
