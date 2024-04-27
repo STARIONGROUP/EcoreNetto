@@ -2,8 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <Company>RHEA System S.A.</Company>
-        <Copyright>Copyright © RHEA System S.A.</Copyright>
+        <Company>Starion Group S.A.</Company>
+        <Copyright>Copyright © Starion Group S.A.</Copyright>
         <Title>ECoreNetto.HandleBars</Title>
         <Version>1.2.2</Version>
         <Description>HandleBarHelpers for use in combination with the ECoreNetto library to support HandleBarHelpers based code generation</Description>
@@ -13,7 +13,7 @@
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <IncludeSource>true</IncludeSource>
         <IncludeSymbols>true</IncludeSymbols>
-        <RepositoryUrl>https://github.com/RHEAGROUP/EcoreNetto</RepositoryUrl>
+        <RepositoryUrl>https://github.com/STARIONGROUP/EcoreNetto</RepositoryUrl>
         <RepositoryType>Git</RepositoryType>
         <PackageIcon>ecorenetto-Icon.png</PackageIcon>
         <AssemblyTitle>EcoreNetto.HandleBars</AssemblyTitle>

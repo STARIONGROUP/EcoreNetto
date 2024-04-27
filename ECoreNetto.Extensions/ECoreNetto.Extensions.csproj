@@ -3,8 +3,8 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>10.0</LangVersion>
-        <Company>RHEA System S.A.</Company>
-        <Copyright>Copyright © RHEA System S.A.</Copyright>
+        <Company>Starion Group S.A.</Company>
+        <Copyright>Copyright © Starion Group S.A.</Copyright>
         <Title>ECoreNetto.Extensions</Title>
         <Version>1.1.2</Version>
         <Description>Extension methods for the ECoreNetto library that are typically used to support code generation</Description>
@@ -14,7 +14,7 @@
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <IncludeSource>true</IncludeSource>
         <IncludeSymbols>true</IncludeSymbols>
-        <RepositoryUrl>https://github.com/RHEAGROUP/EcoreNetto</RepositoryUrl>
+        <RepositoryUrl>https://github.com/STARIONGROUP/EcoreNetto</RepositoryUrl>
         <RepositoryType>Git</RepositoryType>
         <PackageIcon>ecorenetto-Icon.png</PackageIcon>
         <AssemblyTitle>EcoreNetto.Extensions</AssemblyTitle>

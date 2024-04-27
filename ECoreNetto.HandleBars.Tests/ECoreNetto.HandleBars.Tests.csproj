@@ -2,13 +2,13 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
-        <Company>RHEA System S.A.</Company>
+        <Company>Starion Group S.A.</Company>
         <Authors>Sam Gerene</Authors>
         <AssemblyName>ECoreNetto.HandleBars.Tests</AssemblyName>
-        <Copyright>RHEA System S.A.</Copyright>
+        <Copyright>Starion Group S.A.</Copyright>
         <PackageProjectUrl>https://ecorenetto.org</PackageProjectUrl>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <RepositoryUrl>https://github.com/RHEAGROUP/EcoreNetto.git</RepositoryUrl>
+        <RepositoryUrl>https://github.com/STARIONGROUP/EcoreNetto.git</RepositoryUrl>
         <RepositoryType>Git</RepositoryType>
         <IsPackable>false</IsPackable>
     </PropertyGroup>

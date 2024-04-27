@@ -1,5 +1,5 @@
 ﻿// -------------------------------------------------------------------------------------------------
-// <copyright file="EOperation.cs" company="RHEA System S.A.">
+// <copyright file="EOperation.cs" company="Starion Group S.A.">
 //
 //   Copyright 2017-2020 System S.A.
 //

@@ -1,8 +1,8 @@
 ### Prerequisites
 
 - [ ] I have written a descriptive pull-request title
-- [ ] I have verified that there are no overlapping [pull-requests](https://github.com/RHEAGROUP/EcoreNetto/pulls) open
-- [ ] I have verified that I am following the CDP4-SDK [code style guidelines](https://raw.githubusercontent.com/RHEAGROUP/EcoreNetto/master/.github/CONTRIBUTING.md)
+- [ ] I have verified that there are no overlapping [pull-requests](https://github.com/STARIONGROUP/EcoreNetto/pulls) open
+- [ ] I have verified that I am following the EcoreNetto [code style guidelines](https://raw.githubusercontent.com/STARIONGROUP/EcoreNetto/master/.github/CONTRIBUTING.md)
 - [ ] I have provided test coverage for my change (where applicable)
 
 ### Description

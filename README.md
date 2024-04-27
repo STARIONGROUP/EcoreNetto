@@ -1,4 +1,4 @@
-<img src="https://github.com/RHEAGROUP/EcoreNetto/raw/development/Ecorenetto-Logo-text.png" width="350">
+<img src="https://github.com/STARIONGROUP/EcoreNetto/raw/development/Ecorenetto-Logo-text.png" width="350">
 
 ## Introduction
 
@@ -14,16 +14,16 @@ The **ECoreNetto.HandleBars** library provides [HandleBars](https://github.com/H
 
 ## Code Quality
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_EcoreNetto&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_EcoreNetto)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_EcoreNetto&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_EcoreNetto)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_EcoreNetto&metric=coverage)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_EcoreNetto)
-[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_EcoreNetto&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_EcoreNetto)
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_EcoreNetto&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_EcoreNetto)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_EcoreNetto&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_EcoreNetto)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_EcoreNetto&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_EcoreNetto)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_EcoreNetto&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_EcoreNetto)
-[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_EcoreNetto&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_EcoreNetto)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_EcoreNetto&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_EcoreNetto)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=STARIONGROUP_EcoreNetto&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=STARIONGROUP_EcoreNetto)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=STARIONGROUP_EcoreNetto&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=STARIONGROUP_EcoreNetto)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=STARIONGROUP_EcoreNetto&metric=coverage)](https://sonarcloud.io/summary/new_code?id=STARIONGROUP_EcoreNetto)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=STARIONGROUP_EcoreNetto&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=STARIONGROUP_EcoreNetto)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=STARIONGROUP_EcoreNetto&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=STARIONGROUP_EcoreNetto)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=STARIONGROUP_EcoreNetto&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=STARIONGROUP_EcoreNetto)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=STARIONGROUP_EcoreNetto&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=STARIONGROUP_EcoreNetto)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=STARIONGROUP_EcoreNetto&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=STARIONGROUP_EcoreNetto)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=STARIONGROUP_EcoreNetto&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=STARIONGROUP_EcoreNetto)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=STARIONGROUP_EcoreNetto&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=STARIONGROUP_EcoreNetto)
 
 ## Installation
 
@@ -39,8 +39,8 @@ GitHub actions are used to build and test the EcoreNetto libraries
 
 Branch | Build Status
 ------- | :------------
-Master | ![Build Status](https://github.com/RHEAGROUP/EcoreNetto/actions/workflows/CodeQuality.yml/badge.svg?branch=master)
-Development | ![Build Status](https://github.com/RHEAGROUP/EcoreNetto/actions/workflows/CodeQuality.yml/badge.svg?branch=development)
+Master | ![Build Status](https://github.com/STARIONGROUP/EcoreNetto/actions/workflows/CodeQuality.yml/badge.svg?branch=master)
+Development | ![Build Status](https://github.com/STARIONGROUP/EcoreNetto/actions/workflows/CodeQuality.yml/badge.svg?branch=development)
 
 ## Ecore Documentation
 
