@@ -12,7 +12,7 @@
         <Version>0.1.0</Version>
         <ImplicitUsings>disable</ImplicitUsings>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageIcon>starion-s-symbol-main1-rgb.png</PackageIcon>
+        <PackageIcon>ecorenetto-Icon.png</PackageIcon>
         <PackageReleaseNotes>
             [Initial] Releasee
         </PackageReleaseNotes>
