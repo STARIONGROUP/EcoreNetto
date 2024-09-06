@@ -57,7 +57,7 @@ namespace ECoreNetto.Extensions.Tests
 
             var packages = this.rootPackage.QueryPackages();
 
-            Assert.That(packages.Count(), Is.EqualTo(2));
+            Assert.That(packages.Count, Is.EqualTo(2));
         }
 
         [Test]

@@ -108,8 +108,7 @@ namespace ECoreNetto.Extensions
 
                 classWorksheet.Cell(1, 1).InsertTable(dataTable, "Classes", true);
 
-                try
-                {
+                try {
                     classWorksheet.Rows().AdjustToContents();
                     classWorksheet.Columns().AdjustToContents();
                 }

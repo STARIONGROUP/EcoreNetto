@@ -53,7 +53,7 @@ namespace ECoreNetto.Tools.Tests.Commands
         [Test]
         public async Task Verify_that_InvokeAsync_returns_0()
         {
-            var invocationContext = new InvocationContext(null);
+            var invocationContext = new InvocationContext(null!);
 
             this.handler.InputModel = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "recipe.ecore"));
             this.handler.OutputReport = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "tabular-report.xlsx"));
@@ -62,7 +62,7 @@ namespace ECoreNetto.Tools.Tests.Commands
 
             this.reportGenerator.Verify(x => x.GenerateTable(It.IsAny<FileInfo>(), It.IsAny<FileInfo>()), Times.Once);
 
-            Assert.That(result, Is.EqualTo(0));
+            Assert.That(result, Is.EqualTo(0), "InvokeAsync should return 0 upon success.");
         }
     }
 }
