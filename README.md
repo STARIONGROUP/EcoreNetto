@@ -12,6 +12,10 @@ The **ECoreNetto.Extensions** library provides extensions methods to the EcoreNe
 
 The **ECoreNetto.HandleBars** library provides [HandleBars](https://github.com/Handlebars-Net/Handlebars.Net) helpers to support code generation. This library is part of the EcoreNetto ecosystem.
 
+## ECoreNetto.Tools
+
+The **ECoreNetto.Tools** commandline application is used to generate reports on the content of the Ecore model.
+
 ## Code Quality
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=STARIONGROUP_EcoreNetto&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=STARIONGROUP_EcoreNetto)
@@ -32,6 +36,7 @@ The package are available on Nuget at:
   - ECoreNetto: [![NuGet Badge](https://buildstats.info/nuget/ECoreNetto)](https://buildstats.info/nuget/ECoreNetto)
   - ECoreNetto.Extensions: [![NuGet Badge](https://buildstats.info/nuget/ECoreNetto.Extensions)](https://buildstats.info/nuget/ECoreNetto.Extensions)
   - ECoreNetto.HandleBars: [![NuGet Badge](https://buildstats.info/nuget/ECoreNetto.HandleBars)](https://buildstats.info/nuget/ECoreNetto.HandleBars)
+  - ECoreNetto.Tools: [![NuGet Badge](https://buildstats.info/nuget/ECoreNetto.Tools)](https://buildstats.info/nuget/ECoreNetto.Tools) 
 
 ## Build Status
 
