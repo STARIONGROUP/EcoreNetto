@@ -24,11 +24,13 @@ namespace ECoreNetto.Tools
     using System.CommandLine.Help;
     using System.CommandLine.Hosting;
     using System.CommandLine.Parsing;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
+    using ECoreNetto.Extensions;
     using ECoreNetto.Processor.Resources;
     using ECoreNetto.Tools.Commands;
-    using Extensions;
+    
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Logging.Console;
@@ -39,6 +41,7 @@ namespace ECoreNetto.Tools
     /// <summary>
     /// Main entry point for the command line application
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public static class Program
     {
         /// <summary>
