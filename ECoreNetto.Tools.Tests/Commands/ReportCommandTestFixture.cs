@@ -20,6 +20,7 @@
 
 namespace ECoreNetto.Tools.Tests.Commands
 {
+    using System;
     using System.CommandLine.Invocation;
     using System.IO;
     using System.Threading.Tasks;
@@ -46,8 +47,20 @@ namespace ECoreNetto.Tools.Tests.Commands
         {
             this.reportGenerator = new Mock<IReportGenerator>();
 
+            this.reportGenerator.Setup(x => x.IsValidExcelReportExtension(It.IsAny<FileInfo>()))
+                .Returns(new Tuple<bool, string>(true, "valid extension"));
+
             this.handler = new ReportCommand.Handler(
                 this.reportGenerator.Object);
+        }
+
+        [Test]
+        public void Verify_that_report_command_can_be_constructed()
+        {
+             Assert.That(() =>
+             {
+                 var reportCommand = new ReportCommand();
+             }, Throws.Nothing);
         }
 
         [Test]
@@ -63,6 +76,34 @@ namespace ECoreNetto.Tools.Tests.Commands
             this.reportGenerator.Verify(x => x.GenerateTable(It.IsAny<FileInfo>(), It.IsAny<FileInfo>()), Times.Once);
 
             Assert.That(result, Is.EqualTo(0), "InvokeAsync should return 0 upon success.");
+        }
+
+        [Test]
+        public async Task Verify_that_when_the_input_ecore_model_does_not_exists_returns_not_0()
+        {
+            var invocationContext = new InvocationContext(null!);
+
+            this.handler.InputModel = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "non-existent.ecore"));
+            this.handler.OutputReport = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "tabular-report.xlsx"));
+
+            var result = await this.handler.InvokeAsync(invocationContext);
+
+            Assert.That(result, Is.EqualTo(-1), "InvokeAsync should return -1 upon failure.");
+        }
+
+        [Test]
+        public async Task Verify_that_when_the_output_extensions_is_not_supported_returns_not_0()
+        {
+            var invocationContext = new InvocationContext(null!);
+
+            this.reportGenerator.Setup(x => x.IsValidExcelReportExtension(It.IsAny<FileInfo>()))
+                .Returns(new Tuple<bool, string>(false, "invalid extension"));
+
+            this.handler.InputModel = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "recipe.ecore"));
+            
+            var result = await this.handler.InvokeAsync(invocationContext);
+
+            Assert.That(result, Is.EqualTo(-1), "InvokeAsync should return -1 upon failure.");
         }
     }
 }

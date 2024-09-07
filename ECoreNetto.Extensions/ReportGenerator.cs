@@ -163,6 +163,33 @@ namespace ECoreNetto.Extensions
         }
 
         /// <summary>
+        /// Verifies whether the extension of the <paramref name="outputPath"/> is valid or not
+        /// </summary>
+        /// <param name="outputPath">
+        /// The subject <see cref="FileInfo"/> to check
+        /// </param>
+        /// <returns>
+        /// A Tuple of bool and string, where the string contains a description of the verification.
+        /// Either stating that the extension is valid or not.
+        /// </returns>
+        public Tuple<bool, string>  IsValidExcelReportExtension(FileInfo outputPath)
+        {
+            switch (outputPath.Extension)
+            {
+                case ".xlsm":
+                    return new Tuple<bool, string>(true, ".xlsm is a supported report extension");
+                case ".xltm":
+                    return new Tuple<bool, string>(true, ".xltm is a supported report extension");
+                case ".xlsx":
+                    return new Tuple<bool, string>(true, ".xlsx is a supported report extension");
+                case ".xltx":
+                    return new Tuple<bool, string>(true, ".xltx is a supported report extension");
+                default:
+                    return new Tuple<bool, string>(false, $"The Extension of the output file '{outputPath.Extension}' is not supported. Supported extensions are '.xlsx', '.xlsm', '.xltx' and '.xltm'");
+            }
+        }
+
+        /// <summary>
         /// Loads the root Ecore package from the provided model
         /// </summary>
         /// <param name="modelPath">

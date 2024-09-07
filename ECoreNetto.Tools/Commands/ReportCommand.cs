@@ -57,7 +57,7 @@ namespace ECoreNetto.Tools.Commands
 
             var reportFileOption = new Option<FileInfo>(
                 name: "--output-report",
-                description: "The path to the tabular report file. The extension is required to be .xlsx",
+                description: "The path to the tabular report file. Supported extensions are '.xlsx', '.xlsm', '.xltx' and '.xltm'",
                 getDefaultValue: () => new FileInfo("tabular-report.xlsx"));
             reportFileOption.AddAlias("-o");
             reportFileOption.IsRequired = true;
@@ -113,7 +113,7 @@ namespace ECoreNetto.Tools.Commands
             /// </returns>
             public int Invoke(InvocationContext context)
             {
-                throw new NotSupportedException();
+                throw new NotSupportedException("Please use InvokeAsync");
             }
 
             /// <summary>
@@ -136,6 +136,16 @@ namespace ECoreNetto.Tools.Commands
                 {
                     AnsiConsole.WriteLine("");
                     AnsiConsole.MarkupLine($"[red]The specified input ecore model does not exist[/]");
+                    AnsiConsole.MarkupLine($"[purple]{this.InputModel.FullName}[/]");
+                    AnsiConsole.WriteLine("");
+                    return -1;
+                }
+
+                var isValidExtension = this.reportGenerator.IsValidExcelReportExtension(this.OutputReport);
+                if (!isValidExtension.Item1)
+                {
+                    AnsiConsole.WriteLine("");
+                    AnsiConsole.MarkupLine($"[red] {isValidExtension.Item2} [/]");
                     AnsiConsole.MarkupLine($"[purple]{this.InputModel.FullName}[/]");
                     AnsiConsole.WriteLine("");
                     return -1;

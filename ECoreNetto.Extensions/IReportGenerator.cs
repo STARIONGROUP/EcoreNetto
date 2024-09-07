@@ -20,6 +20,7 @@
 
 namespace ECoreNetto.Extensions
 {
+    using System;
     using System.IO;
 
     /// <summary>
@@ -38,5 +39,17 @@ namespace ECoreNetto.Extensions
         /// the path, including filename, where the output is to be generated.
         /// </param>
         public void GenerateTable(FileInfo modelPath, FileInfo outputPath);
+
+        /// <summary>
+        /// Verifies whether the extension of the <paramref name="outputPath"/> is valid or not
+        /// </summary>
+        /// <param name="outputPath">
+        /// The subject <see cref="FileInfo"/> to check
+        /// </param>
+        /// <returns>
+        /// A Tuple of bool and string, where the string contains a description of the verification.
+        /// Either stating that the extension is valid or not.
+        /// </returns>
+        public Tuple<bool, string> IsValidExcelReportExtension(FileInfo outputPath);
     }
 }

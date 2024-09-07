@@ -57,5 +57,32 @@ namespace ECoreNetto.Extensions.Tests
         {
             Assert.That(() => this.reportGenerator.GenerateTable(modelFileInfo, reportFileInfo), Throws.Nothing);
         }
+
+        [Test]
+        public void Verify_that_IsValidExcelReportExtension_returns_false_when_invalid()
+        {
+            var inValidFileName = new FileInfo("output-report.invalid");
+            var invalidResult = this.reportGenerator.IsValidExcelReportExtension(inValidFileName);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(invalidResult.Item1, Is.False);
+                Assert.That(invalidResult.Item2,
+                    Is.EqualTo("The Extension of the output file '.invalid' is not supported. Supported extensions are '.xlsx', '.xlsm', '.xltx' and '.xltm'"));
+            });
+        }
+
+        [Test]
+        [TestCase("xlsx")]
+        [TestCase("xltx")]
+        [TestCase("xlsm")]
+        [TestCase("xltm")]
+        public void Verify_that_IsValidExcelReportExtension_returns_true_when_valid(string extension)
+        {
+            var validFileName = new FileInfo($"output-report.{extension}");
+            var validResult = this.reportGenerator.IsValidExcelReportExtension(validFileName);
+            Assert.That(validResult.Item1, Is.True);
+            Assert.That(validResult.Item2, Is.EqualTo($".{extension} is a supported report extension"));
+        }
     }
 }
