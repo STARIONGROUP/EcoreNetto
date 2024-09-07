@@ -20,6 +20,9 @@
 
 namespace ECoreNetto
 {
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
     /// Represents a simple datatype
     /// </summary>
@@ -31,13 +34,23 @@ namespace ECoreNetto
     public class EDataType : EClassifier
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<EDataType> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="EDataType"/> class
         /// </summary>
         /// <param name="resource">
         /// The <see cref="ECoreNetto.Resource.Resource"/> containing all instantiated <see cref="EObject"/>
         /// </param>
-        public EDataType(Resource.Resource resource) : base(resource)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </param>
+        public EDataType(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource, loggerFactory)
         {
+            this.logger = loggerFactory == null ? NullLogger<EDataType>.Instance : loggerFactory.CreateLogger<EDataType>();
+
             this.Serializable = true;
         }
 
@@ -51,6 +64,8 @@ namespace ECoreNetto
         /// </summary>
         internal override void SetProperties()
         {
+            this.logger.LogTrace("setting properties of EDataType {0}:{1}", this.Identifier, this.Name);
+
             base.SetProperties();
 
             if (this.Attributes.TryGetValue("serializable", out var output))

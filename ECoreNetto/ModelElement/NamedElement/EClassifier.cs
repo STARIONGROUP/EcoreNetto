@@ -22,19 +22,31 @@ namespace ECoreNetto
 {
     using System.Collections.Generic;
 
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
     /// The super abstract type for a type representing a classifier
     /// </summary>
     public abstract class EClassifier : ENamedElement
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<EClassifier> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="EClassifier"/> class
         /// </summary>        
         /// <param name="resource">
         /// The <see cref="ECoreNetto.Resource.Resource"/> containing all instantiated <see cref="EObject"/>
         /// </param>
-        protected EClassifier(Resource.Resource resource) : base(resource)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </param>
+        protected EClassifier(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource, loggerFactory)
         {
+            this.logger = loggerFactory == null ? NullLogger<EClassifier>.Instance : loggerFactory.CreateLogger<EClassifier>();
         }
 
         /// <summary>
@@ -78,6 +90,8 @@ namespace ECoreNetto
         /// </summary>
         internal override void SetProperties()
         {
+            this.logger.LogTrace("setting properties of EClassifier {0}:{1}", this.Identifier, this.Name);
+
             base.SetProperties();
 
             if (this.Attributes.TryGetValue("instanceClassName", out var output))

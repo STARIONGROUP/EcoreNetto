@@ -21,15 +21,24 @@
 namespace ECoreNetto.Extensions
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Text;
 
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+    
     /// <summary>
     /// The purpose of the <see cref="ModelInspector"/> is to iterate through the model and report on the various kinds of
     /// patters that exist in the ECore model that need to be taken into account for code-generation
     /// </summary>
     public class ModelInspector : IModelInspector
     {
+        /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<ModelInspector> logger;
+
         private readonly HashSet<EClass> interestingClasses = new();
 
         private readonly List<string> referenceTypes = new();
@@ -37,6 +46,17 @@ namespace ECoreNetto.Extensions
         private readonly List<string> valueTypes = new();
 
         private readonly List<string> enums = new();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ModelInspector"/> class.
+        /// </summary>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </param>
+        public ModelInspector(ILoggerFactory loggerFactory = null)
+        {
+            this.logger = loggerFactory == null ? NullLogger<ModelInspector>.Instance : loggerFactory.CreateLogger<ModelInspector>();
+        }
 
         /// <summary>
         /// Inspect the content of the provided <see cref="EPackage"/> and returns the variation 
@@ -53,6 +73,10 @@ namespace ECoreNetto.Extensions
         /// </returns>
         public string Inspect(EPackage package, bool recursive = false)
         {
+            this.logger.LogInformation("Start ECore Model Inspection at EPackage {0}:{1}", package.Identifier, package.Name);
+             
+            var sw = Stopwatch.StartNew();
+
             var sb = new StringBuilder();
 
             sb.AppendLine($"----- PACKAGE {package.Name} ANALYSIS ------");
@@ -61,6 +85,8 @@ namespace ECoreNetto.Extensions
 
             sb.AppendLine("----- MULTIPLICITY RESULTS ------");
 
+            this.logger.LogInformation("MULTIPLICITY RESULTS - Inspecting the Reference Types");
+
             var orderedReferenceTypes = this.referenceTypes.OrderBy(x => x);
 
             foreach (var referenceType in orderedReferenceTypes)
@@ -68,12 +94,16 @@ namespace ECoreNetto.Extensions
                 sb.AppendLine($"reference type: {referenceType}");
             }
 
+            this.logger.LogInformation("MULTIPLICITY RESULTS - Inspecting the Enums");
+
             var orderedEnums = this.enums.OrderBy(x => x);
 
             foreach (var @enum in orderedEnums)
             {
                 sb.AppendLine($"enum type: {@enum}");
             }
+
+            this.logger.LogInformation("MULTIPLICITY RESULTS - Inspecting the Value Types");
 
             var orderedValueTypes = this.valueTypes.OrderBy(x => x);
 
@@ -84,10 +114,14 @@ namespace ECoreNetto.Extensions
 
             sb.AppendLine("----- INTERESTING CLASSES ------");
 
+            this.logger.LogInformation("INTERESTING CLASSES - Listing interesting Classes");
+
             foreach (var @class in this.interestingClasses.OrderBy(x => x.Name))
             {
                 sb.AppendLine($"class: {package.Name}:{@class.Name}");
             }
+
+            this.logger.LogInformation("ECore Model Inspection of EPackage {0}:{1} finished in {2} [ms]", package.Identifier, package.Name, sw.ElapsedMilliseconds);
 
             return sb.ToString();
         }
@@ -107,8 +141,12 @@ namespace ECoreNetto.Extensions
         /// </param>
         private void Inspect(EPackage package, StringBuilder sb, bool recursive)
         {
+            this.logger.LogInformation("Inspecting the contents of EPackage {0}:{1}", package.Identifier, package.Name);
+
             foreach (var eClass in package.EClassifiers.OfType<EClass>().OrderBy(x => x.Name))
             {
+                this.logger.LogTrace("Inspecting EClass {0}:{1}", eClass.Identifier, eClass.Name);
+
                 foreach (var structuralFeature in eClass.EStructuralFeatures)
                 {
                     if (structuralFeature.Derived || structuralFeature.Transient)
@@ -122,6 +160,8 @@ namespace ECoreNetto.Extensions
 
                         if (!this.referenceTypes.Contains(referenceType))
                         {
+                            this.logger.LogTrace("Inspecting reference type {0}", referenceType);
+
                             this.referenceTypes.Add(referenceType);
                             this.interestingClasses.Add(eClass);
 
@@ -134,6 +174,8 @@ namespace ECoreNetto.Extensions
                         if (structuralFeature.QueryIsEnum())
                         {
                             var @enum = $"{attribute.LowerBound}:{attribute.UpperBound}";
+
+                            this.logger.LogTrace("Inspecting enum attribute {0}", @enum);
 
                             if (!this.enums.Contains(@enum))
                             {
@@ -150,6 +192,8 @@ namespace ECoreNetto.Extensions
 
                             if (!this.valueTypes.Contains(valueType))
                             {
+                                this.logger.LogTrace("Inspecting value attribute {0}", valueType);
+
                                 this.valueTypes.Add(valueType);
                                 this.interestingClasses.Add(eClass);
 
@@ -185,6 +229,10 @@ namespace ECoreNetto.Extensions
         /// </returns>
         public string Inspect(EPackage package, string className)
         {
+            this.logger.LogInformation("Start ECore named Class '{2}' Inspection at EPackage {0}:{1}", package.Identifier, package.Name, className);
+
+            var sw = Stopwatch.StartNew();
+
             var sb = new StringBuilder();
 
             var eClass = package.EClassifiers.OfType<EClass>().Single(x => x.Name == className);
@@ -256,6 +304,8 @@ namespace ECoreNetto.Extensions
                 }
             }
 
+            this.logger.LogInformation("ECore named Class '{2}' Inspection at EPackage {0}:{1} finished in {3} [ms]", package.Identifier, package.Name, className, sw.ElapsedMilliseconds);
+
             return sb.ToString();
         }
 
@@ -274,12 +324,18 @@ namespace ECoreNetto.Extensions
         /// </returns>
         public string AnalyzeDocumentation(EPackage package, bool recursive = false)
         {
+            this.logger.LogInformation("Start inspection of EPackage documentation {0}:{1}", package.Identifier, package.Name);
+
+            var sw = Stopwatch.StartNew();
+
             var sb = new StringBuilder();
 
             sb.AppendLine("----- DOCUMENTATION ANALYSIS ------");
 
             this.AnalyzeDocumentation(package, sb, recursive);
-            
+
+            this.logger.LogInformation("Inspection of EPackage documentation {0}:{1} finished in {3} [ms]", package.Identifier, package.Name, sw.ElapsedMilliseconds);
+
             return sb.ToString();
         }
 

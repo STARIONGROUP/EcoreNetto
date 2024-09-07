@@ -25,6 +25,8 @@ namespace ECoreNetto
     using System.Linq;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+    
     /// <summary>
     /// An <see cref="EObject"/> is the base of all modeled objects. All the method names start with "e" to distinguish the EMF methods from the client methods.
     /// It provides support for the behaviors and features common to all modeled objects.
@@ -38,7 +40,10 @@ namespace ECoreNetto
         /// <param name="resource">
         /// The <see cref="ECoreNetto.Resource.Resource"/> containing all instantiated <see cref="EObject"/>
         /// </param>
-        protected EObject(Resource.Resource resource)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </param>
+        protected EObject(Resource.Resource resource, ILoggerFactory loggerFactory = null)
         {
             this.EResource = resource;
             this.Attributes = new Dictionary<string, string>();

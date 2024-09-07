@@ -25,8 +25,9 @@ namespace ECoreNetto.Extensions.Tests
 
     using ECoreNetto.Extensions;
     using ECoreNetto.Resource;
-
+    using Microsoft.Extensions.Logging;
     using NUnit.Framework;
+    using Serilog;
 
     /// <summary>
     /// Suite of tests for the <see cref="ModelElementExtensions"/> class
@@ -36,6 +37,22 @@ namespace ECoreNetto.Extensions.Tests
     {
         private EPackage rootPackage;
 
+        private ILoggerFactory loggerFactory;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console()
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
+
         [SetUp]
         public void SetUp()
         {
@@ -43,7 +60,7 @@ namespace ECoreNetto.Extensions.Tests
             var filePath = Path.GetFullPath(path);
             var uri = new System.Uri(filePath);
 
-            var resourceSet = new ResourceSet();
+            var resourceSet = new ResourceSet(this.loggerFactory);
             var resource = resourceSet.CreateResource(uri);
 
             this.rootPackage = resource.Load(null);
@@ -52,7 +69,7 @@ namespace ECoreNetto.Extensions.Tests
         [Test]
         public void Verify_that_all_packages_are_returned()
         {
-            var subPackage = new EPackage(this.rootPackage.EResource);
+            var subPackage = new EPackage(this.rootPackage.EResource, this.loggerFactory);
             this.rootPackage.ESubPackages.Add(subPackage);
 
             var packages = this.rootPackage.QueryPackages();

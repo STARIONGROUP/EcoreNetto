@@ -25,9 +25,10 @@ namespace ECoreNetto.Extensions.Tests
 
     using ECoreNetto.Extensions;
     using ECoreNetto.Resource;
-
+    using Microsoft.Extensions.Logging;
     using NUnit.Framework;
-    
+    using Serilog;
+
     /// <summary>
     /// Suite of tests for the <see cref="ModelElementExtensions"/> class
     /// </summary>
@@ -35,7 +36,22 @@ namespace ECoreNetto.Extensions.Tests
     public class ModelElementExtensionsTestFixture
     {
         private EPackage rootPackage;
+        private ILoggerFactory loggerFactory; 
         
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console()
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
+
         [SetUp]
         public void SetUp()
         {
@@ -43,7 +59,7 @@ namespace ECoreNetto.Extensions.Tests
             var filePath = Path.GetFullPath(path);
             var uri = new System.Uri(filePath);
 
-            var resourceSet = new ResourceSet();
+            var resourceSet = new ResourceSet(this.loggerFactory);
             var resource = resourceSet.CreateResource(uri);
 
             this.rootPackage = resource.Load(null);

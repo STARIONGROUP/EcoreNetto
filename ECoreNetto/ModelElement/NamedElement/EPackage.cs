@@ -25,11 +25,24 @@ namespace ECoreNetto
     using System.Linq;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
     /// The ECore package.
     /// </summary>
     public class EPackage : ENamedElement
     {
+        /// <summary>
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </summary>
+        private readonly ILoggerFactory loggerFactory;
+
+        /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<EPackage> logger;
+
         /// <summary>
         /// The ECORE class key.
         /// </summary>
@@ -56,8 +69,15 @@ namespace ECoreNetto
         /// <param name="resource">
         /// The <see cref="ECoreNetto.Resource.Resource"/> containing all instantiated <see cref="EObject"/>
         /// </param>
-        public EPackage(Resource.Resource resource) : base(resource)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </param>
+        public EPackage(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource, loggerFactory)
         {
+            this.loggerFactory = loggerFactory;
+
+            this.logger = this.loggerFactory == null ? NullLogger<EPackage>.Instance : this.loggerFactory.CreateLogger<EPackage>();
+
             this.ESubPackages = new ContainerList<EPackage>(this);
             this.EClassifiers = new ContainerList<EClassifier>(this);
         }
@@ -106,6 +126,8 @@ namespace ECoreNetto
         /// </summary>
         internal override void SetProperties()
         {
+            this.logger.LogTrace("setting properties of EPackage {0}:{1}", this.Identifier, this.Name);
+
             base.SetProperties();
 
             if (this.Attributes.TryGetValue("nsURI", out var output))
@@ -127,10 +149,13 @@ namespace ECoreNetto
         /// </param>
         protected override void DeserializeChildNode(XmlNode reader)
         {
+            this.logger.LogTrace("deserializing child nodes of EPackage {0}:{1}", this.Identifier, this.Name);
+
             base.DeserializeChildNode(reader);
+
             if (reader.Name == "eSubpackages" && reader.NodeType == XmlNodeType.Element)
             {
-                var package = new EPackage(this.EResource);
+                var package = new EPackage(this.EResource, this.loggerFactory);
                 this.ESubPackages.Add(package);
                 package.ReadXml(reader);
             }
@@ -144,17 +169,17 @@ namespace ECoreNetto
             switch (ecoreType)
             {
                 case EcoreClassKey:
-                    var ecoreClass = new EClass(this.EResource);
+                    var ecoreClass = new EClass(this.EResource, this.loggerFactory);
                     this.EClassifiers.Add(ecoreClass);
                     ecoreClass.ReadXml(reader);
                     break;
                 case EcoreDataTypeKey:
-                    var ecoreDatatype = new EDataType(this.EResource);
+                    var ecoreDatatype = new EDataType(this.EResource, this.loggerFactory);
                     this.EClassifiers.Add(ecoreDatatype);
                     ecoreDatatype.ReadXml(reader);
                     break;
                 case EcoreEnumKey:
-                    var ecoreEnum = new EEnum(this.EResource);
+                    var ecoreEnum = new EEnum(this.EResource, this.loggerFactory);
                     this.EClassifiers.Add(ecoreEnum);
                     ecoreEnum.ReadXml(reader);
                     break;

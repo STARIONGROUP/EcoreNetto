@@ -23,19 +23,32 @@ namespace ECoreNetto
     using System.Collections.Generic;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
     /// The type representing an annotation
     /// </summary>
     public class EAnnotation : EModelElement
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<EAnnotation> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="EAnnotation"/> class
         /// </summary>
         /// <param name="resource">
         /// The <see cref="ECoreNetto.Resource.Resource"/> containing all instantiated <see cref="EObject"/>
         /// </param>
-        public EAnnotation(Resource.Resource resource) : base(resource)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </param>
+        public EAnnotation(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource, loggerFactory)
         {
+            this.logger = loggerFactory == null ? NullLogger<EAnnotation>.Instance : loggerFactory.CreateLogger<EAnnotation>();
+
             this.Details = new Dictionary<string, string>();
         }
 
@@ -65,6 +78,8 @@ namespace ECoreNetto
         /// </summary>
         internal override void SetProperties()
         {
+            this.logger.LogTrace("setting properties of EAnnotation:EModelElement {0}:{1}", this.Identifier, this.EModelElement.Identifier);
+
             base.SetProperties();
 
             if (this.Attributes.TryGetValue("source", out var source))
@@ -79,6 +94,8 @@ namespace ECoreNetto
         /// <param name="reader">The <see cref="XmlNode"/></param>
         protected override void DeserializeChildNode(XmlNode reader)
         {
+            this.logger.LogTrace("deserializing child nodes of EAnnotation of EModelElement {0}", this.EModelElement.Identifier);
+
             base.DeserializeChildNode(reader);
 
             if (reader.Name == "details")

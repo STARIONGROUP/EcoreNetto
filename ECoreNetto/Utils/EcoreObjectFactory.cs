@@ -1,5 +1,5 @@
 ﻿// -------------------------------------------------------------------------------------------------
-// <copyright file="EcoreObjectInstantiator.cs" company="Starion Group S.A.">
+// <copyright file="EcoreObjectFactory.cs" company="Starion Group S.A.">
 //
 //   Copyright 2017-2024 Starion Group S.A.
 //
@@ -20,107 +20,121 @@
 
 namespace ECoreNetto.Utils
 {
-    using Resource;
+    using ECoreNetto.Resource;
+
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
-    /// internal class responsible for instantiating ECORE class objects
+    /// internal class responsible for instantiating Ecore class objects
     /// </summary>
-    internal class EcoreObjectInstantiator
+    internal class EcoreObjectFactory
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EcoreObjectInstantiator"/>
+        /// Initializes a new instance of the <see cref="EcoreObjectFactory"/>
         /// </summary>
-        /// <param name="resource">The <see cref="Resource"/></param>
-        public EcoreObjectInstantiator(Resource resource)
+        /// <param name="resource">
+        /// The <see cref="Resource"/>
+        /// </param>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </param>
+        public EcoreObjectFactory(Resource resource, ILoggerFactory loggerFactory = null)
         {
-            this.EObject = new EClass(resource) { Name = "EObject", Abstract = true };
+            var logger = loggerFactory == null ? NullLogger<EcoreObjectFactory>.Instance : loggerFactory.CreateLogger<EcoreObjectFactory>();
 
-            this.EModelElement = new EClass(resource) { Name = "EModelElement", Abstract = true };
+            logger.LogTrace("start - setup all Type instances");
+
+            this.EObject = new EClass(resource, loggerFactory) { Name = "EObject", Abstract = true };
+
+            this.EModelElement = new EClass(resource, loggerFactory) { Name = "EModelElement", Abstract = true };
             this.EModelElement.ESuperTypes.Add(this.EObject);
 
-            this.ENamedElement = new EClass(resource) { Name = "ENamedElement", Abstract = true };
+            this.ENamedElement = new EClass(resource, loggerFactory) { Name = "ENamedElement", Abstract = true };
             this.ENamedElement.ESuperTypes.Add(this.EModelElement);
 
-            this.EFactory = new EClass(resource) { Name = "EFactory" };
+            this.EFactory = new EClass(resource, loggerFactory) { Name = "EFactory" };
             this.EFactory.ESuperTypes.Add(this.EModelElement);
 
-            this.EAnnotation = new EClass(resource) {Name = "EAnnotation" };
+            this.EAnnotation = new EClass(resource, loggerFactory) {Name = "EAnnotation" };
             this.EAnnotation.ESuperTypes.Add(this.EModelElement);
 
-            this.EClassifier = new EClass(resource) { Name = "EClassifier", Abstract = true };
+            this.EClassifier = new EClass(resource, loggerFactory) { Name = "EClassifier", Abstract = true };
             this.EClassifier.ESuperTypes.Add(this.ENamedElement);
 
-            this.EEnumLiteral = new EClass(resource) { Name = "EEnumLiteral" };
+            this.EEnumLiteral = new EClass(resource, loggerFactory) { Name = "EEnumLiteral" };
             this.EEnumLiteral.ESuperTypes.Add(this.ENamedElement);
 
-            this.EPackage = new EClass(resource) { Name = "EPackage" };
+            this.EPackage = new EClass(resource, loggerFactory) { Name = "EPackage" };
             this.EPackage.ESuperTypes.Add(this.ENamedElement);
 
-            this.ETypedElement = new EClass(resource) { Name = "ETypedElement", Abstract = true };
+            this.ETypedElement = new EClass(resource, loggerFactory) { Name = "ETypedElement", Abstract = true };
             this.ETypedElement.ESuperTypes.Add(this.ENamedElement);
 
-            this.EClass = new EClass(resource) { Name = "EClass" };
+            this.EClass = new EClass(resource, loggerFactory) { Name = "EClass" };
             this.EClass.ESuperTypes.Add(this.EClassifier);
 
-            this.EDataType = new EClass(resource) { Name = "EDataType" };
+            this.EDataType = new EClass(resource, loggerFactory) { Name = "EDataType" };
             this.EDataType.ESuperTypes.Add(this.EClassifier);
 
-            this.EEnum = new EClass(resource) { Name = "EEnum" };
+            this.EEnum = new EClass(resource, loggerFactory) { Name = "EEnum" };
             this.EEnum.ESuperTypes.Add(this.EClassifier);
 
-            this.EOperation = new EClass(resource) { Name = "EOperation" };
+            this.EOperation = new EClass(resource, loggerFactory) { Name = "EOperation" };
             this.EOperation.ESuperTypes.Add(this.ETypedElement);
 
-            this.EParameter = new EClass(resource) { Name = "EParameter" };
+            this.EParameter = new EClass(resource, loggerFactory) { Name = "EParameter" };
             this.EParameter.ESuperTypes.Add(this.ETypedElement);
 
-            this.EStructuralFeature = new EClass(resource) { Name = "EStructuralFeature", Abstract = true };
+            this.EStructuralFeature = new EClass(resource, loggerFactory) { Name = "EStructuralFeature", Abstract = true };
             this.EStructuralFeature.ESuperTypes.Add(this.ETypedElement);
 
-            this.EAttribute = new EClass(resource) { Name = "EAttribute" };
+            this.EAttribute = new EClass(resource, loggerFactory) { Name = "EAttribute" };
             this.EAttribute.ESuperTypes.Add(this.EStructuralFeature);
 
-            this.EReference = new EClass(resource) { Name = "EReference" };
+            this.EReference = new EClass(resource, loggerFactory) { Name = "EReference" };
             this.EReference.ESuperTypes.Add(this.EStructuralFeature);
 
-            this.EGenericType = new EClass(resource) { Name = "EGenericType" };
+            this.EGenericType = new EClass(resource, loggerFactory) { Name = "EGenericType" };
 
-            this.ETypeParameter = new EClass(resource) { Name = "ETypeParameter" };
+            this.ETypeParameter = new EClass(resource, loggerFactory) { Name = "ETypeParameter" };
             this.ETypeParameter.ESuperTypes.Add(this.ENamedElement);
 
-            this.EBigDecimal = new EDataType(resource) { Name = "EBigDecimal" };
-            this.EBigInteger = new EDataType(resource) { Name = "EBigInteger" };
-            this.EBool = new EDataType(resource) { Name = "EBool"};
-            this.EBooleanObject = new EDataType(resource) { Name = "EBooleanObject" };
-            this.EByte = new EDataType(resource) { Name = "EByte" };
-            this.EByteArray = new EDataType(resource) { Name = "EByteArray" };
-            this.EByteObject = new EDataType(resource) { Name = "EByteObject" };
-            this.EChar = new EDataType(resource) { Name = "EChar" };
-            this.ECharacterObject = new EDataType(resource) { Name = "ECharacterObject" };
-            this.EDate = new EDataType(resource) { Name = "EDate" };
-            this.EDiagnosticChain = new EDataType(resource) { Name = "EDiagnosticChain" };
-            this.EDouble = new EDataType(resource) { Name = "EDouble" };
-            this.EDoubleObject = new EDataType(resource) { Name = "EDoubleObject" };
-            this.EEList = new EDataType(resource) { Name = "EEList" };
-            this.EEnumerator = new EDataType(resource) { Name = "EEnumerator" };
-            this.EFeatureMap = new EDataType(resource) { Name = "EFeatureMap" };
-            this.EFeatureMapEntry = new EDataType(resource) { Name = "EFeatureMapEntry" };
-            this.EFloat = new EDataType(resource) { Name = "EFloat" };
-            this.EFloatObject = new EDataType(resource) { Name = "EFloatObject" };
-            this.EInt = new EDataType(resource) { Name = "EInt" };
-            this.EIntegerObject = new EDataType(resource) { Name = "EIntegerObject" };
-            this.EJavaClass = new EDataType(resource) { Name = "EJavaClass" };
-            this.EJavaObject = new EDataType(resource) { Name = "EJavaObject" };
-            this.ELong = new EDataType(resource) { Name = "ELong" };
-            this.ELongObject = new EDataType(resource) { Name = "ELongObject" };
-            this.EMap = new EDataType(resource) { Name = "EMap" };
-            this.EResource = new EDataType(resource) { Name = "EResource" };
-            this.EResourceSet = new EDataType(resource) { Name = "EResourceSet" };
-            this.EShort = new EDataType(resource) { Name = "EShort" };
-            this.EShortObject = new EDataType(resource) { Name = "EShortObject" };
-            this.EString = new EDataType(resource) { Name = "EString" };
-            this.ETreeIterator = new EDataType(resource) { Name = "ETreeIterator" };
-            this.EInvocationTargetException = new EDataType(resource) { Name = "EInvocationTargetException" };
+            this.EBigDecimal = new EDataType(resource, loggerFactory) { Name = "EBigDecimal" };
+            this.EBigInteger = new EDataType(resource, loggerFactory) { Name = "EBigInteger" };
+            this.EBool = new EDataType(resource, loggerFactory) { Name = "EBool"};
+            this.EBooleanObject = new EDataType(resource, loggerFactory) { Name = "EBooleanObject" };
+            this.EByte = new EDataType(resource, loggerFactory) { Name = "EByte" };
+            this.EByteArray = new EDataType(resource, loggerFactory) { Name = "EByteArray" };
+            this.EByteObject = new EDataType(resource, loggerFactory) { Name = "EByteObject" };
+            this.EChar = new EDataType(resource, loggerFactory) { Name = "EChar" };
+            this.ECharacterObject = new EDataType(resource, loggerFactory) { Name = "ECharacterObject" };
+            this.EDate = new EDataType(resource, loggerFactory) { Name = "EDate" };
+            this.EDiagnosticChain = new EDataType(resource, loggerFactory) { Name = "EDiagnosticChain" };
+            this.EDouble = new EDataType(resource, loggerFactory) { Name = "EDouble" };
+            this.EDoubleObject = new EDataType(resource, loggerFactory) { Name = "EDoubleObject" };
+            this.EEList = new EDataType(resource, loggerFactory) { Name = "EEList" };
+            this.EEnumerator = new EDataType(resource, loggerFactory) { Name = "EEnumerator" };
+            this.EFeatureMap = new EDataType(resource, loggerFactory) { Name = "EFeatureMap" };
+            this.EFeatureMapEntry = new EDataType(resource, loggerFactory) { Name = "EFeatureMapEntry" };
+            this.EFloat = new EDataType(resource, loggerFactory) { Name = "EFloat" };
+            this.EFloatObject = new EDataType(resource, loggerFactory) { Name = "EFloatObject" };
+            this.EInt = new EDataType(resource, loggerFactory) { Name = "EInt" };
+            this.EIntegerObject = new EDataType(resource, loggerFactory) { Name = "EIntegerObject" };
+            this.EJavaClass = new EDataType(resource, loggerFactory) { Name = "EJavaClass" };
+            this.EJavaObject = new EDataType(resource, loggerFactory) { Name = "EJavaObject" };
+            this.ELong = new EDataType(resource, loggerFactory) { Name = "ELong" };
+            this.ELongObject = new EDataType(resource, loggerFactory) { Name = "ELongObject" };
+            this.EMap = new EDataType(resource, loggerFactory) { Name = "EMap" };
+            this.EResource = new EDataType(resource, loggerFactory) { Name = "EResource" };
+            this.EResourceSet = new EDataType(resource, loggerFactory) { Name = "EResourceSet" };
+            this.EShort = new EDataType(resource, loggerFactory) { Name = "EShort" };
+            this.EShortObject = new EDataType(resource, loggerFactory) { Name = "EShortObject" };
+            this.EString = new EDataType(resource, loggerFactory) { Name = "EString" };
+            this.ETreeIterator = new EDataType(resource, loggerFactory) { Name = "ETreeIterator" };
+            this.EInvocationTargetException = new EDataType(resource, loggerFactory) { Name = "EInvocationTargetException" };
+
+            logger.LogTrace("finish - setup all Type instances");
         }
 
         /// <summary>

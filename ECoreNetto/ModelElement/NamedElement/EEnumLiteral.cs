@@ -20,19 +20,31 @@
 
 namespace ECoreNetto
 {
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
     /// Represents the literal of an enumeration
     /// </summary>
     public class EEnumLiteral : ENamedElement
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<EEnumLiteral> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="EEnumLiteral"/> class
         /// </summary>
         /// <param name="resource">
         /// The <see cref="ECoreNetto.Resource.Resource"/> containing all instantiated <see cref="EObject"/>
         /// </param>
-        public EEnumLiteral(Resource.Resource resource) : base(resource)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </param>
+        public EEnumLiteral(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource, loggerFactory)
         {
+            this.logger = loggerFactory == null ? NullLogger<EEnumLiteral>.Instance : loggerFactory.CreateLogger<EEnumLiteral>();
         }
         
         /// <summary>
@@ -56,6 +68,8 @@ namespace ECoreNetto
         /// </summary>
         internal override void SetProperties()
         {
+            this.logger.LogTrace("setting properties of EEnumLiteral {0}:{1}", this.Identifier, this.Name);
+
             base.SetProperties();
 
             if (this.Attributes.TryGetValue("value", out var output))

@@ -20,6 +20,9 @@
 
 namespace ECoreNetto
 {
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
     /// A representation of the model object <see cref="EAttribute"/>. 
     /// </summary>
@@ -30,13 +33,22 @@ namespace ECoreNetto
     public class EAttribute : EStructuralFeature
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<EAttribute> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="EAttribute"/> class
         /// </summary>
         /// <param name="resource">
         /// The <see cref="ECoreNetto.Resource.Resource"/> containing all instantiated <see cref="EObject"/>
         /// </param>
-        public EAttribute(Resource.Resource resource) : base(resource)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </param>
+        public EAttribute(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource, loggerFactory)
         {
+            this.logger = loggerFactory == null ? NullLogger<EAttribute>.Instance : loggerFactory.CreateLogger<EAttribute>();
         }
 
         /// <summary>
@@ -52,6 +64,8 @@ namespace ECoreNetto
         /// </summary>
         internal override void SetProperties()
         {
+            this.logger.LogTrace("setting properties of EAttribute {0}:{1}", this.Identifier, this.Name);
+
             base.SetProperties();
 
             if (this.Attributes.TryGetValue("iD", out var output))

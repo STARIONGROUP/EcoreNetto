@@ -22,19 +22,32 @@ namespace ECoreNetto
 {
     using System.Linq;
 
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
     /// Represents a <see cref="EModelElement"/> with a type
     /// </summary>
     public abstract class ETypedElement : ENamedElement
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<ETypedElement> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ETypedElement"/> class
         /// </summary>
         /// <param name="resource">
         /// The <see cref="ECoreNetto.Resource.Resource"/> containing all instantiated <see cref="EObject"/>
         /// </param>
-        protected ETypedElement(Resource.Resource resource) : base(resource)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </param>
+        protected ETypedElement(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource, loggerFactory)
         {
+            this.logger = loggerFactory == null ? NullLogger<ETypedElement>.Instance : loggerFactory.CreateLogger<ETypedElement>();
+
             // set the default value
             this.Ordered = true;
             this.Unique = true;
@@ -84,6 +97,8 @@ namespace ECoreNetto
         /// </summary>
         internal override void SetProperties()
         {
+            this.logger.LogTrace("setting properties of EPackage {0}:{1}", this.Identifier, this.Name);
+
             base.SetProperties();
 
             if (this.Attributes.TryGetValue("ordered", out var output))

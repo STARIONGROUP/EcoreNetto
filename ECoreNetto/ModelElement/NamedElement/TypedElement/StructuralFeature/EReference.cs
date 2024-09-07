@@ -20,6 +20,9 @@
 
 namespace ECoreNetto
 {
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
     /// A representation of the model object <see cref="EReference"/>. 
     /// </summary>
@@ -31,13 +34,23 @@ namespace ECoreNetto
     public class EReference : EStructuralFeature
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<EReference> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="EReference"/> class
         /// </summary>
         /// <param name="resource">
         /// The <see cref="ECoreNetto.Resource.Resource"/> containing all instantiated <see cref="EObject"/>
         /// </param>
-        public EReference(Resource.Resource resource) : base(resource)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </param>
+        public EReference(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource, loggerFactory)
         {
+            this.logger = loggerFactory == null ? NullLogger<EReference>.Instance : loggerFactory.CreateLogger<EReference>();
+
             this.IsResolveProxies = true;
         }
 
@@ -84,6 +97,8 @@ namespace ECoreNetto
         /// </summary>
         internal override void SetProperties()
         {
+            this.logger.LogTrace("setting properties of EReference {0}:{1}", this.Identifier, this.Name);
+
             base.SetProperties();
 
             if (this.Attributes.TryGetValue("container", out var output))

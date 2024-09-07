@@ -1,5 +1,5 @@
 ﻿// -------------------------------------------------------------------------------------------------
-// <copyright file="IReportGenerator.cs" company="Starion Group S.A">
+// <copyright file="IXlReportGenerator.cs" company="Starion Group S.A">
 // 
 //   Copyright 2017-2024 Starion Group S.A.
 // 
@@ -24,10 +24,10 @@ namespace ECoreNetto.Extensions
     using System.IO;
 
     /// <summary>
-    /// The purpose of the <see cref="IReportGenerator"/> is to generate reports of an
+    /// The purpose of the <see cref="IXlReportGenerator"/> is to generate reports of an
     /// Ecore Model
     /// </summary>
-    public interface IReportGenerator
+    public interface IXlReportGenerator
     {
         /// <summary>
         /// Generates a table that contains all classes, attributes and their documentation

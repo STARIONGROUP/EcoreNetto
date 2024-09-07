@@ -20,6 +20,7 @@
 
 namespace ECoreNetto.Tools
 {
+    using System.CommandLine;
     using System.CommandLine.Builder;
     using System.CommandLine.Help;
     using System.CommandLine.Hosting;
@@ -60,9 +61,9 @@ namespace ECoreNetto.Tools
                     , builder => builder
                         .ConfigureServices((hostContext, services) =>
                         {
-                            services.AddSingleton<IReportGenerator, ReportGenerator>();
+                            services.AddSingleton<IXlReportGenerator, XlReportGenerator>();
                         })
-                        .UseCommandHandler<ReportCommand, ReportCommand.Handler>())
+                        .UseCommandHandler<XlReportCommand, XlReportCommand.Handler>())
                 .UseDefaults()
 
                 .Build();
@@ -78,7 +79,10 @@ namespace ECoreNetto.Tools
         /// </returns>
         private static CommandLineBuilder BuildCommandLine()
         {
-            var root = new ReportCommand();
+            var root = new RootCommand("ECoreNetto Tools");
+
+            var reportCommand = new XlReportCommand();
+            root.AddCommand(reportCommand);
 
             return new CommandLineBuilder(root)
                 .UseHelp(ctx =>

@@ -1,5 +1,5 @@
 ﻿// -------------------------------------------------------------------------------------------------
-// <copyright file="ReportGenerator.cs" company="Starion Group S.A">
+// <copyright file="XlReportGenerator.cs" company="Starion Group S.A">
 // 
 //   Copyright 2017-2024 Starion Group S.A.
 // 
@@ -22,6 +22,7 @@ namespace ECoreNetto.Extensions
 {
     using System;
     using System.Data;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
 
@@ -29,12 +30,38 @@ namespace ECoreNetto.Extensions
 
     using ECoreNetto.Resource;
 
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
-    /// The purpose of the <see cref="ReportGenerator"/> is to generate reports of an
+    /// The purpose of the <see cref="XlReportGenerator"/> is to generate reports of an
     /// Ecore Model
     /// </summary>
-    public class ReportGenerator : IReportGenerator
+    public class XlReportGenerator : IXlReportGenerator
     {
+        /// <summary>
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </summary>
+        private readonly ILoggerFactory loggerFactory;
+
+        /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<XlReportGenerator> logger;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XlReportGenerator"/> class.
+        /// </summary>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </param>
+        public XlReportGenerator(ILoggerFactory loggerFactory = null)
+        {
+            this.loggerFactory = loggerFactory;
+
+            this.logger = this.loggerFactory == null ? NullLogger<XlReportGenerator>.Instance : this.loggerFactory.CreateLogger<XlReportGenerator>();
+        }
+
         /// <summary>
         /// Generates a table that contains all classes, attributes and their documentation
         /// </summary>
@@ -56,12 +83,18 @@ namespace ECoreNetto.Extensions
                 throw new ArgumentNullException(nameof(outputPath));
             }
 
+            var sw = Stopwatch.StartNew();
+
+            this.logger.LogInformation("Start Generating Excel report tables");
+
             var rootPackage = this.LoadRootPackage(modelPath);
 
             var packages = rootPackage.QueryPackages();
 
             using (var workbook = new XLWorkbook())
             {
+                this.logger.LogDebug("Add EClass reports");
+
                 var classWorksheet = workbook.Worksheets.Add("Classes");
 
                 var dataTable = new DataTable();
@@ -119,6 +152,8 @@ namespace ECoreNetto.Extensions
 
                 var enumWorksheet = workbook.Worksheets.Add("Enums");
 
+                this.logger.LogDebug("Add EEnum reports");
+
                 dataTable = new DataTable();
 
                 dataTable.Columns.Add("Enum", typeof(string));
@@ -156,10 +191,16 @@ namespace ECoreNetto.Extensions
                 catch (Exception e)
                 {
                     Console.WriteLine("Problem loading fonts {0}", e);
+
+                    this.logger.LogWarning("Problem loading fonts when adjusting to contents {0}", e);
                 }
+
+                this.logger.LogInformation("Saving report file to {0}", outputPath.FullName);
 
                 workbook.SaveAs(outputPath.FullName);
             }
+
+            this.logger.LogInformation("Generated Excel report tables in {0} [ms]", sw.ElapsedMilliseconds);
         }
 
         /// <summary>
@@ -200,9 +241,11 @@ namespace ECoreNetto.Extensions
         /// </returns>
         private EPackage LoadRootPackage(FileInfo modelPath)
         {
+            this.logger.LogInformation("Loading Ecore model from {0}", modelPath.FullName);
+
             var uri = new System.Uri(modelPath.FullName);
 
-            var resourceSet = new ResourceSet();
+            var resourceSet = new ResourceSet(this.loggerFactory);
             var resource = resourceSet.CreateResource(uri);
 
             var rootPackage = resource.Load(null);

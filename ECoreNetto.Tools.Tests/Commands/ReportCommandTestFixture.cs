@@ -33,24 +33,24 @@ namespace ECoreNetto.Tools.Tests.Commands
     using NUnit.Framework;
 
     /// <summary>
-    /// Suite of tests for the <see cref="ReportCommand"/> class.
+    /// Suite of tests for the <see cref="XlReportCommand"/> class.
     /// </summary>
     [TestFixture]
     public class ReportCommandTestFixture
     {
-        private Mock<IReportGenerator> reportGenerator;
+        private Mock<IXlReportGenerator> reportGenerator;
 
-        private ReportCommand.Handler handler;
+        private XlReportCommand.Handler handler;
 
         [SetUp]
         public void SetUp()
         {
-            this.reportGenerator = new Mock<IReportGenerator>();
+            this.reportGenerator = new Mock<IXlReportGenerator>();
 
             this.reportGenerator.Setup(x => x.IsValidExcelReportExtension(It.IsAny<FileInfo>()))
                 .Returns(new Tuple<bool, string>(true, "valid extension"));
 
-            this.handler = new ReportCommand.Handler(
+            this.handler = new XlReportCommand.Handler(
                 this.reportGenerator.Object);
         }
 
@@ -59,7 +59,7 @@ namespace ECoreNetto.Tools.Tests.Commands
         {
              Assert.That(() =>
              {
-                 var reportCommand = new ReportCommand();
+                 var reportCommand = new XlReportCommand();
              }, Throws.Nothing);
         }
 

@@ -22,6 +22,9 @@ namespace ECoreNetto
 {
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
     /// The base abstract type for <see cref="EModelElement"/> with a name
     /// </summary>
@@ -38,7 +41,10 @@ namespace ECoreNetto
         /// <param name="resource">
         /// The <see cref="ECoreNetto.Resource.Resource"/> containing all instantiated <see cref="EObject"/>
         /// </param>
-        protected ENamedElement(Resource.Resource resource) : base(resource)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </param>
+        protected ENamedElement(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource)
         {
         }
 

@@ -26,25 +26,41 @@ namespace ECoreNetto.Extensions.Tests
 
 	using ECoreNetto.Extensions;
 	using ECoreNetto.Resource;
+    using Microsoft.Extensions.Logging;
+    using NUnit.Framework;
+    using Serilog;
 
-	using NUnit.Framework;
-
-	/// <summary>
-	/// Suite of tests for the <see cref="ModelElementExtensions"/> class
-	/// </summary>
+    /// <summary>
+    /// Suite of tests for the <see cref="ModelElementExtensions"/> class
+    /// </summary>
 	[TestFixture]
 	public class ClassExtensionsTestFixture
 	{
 		private EPackage rootPackage;
+        private ILoggerFactory loggerFactory;
 
-		[SetUp]
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console()
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
+
+        [SetUp]
 		public void SetUp()
 		{
 			var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "recipe.ecore");
 			var filePath = Path.GetFullPath(path);
 			var uri = new System.Uri(filePath);
 
-			var resourceSet = new ResourceSet();
+			var resourceSet = new ResourceSet(this.loggerFactory);
 			var resource = resourceSet.CreateResource(uri);
 
 			this.rootPackage = resource.Load(null);

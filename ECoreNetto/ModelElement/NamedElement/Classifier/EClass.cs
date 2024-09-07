@@ -25,6 +25,9 @@ namespace ECoreNetto
     using System.Linq;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
     /// A type that represents a class in the ECore model
     /// </summary>
@@ -34,6 +37,16 @@ namespace ECoreNetto
     /// </remarks>
     public class EClass : EClassifier
     {
+        /// <summary>
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </summary>
+        private readonly ILoggerFactory loggerFactory;
+
+        /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<EClass> logger;
+
         /// <summary>
         /// The ECORE abstract keyword.
         /// </summary>
@@ -55,8 +68,15 @@ namespace ECoreNetto
         /// <param name="resource">
         /// The <see cref="ECoreNetto.Resource.Resource"/> containing all instantiated <see cref="EObject"/>
         /// </param>
-        public EClass(Resource.Resource resource) : base(resource)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </param>
+        public EClass(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource, loggerFactory)
         {
+            this.loggerFactory = loggerFactory;
+
+            this.logger = this.loggerFactory == null ? NullLogger<EClass>.Instance : this.loggerFactory.CreateLogger<EClass>();
+
             this.ESuperTypes = new List<EClass>();
             this.EOperations = new ContainerList<EOperation>(this);
             this.EStructuralFeatures = new ContainerList<EStructuralFeature>(this);
@@ -144,6 +164,8 @@ namespace ECoreNetto
         /// </summary>
         internal override void SetProperties()
         {
+            this.logger.LogTrace("setting properties of EClass {0}:{1}", this.Identifier, this.Name);
+
             base.SetProperties();
 
             if (this.Attributes.TryGetValue(EcoreAbstractKeyword, out var output))
@@ -172,6 +194,8 @@ namespace ECoreNetto
         /// <param name="reader">The <see cref="XmlNode"/></param>
         protected override void DeserializeChildNode(XmlNode reader)
         {
+            this.logger.LogTrace("deserializing child nodes of EClass {0}:{1}", this.Identifier, this.Name);
+
             base.DeserializeChildNode(reader);
 
             if (reader.Name == "eStructuralFeatures" && reader.NodeType == XmlNodeType.Element)
@@ -180,12 +204,12 @@ namespace ECoreNetto
                 switch (ecoreType)
                 {
                     case "ecore:EReference":
-                        var ecoreReference = new EReference(this.EResource);
+                        var ecoreReference = new EReference(this.EResource, this.loggerFactory);
                         this.EStructuralFeatures.Add(ecoreReference);
                         ecoreReference.ReadXml(reader);
                         break;
                     case "ecore:EAttribute":
-                        var ecoreAttribute = new EAttribute(this.EResource);
+                        var ecoreAttribute = new EAttribute(this.EResource, this.loggerFactory);
                         this.EStructuralFeatures.Add(ecoreAttribute);
                         ecoreAttribute.ReadXml(reader);
                         break;
@@ -196,7 +220,7 @@ namespace ECoreNetto
 
             if (reader.Name == "eOperations" && reader.NodeType == XmlNodeType.Element)
             {
-                var ecoreOperation = new EOperation(this.EResource);
+                var ecoreOperation = new EOperation(this.EResource, this.loggerFactory);
                 this.EOperations.Add(ecoreOperation);
                 ecoreOperation.ReadXml(reader);
             }

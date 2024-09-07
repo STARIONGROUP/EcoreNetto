@@ -28,7 +28,7 @@ namespace ECoreNetto.Extensions.Tests
     using NUnit.Framework;
 
     /// <summary>
-    /// Suite of tests for the <see cref="StringExtensionsTestFixture"/> class
+    /// Suite of tests for the <see cref="StringExtensions"/> class
     /// </summary>
     [TestFixture]
     public class StringExtensionsTestFixture

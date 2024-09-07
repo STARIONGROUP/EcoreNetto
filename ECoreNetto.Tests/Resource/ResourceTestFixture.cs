@@ -24,8 +24,9 @@ namespace ECoreNetto.Tests.Resource
     using System.Linq;
 
     using ECoreNetto.Resource;
-
+    using Microsoft.Extensions.Logging;
     using NUnit.Framework;
+    using Serilog;
 
     /// <summary>
     /// Suite of tests for the <see cref="Resource"/> class.
@@ -36,6 +37,21 @@ namespace ECoreNetto.Tests.Resource
         private string filePath;
         private Resource resource;
         private ResourceSet resourceSet;
+        private ILoggerFactory loggerFactory;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console()
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
 
         [SetUp]
         public void SetUp()
@@ -44,8 +60,8 @@ namespace ECoreNetto.Tests.Resource
             this.filePath = Path.GetFullPath(path);
             var uri = new System.Uri(this.filePath);
 
-            this.resourceSet = new ResourceSet();
-            this.resource = new Resource() { URI = uri, ResourceSet = this.resourceSet};
+            this.resourceSet = new ResourceSet(this.loggerFactory);
+            this.resource = new Resource(this.loggerFactory) { URI = uri, ResourceSet = this.resourceSet};
             this.resourceSet.Resources.Add(this.resource);
         }
 

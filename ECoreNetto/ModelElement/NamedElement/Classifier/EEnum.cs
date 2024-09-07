@@ -22,19 +22,39 @@ namespace ECoreNetto
 {
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
     /// Represents an enumeration
     /// </summary>
     public class EEnum : EDataType
     {
         /// <summary>
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </summary>
+        private readonly ILoggerFactory loggerFactory;
+
+        /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<EEnum> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="EEnum"/> class
         /// </summary>
         /// <param name="resource">
         /// The <see cref="ECoreNetto.Resource.Resource"/> containing all instantiated <see cref="EObject"/>
         /// </param>
-        public EEnum(Resource.Resource resource) : base(resource)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </param>
+        public EEnum(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource, loggerFactory)
         {
+            this.loggerFactory = loggerFactory;
+
+            this.logger = this.loggerFactory == null ? NullLogger<EEnum>.Instance : this.loggerFactory.CreateLogger<EEnum>();
+
             this.ELiterals = new ContainerList<EEnumLiteral>(this);
         }
 
@@ -51,11 +71,13 @@ namespace ECoreNetto
         /// </param>
         protected override void DeserializeChildNode(XmlNode reader)
         {
+            this.logger.LogTrace("deserializing child nodes of EEnum {0}:{1}", this.Identifier, this.Name);
+
             base.DeserializeChildNode(reader);
 
             if (reader.Name == "eLiterals" && reader.NodeType == XmlNodeType.Element)
             {
-                var ecoreEnumLiteral = new EEnumLiteral(this.EResource);
+                var ecoreEnumLiteral = new EEnumLiteral(this.EResource, this.loggerFactory);
                 this.ELiterals.Add(ecoreEnumLiteral);
                 ecoreEnumLiteral.ReadXml(reader);
             }

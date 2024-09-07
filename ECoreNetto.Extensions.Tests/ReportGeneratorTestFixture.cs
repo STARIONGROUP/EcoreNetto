@@ -23,8 +23,9 @@ namespace ECoreNetto.Extensions.Tests
     using System.IO;
     
     using ECoreNetto.Extensions;
-    
+    using Microsoft.Extensions.Logging;
     using NUnit.Framework;
+    using Serilog;
 
     /// <summary>
     /// Suite of tests for the <see cref="ReportGeneratorTestFixture"/> class
@@ -36,7 +37,23 @@ namespace ECoreNetto.Extensions.Tests
 
         private FileInfo reportFileInfo;
 
-        private ReportGenerator reportGenerator;
+        private XlReportGenerator xlXlReportGenerator;
+
+        private ILoggerFactory loggerFactory;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console()
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
 
         [SetUp]
         public void SetUp()
@@ -49,20 +66,20 @@ namespace ECoreNetto.Extensions.Tests
             var outputPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "tabular-report.xlsx");
             this.reportFileInfo = new FileInfo(outputPath);
 
-            this.reportGenerator = new ReportGenerator();
+            this.xlXlReportGenerator = new XlReportGenerator(this.loggerFactory);
         }
 
         [Test]
         public void Verify_that_the_report_generator_generates_a_report()
         {
-            Assert.That(() => this.reportGenerator.GenerateTable(modelFileInfo, reportFileInfo), Throws.Nothing);
+            Assert.That(() => this.xlXlReportGenerator.GenerateTable(modelFileInfo, reportFileInfo), Throws.Nothing);
         }
 
         [Test]
         public void Verify_that_IsValidExcelReportExtension_returns_false_when_invalid()
         {
             var inValidFileName = new FileInfo("output-report.invalid");
-            var invalidResult = this.reportGenerator.IsValidExcelReportExtension(inValidFileName);
+            var invalidResult = this.xlXlReportGenerator.IsValidExcelReportExtension(inValidFileName);
 
             Assert.Multiple(() =>
             {
@@ -80,7 +97,7 @@ namespace ECoreNetto.Extensions.Tests
         public void Verify_that_IsValidExcelReportExtension_returns_true_when_valid(string extension)
         {
             var validFileName = new FileInfo($"output-report.{extension}");
-            var validResult = this.reportGenerator.IsValidExcelReportExtension(validFileName);
+            var validResult = this.xlXlReportGenerator.IsValidExcelReportExtension(validFileName);
             Assert.That(validResult.Item1, Is.True);
             Assert.That(validResult.Item2, Is.EqualTo($".{extension} is a supported report extension"));
         }

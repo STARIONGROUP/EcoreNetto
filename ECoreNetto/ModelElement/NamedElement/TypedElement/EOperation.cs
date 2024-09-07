@@ -24,19 +24,39 @@ namespace ECoreNetto
     using System.Collections.Generic;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
     /// The ECore operation class.
     /// </summary>
     public class EOperation : ETypedElement
     {
         /// <summary>
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </summary>
+        private readonly ILoggerFactory loggerFactory;
+
+        /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<EOperation> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="EOperation"/> class
         /// </summary>
         /// <param name="resource">
         /// The <see cref="ECoreNetto.Resource.Resource"/> containing all instantiated <see cref="EObject"/>
         /// </param>
-        public EOperation(Resource.Resource resource) : base(resource)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </param>
+        public EOperation(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource, loggerFactory)
         {
+            this.loggerFactory = loggerFactory;
+
+            this.logger = this.loggerFactory == null ? NullLogger<EOperation>.Instance : this.loggerFactory.CreateLogger<EOperation>();
+
             this.EParameters = new ContainerList<EParameter>(this);
             this.EExceptions = new List<EClassifier>();
         }
@@ -95,11 +115,13 @@ namespace ECoreNetto
         /// </param>
         protected override void DeserializeChildNode(XmlNode reader)
         {
+            this.logger.LogTrace("deserializing child nodes of EPackage {0}:{1}", this.Identifier, this.Name);
+
             base.DeserializeChildNode(reader);
 
             if (reader.Name == "eParameters" && reader.NodeType == XmlNodeType.Element)
             {
-                var parameter = new EParameter(this.EResource);
+                var parameter = new EParameter(this.EResource, this.loggerFactory);
                 this.EParameters.Add(parameter);
                 parameter.ReadXml(reader);
             }

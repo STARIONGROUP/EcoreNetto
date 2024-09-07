@@ -22,9 +22,13 @@ namespace ECoreNetto.Resource
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
-    using Utils;
+    using ECoreNetto.Utils;
+
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// A persistent document
@@ -41,6 +45,16 @@ namespace ECoreNetto.Resource
     /// </remarks>
     public class Resource : Notifier
     {
+        /// <summary>
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </summary>
+        private readonly ILoggerFactory loggerFactory;
+
+        /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<Resource> logger;
+
         /// <summary>
         /// backing field that is used to register whether a <see cref="Resource"/> is loaded or not.
         /// </summary>
@@ -59,71 +73,78 @@ namespace ECoreNetto.Resource
         /// <summary>
         /// A collection of <see cref="EObject"/> representing ECORE types
         /// </summary>
-        private readonly Dictionary<string, EObject> ECoreTypes;
+        private readonly Dictionary<string, EObject> eCoreTypes;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Resource"/> class.
         /// </summary>
-        public Resource()
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </param>
+        public Resource(ILoggerFactory loggerFactory = null)
         {
-            var ecoreInstantiator = new EcoreObjectInstantiator(this);
+            this.loggerFactory = loggerFactory;
 
-            this.ECoreTypes = new Dictionary<string, EObject>
+            this.logger = this.loggerFactory == null ? NullLogger<Resource>.Instance : this.loggerFactory.CreateLogger<Resource>();
+
+            var ecoreObjectFactory = new EcoreObjectFactory(this, this.loggerFactory);
+
+            this.eCoreTypes = new Dictionary<string, EObject>
             {
-                { "//EObject", ecoreInstantiator.EObject },
-                { "//EModelElement", ecoreInstantiator.EModelElement },
-                { "//ENamedElement", ecoreInstantiator.ENamedElement },
-                { "//EFactory", ecoreInstantiator.EFactory },
-                { "//EAnnotation", ecoreInstantiator.EAnnotation },
-                { "//EClassifier", ecoreInstantiator.EClassifier },
-                { "//EEnumLiteral", ecoreInstantiator.EEnumLiteral },
-                { "//EPackage", ecoreInstantiator.EPackage },
-                { "//ETypedElement", ecoreInstantiator.ETypedElement },
-                { "//EClass", ecoreInstantiator.EClass },
-                { "//EDataType", ecoreInstantiator.EDataType },
-                { "//EEnum", ecoreInstantiator.EEnum },
-                { "//EOperation", ecoreInstantiator.EOperation },
-                { "//EParameter", ecoreInstantiator.EParameter },
-                { "//EStructuralFeature", ecoreInstantiator.EStructuralFeature },
-                { "//EAttribute", ecoreInstantiator.EAttribute },
-                { "//EReference", ecoreInstantiator.EReference },
-                { "//EStringToStringMapEntry", ecoreInstantiator.EStringToStringMapEntry },
-                { "//EGenericType", ecoreInstantiator.EGenericType },
-                { "//ETypeParameter", ecoreInstantiator.ETypeParameter },
+                { "//EObject", ecoreObjectFactory.EObject },
+                { "//EModelElement", ecoreObjectFactory.EModelElement },
+                { "//ENamedElement", ecoreObjectFactory.ENamedElement },
+                { "//EFactory", ecoreObjectFactory.EFactory },
+                { "//EAnnotation", ecoreObjectFactory.EAnnotation },
+                { "//EClassifier", ecoreObjectFactory.EClassifier },
+                { "//EEnumLiteral", ecoreObjectFactory.EEnumLiteral },
+                { "//EPackage", ecoreObjectFactory.EPackage },
+                { "//ETypedElement", ecoreObjectFactory.ETypedElement },
+                { "//EClass", ecoreObjectFactory.EClass },
+                { "//EDataType", ecoreObjectFactory.EDataType },
+                { "//EEnum", ecoreObjectFactory.EEnum },
+                { "//EOperation", ecoreObjectFactory.EOperation },
+                { "//EParameter", ecoreObjectFactory.EParameter },
+                { "//EStructuralFeature", ecoreObjectFactory.EStructuralFeature },
+                { "//EAttribute", ecoreObjectFactory.EAttribute },
+                { "//EReference", ecoreObjectFactory.EReference },
+                { "//EStringToStringMapEntry", ecoreObjectFactory.EStringToStringMapEntry },
+                { "//EGenericType", ecoreObjectFactory.EGenericType },
+                { "//ETypeParameter", ecoreObjectFactory.ETypeParameter },
                 
-                { "http://www.eclipse.org/emf/2002/Ecore#//EBigDecimal", ecoreInstantiator.EBigDecimal},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EBigInteger", ecoreInstantiator.EBigInteger},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EBool", ecoreInstantiator.EBool},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject", ecoreInstantiator.EBooleanObject},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EByte", ecoreInstantiator.EByte},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EByteArray", ecoreInstantiator.EByteArray},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EByteObject", ecoreInstantiator.EByteObject},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EChar", ecoreInstantiator.EChar},
-                { "http://www.eclipse.org/emf/2002/Ecore#//ECharacterObject", ecoreInstantiator.ECharacterObject},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EDate", ecoreInstantiator.EDate},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EDiagnosticChain", ecoreInstantiator.EDiagnosticChain},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EDouble", ecoreInstantiator.EDouble},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EDoubleObject", ecoreInstantiator.EDoubleObject},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EEList", ecoreInstantiator.EEList},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EEnumerator", ecoreInstantiator.EEnumerator},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EFeatureMap", ecoreInstantiator.EFeatureMap},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry", ecoreInstantiator.EFeatureMapEntry},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EFloat", ecoreInstantiator.EFloat},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EFloatObject", ecoreInstantiator.EFloatObject},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EInt", ecoreInstantiator.EInt},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject", ecoreInstantiator.EIntegerObject},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EJavaClass", ecoreInstantiator.EJavaClass},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EJavaObject", ecoreInstantiator.EJavaObject},
-                { "http://www.eclipse.org/emf/2002/Ecore#//ELong", ecoreInstantiator.ELong},
-                { "http://www.eclipse.org/emf/2002/Ecore#//ELongObject", ecoreInstantiator.ELongObject},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EMap", ecoreInstantiator.EMap},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EResource", ecoreInstantiator.EResource},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EResourceSet", ecoreInstantiator.EResourceSet},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EShort", ecoreInstantiator.EShort},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EShortObject", ecoreInstantiator.EShortObject},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EString", ecoreInstantiator.EString},
-                { "http://www.eclipse.org/emf/2002/Ecore#//ETreeIterator", ecoreInstantiator.ETreeIterator},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EInvocationTargetException", ecoreInstantiator.EInvocationTargetException}
+                { "http://www.eclipse.org/emf/2002/Ecore#//EBigDecimal", ecoreObjectFactory.EBigDecimal},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EBigInteger", ecoreObjectFactory.EBigInteger},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EBool", ecoreObjectFactory.EBool},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject", ecoreObjectFactory.EBooleanObject},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EByte", ecoreObjectFactory.EByte},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EByteArray", ecoreObjectFactory.EByteArray},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EByteObject", ecoreObjectFactory.EByteObject},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EChar", ecoreObjectFactory.EChar},
+                { "http://www.eclipse.org/emf/2002/Ecore#//ECharacterObject", ecoreObjectFactory.ECharacterObject},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EDate", ecoreObjectFactory.EDate},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EDiagnosticChain", ecoreObjectFactory.EDiagnosticChain},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EDouble", ecoreObjectFactory.EDouble},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EDoubleObject", ecoreObjectFactory.EDoubleObject},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EEList", ecoreObjectFactory.EEList},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EEnumerator", ecoreObjectFactory.EEnumerator},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EFeatureMap", ecoreObjectFactory.EFeatureMap},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry", ecoreObjectFactory.EFeatureMapEntry},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EFloat", ecoreObjectFactory.EFloat},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EFloatObject", ecoreObjectFactory.EFloatObject},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EInt", ecoreObjectFactory.EInt},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject", ecoreObjectFactory.EIntegerObject},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EJavaClass", ecoreObjectFactory.EJavaClass},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EJavaObject", ecoreObjectFactory.EJavaObject},
+                { "http://www.eclipse.org/emf/2002/Ecore#//ELong", ecoreObjectFactory.ELong},
+                { "http://www.eclipse.org/emf/2002/Ecore#//ELongObject", ecoreObjectFactory.ELongObject},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EMap", ecoreObjectFactory.EMap},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EResource", ecoreObjectFactory.EResource},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EResourceSet", ecoreObjectFactory.EResourceSet},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EShort", ecoreObjectFactory.EShort},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EShortObject", ecoreObjectFactory.EShortObject},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EString", ecoreObjectFactory.EString},
+                { "http://www.eclipse.org/emf/2002/Ecore#//ETreeIterator", ecoreObjectFactory.ETreeIterator},
+                { "http://www.eclipse.org/emf/2002/Ecore#//EInvocationTargetException", ecoreObjectFactory.EInvocationTargetException}
             };
 
             this.Cache = new Dictionary<string, EObject>();
@@ -206,28 +227,34 @@ namespace ECoreNetto.Resource
         /// </returns>
         public EObject GetEObject(string uriFragment)
         {
+            this.logger.LogTrace("Getting EObject for resources {0}", uriFragment);
+
             if (string.IsNullOrWhiteSpace(uriFragment))
             {
-                throw new ArgumentException("The uri cannot be null or empty", "uriFragment");
+                throw new ArgumentException("The uri cannot be null or empty", nameof(uriFragment));
             }
 
             if (this.Cache.TryGetValue(uriFragment, out var @object))
             {
+                this.logger.LogTrace("EObject using uri fragment '{0}' found in cache", uriFragment);
+
                 return @object;
             }
 
-            var ecoreType = this.ECoreTypes.SingleOrDefault(x => uriFragment.Contains(x.Key));
+            var ecoreType = this.eCoreTypes.SingleOrDefault(x => uriFragment.Contains(x.Key));
             if (ecoreType.Value != null)
             {
+                this.logger.LogTrace("EObject using Key: '{0}' found in found in ECore Types", ecoreType.Key);
+
                 return ecoreType.Value;
             }
 
             // load another resource
             // parse uri
-            var urifragments = uriFragment.Split('#');
-            if (!urifragments[0].Contains(".ecore"))
+            var uriFragments = uriFragment.Split('#');
+            if (!uriFragments[0].Contains(".ecore"))
             {
-                throw new ArgumentException($"The resource {urifragments[0]} is invalid.");
+                throw new ArgumentException($"The resource {uriFragments[0]} is invalid.");
             }
 
             var index = this.URI.AbsolutePath.LastIndexOf('/');
@@ -236,7 +263,9 @@ namespace ECoreNetto.Resource
                 throw new ArgumentException($"Invalid path for the current resource: {this.URI.AbsolutePath}");
             }
 
-            var resourceUri = new Uri($"{this.URI.AbsolutePath.Substring(0, index)}/{urifragments[0]}");
+            var resourceUri = new Uri($"{this.URI.AbsolutePath.Substring(0, index)}/{uriFragments[0]}");
+
+            this.logger.LogTrace("EObject not found in current resource, loading other resources: {0}", resourceUri);
 
             var resource = this.ResourceSet.Resources.SingleOrDefault(x => x.URI == resourceUri);
             if (resource == null)
@@ -259,6 +288,8 @@ namespace ECoreNetto.Resource
         /// </param>
         public void Save(Dictionary<object, object> options)
         {
+            this.logger.LogWarning("Saving an Ecore model to file is not yet supported");
+
             throw new NotImplementedException();
         }
 
@@ -276,12 +307,17 @@ namespace ECoreNetto.Resource
         /// </returns>
         public EPackage Load(Dictionary<object, object> options)
         {
-            var parser = new ECoreParser(this);
-            var pacakge = parser.ParseXml();
+            var sw = Stopwatch.StartNew();
+
+            var parser = new ECoreParser(this, this.loggerFactory);
+            var package = parser.ParseXml();
             
             this.isLoaded = true;
 
-            return pacakge;
+            this.logger.LogInformation("Package: '{0}' with prefix {1} and uri {2} loaded in {3} [ms]", 
+                package.Name, package.NsPrefix, package.NsUri, sw.ElapsedMilliseconds);
+
+            return package;
         }
 
         /// <summary>

@@ -20,37 +20,55 @@
 
 namespace ECoreNetto
 {
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
-    /// The purpose of the <see cref="ECoreParser"/> class is to deserialize an Ecore meta model
+    /// The purpose of the <see cref="ECoreParser"/> class is to deserialize an Ecore model
     /// </summary>
     internal class ECoreParser
     {
         /// <summary>
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </summary>
+        private readonly ILoggerFactory loggerFactory;
+
+        /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<ECoreParser> logger;
+
+        /// <summary>
         /// The <see cref="Resource.Resource"/> that is populated using the current <see cref="ECoreParser"/>
         /// </summary>
         private readonly Resource.Resource resource;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ECoreParser"/> class.
         /// </summary>
         /// <param name="resource">
         /// The <see cref="Resource.Resource"/> that is populated using the current <see cref="ECoreParser"/>
         /// </param>
-        internal ECoreParser(Resource.Resource resource)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </param>
+        internal ECoreParser(Resource.Resource resource, ILoggerFactory loggerFactory = null)
         {
+            this.loggerFactory = loggerFactory;
+
+            this.logger = this.loggerFactory == null ? NullLogger<ECoreParser>.Instance : this.loggerFactory.CreateLogger<ECoreParser>();
+
             this.resource = resource;
         }
 
         /// <summary>
         /// Parse an ECore document into a <see cref="EPackage"/>
         /// </summary>
-        /// <param name="resource">
-        /// The <see cref="Resource.Resource"/> that is being parsed
-        /// </param>
         /// <returns>
         /// The top level <see cref="EPackage"/> contained by the <see cref="resource"/>
         /// </returns>
@@ -65,6 +83,10 @@ namespace ECoreNetto
         /// </exception>
         internal EPackage ParseXml()
         {
+            this.logger.LogDebug("start parsing Ecore file");
+
+            var sw = Stopwatch.StartNew();
+
             var settings = new XmlReaderSettings();
             var fileInfo = new FileInfo(this.resource.URI.AbsolutePath.Replace("%20", " "));
             var fullPath = Path.GetFullPath(fileInfo.FullName);
@@ -73,13 +95,15 @@ namespace ECoreNetto
             var xmlReader = XmlReader.Create(fullPath, settings);
             var xmlDocument = new XmlDocument();
             xmlDocument.Load(xmlReader);
-            var package = new EPackage(this.resource);
+            var package = new EPackage(this.resource, this.loggerFactory);
             package.ReadXml(xmlDocument.DocumentElement);
             
             foreach (var modelElement in this.resource.AllContents().ToArray())
             {
                 modelElement.SetProperties();
             }
+
+            this.logger.LogDebug("Ecore file parsed in {0} [ms]", sw.ElapsedMilliseconds);
 
             return package;
         }

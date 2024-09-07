@@ -21,12 +21,25 @@
 namespace ECoreNetto
 {
     using System.Xml;
+
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
     
     /// <summary>
     /// The base abstract class for ECore objects
     /// </summary>
     public abstract class EModelElement : EObject
     {
+        /// <summary>
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </summary>
+        private readonly ILoggerFactory loggerFactory;
+
+        /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<EModelElement> logger;
+
         /// <summary>
         /// The ECORE annotation.
         /// </summary>
@@ -38,8 +51,15 @@ namespace ECoreNetto
         /// <param name="resource">
         /// The <see cref="ECoreNetto.Resource.Resource"/> containing all instantiated <see cref="EObject"/>
         /// </param>
-        protected EModelElement(Resource.Resource resource) : base(resource)
-        {            
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </param>
+        protected EModelElement(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource, loggerFactory)
+        {
+            this.loggerFactory = loggerFactory;
+
+            this.logger = this.loggerFactory == null ? NullLogger<EModelElement>.Instance : this.loggerFactory.CreateLogger<EModelElement>();
+
             this.EAnnotations = new ContainerList<EAnnotation>(this);
         }
         
@@ -53,6 +73,8 @@ namespace ECoreNetto
         /// </summary>
         internal override void SetProperties()
         {
+            this.logger.LogTrace("setting properties of EModelElement {0}", this.Identifier);
+
             // Ensure invocation of setProperties on contained EAnnotations collection
             foreach (var annotation in this.EAnnotations)
             {
@@ -66,9 +88,11 @@ namespace ECoreNetto
         /// <param name="reader">The <see cref="XmlReader"/></param>
         protected override void DeserializeChildNode(XmlNode reader)
         {
+            this.logger.LogTrace("deserializing child nodes of EModelElement {0}", this.Identifier);
+
             if (reader.Name == EcoreAnnotation && reader.NodeType == XmlNodeType.Element)
             {
-                var annotation = new EAnnotation(this.EResource);
+                var annotation = new EAnnotation(this.EResource, this.loggerFactory);
                 this.EAnnotations.Add(annotation);
                 annotation.ReadXml(reader);
             }

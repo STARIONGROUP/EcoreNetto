@@ -20,6 +20,8 @@
 
 namespace ECoreNetto.Resource
 {
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
     using System;
     using System.Collections.Generic;
 
@@ -37,10 +39,27 @@ namespace ECoreNetto.Resource
     public class ResourceSet : Notifier
     {
         /// <summary>
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </summary>
+        private readonly ILoggerFactory loggerFactory;
+
+        /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<ResourceSet> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ResourceSet"/> class.
         /// </summary>
-        public ResourceSet()
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </param>
+        public ResourceSet(ILoggerFactory loggerFactory = null)
         {
+            this.loggerFactory = loggerFactory;
+
+            this.logger = this.loggerFactory == null ? NullLogger<ResourceSet>.Instance : this.loggerFactory.CreateLogger<ResourceSet>();
+
             this.Resources = new List<Resource>();
         }
 
@@ -66,7 +85,9 @@ namespace ECoreNetto.Resource
         /// </returns>
         public Resource CreateResource(Uri uri)
         {
-            var resource = new Resource()
+            this.logger.LogInformation("Creating resource for uri: {0}", uri);
+
+            var resource = new Resource(this.loggerFactory)
             {
                 URI = uri
             };
@@ -111,10 +132,10 @@ namespace ECoreNetto.Resource
         /// the URI to resolve.
         /// </param>
         /// <param name="loadOnDemand">
-        /// whether to create and load the resource, if it doesn't already exists.
+        /// whether to create and load the resource, if it doesn't already exist.
         /// </param>
         /// <returns>
-        /// the resource resolved by the URI, or null if there isn't one and it's not being demand loaded.
+        /// the resource resolved by the URI, or null if there isn't one, and it's not being demand loaded.
         /// </returns>
         public Resource Resource(Uri uri, bool loadOnDemand)
         {

@@ -29,17 +29,18 @@ namespace ECoreNetto.Tools.Commands
 
     using ECoreNetto.Extensions;
     using ECoreNetto.Processor.Resources;
+
     using Spectre.Console;
 
     /// <summary>
     /// The <see cref="RootCommand"/> that generates ecore reports
     /// </summary>
-    public class ReportCommand : RootCommand
+    public class XlReportCommand : Command
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReportCommand"/>
+        /// Initializes a new instance of the <see cref="XlReportCommand"/>
         /// </summary>
-        public ReportCommand() : base("Ecore Tools")
+        public XlReportCommand() : base("report", "Generates a tabular report of the ECore model")
         {
             var noLogoOption = new Option<bool>(
                 name: "--no-logo",
@@ -65,26 +66,26 @@ namespace ECoreNetto.Tools.Commands
         }
 
         /// <summary>
-        /// The Command Handler of the <see cref="ReportCommand"/>
+        /// The Command Handler of the <see cref="XlReportCommand"/>
         /// </summary>
         public new class Handler : ICommandHandler
         {
             /// <summary>
-            /// The (injected) <see cref="IReportGenerator"/> that is used to generate the
+            /// The (injected) <see cref="IXlReportGenerator"/> that is used to generate the
             /// excel report
             /// </summary>
-            private readonly IReportGenerator reportGenerator;
+            private readonly IXlReportGenerator xlReportGenerator;
 
             /// <summary>
             /// Initializes a nwe instance of the <see cref="Handler"/> class.
             /// </summary>
-            /// <param name="reportGenerator">
-            /// The (injected) <see cref="IReportGenerator"/> that is used to generate the
+            /// <param name="xlReportGenerator">
+            /// The (injected) <see cref="IXlReportGenerator"/> that is used to generate the
             /// excel report
             /// </param>
-            public Handler(IReportGenerator reportGenerator)
+            public Handler(IXlReportGenerator xlReportGenerator)
             {
-                this.reportGenerator = reportGenerator ?? throw new ArgumentNullException(nameof(reportGenerator));
+                this.xlReportGenerator = xlReportGenerator ?? throw new ArgumentNullException(nameof(xlReportGenerator));
             }
 
             /// <summary>
@@ -141,7 +142,7 @@ namespace ECoreNetto.Tools.Commands
                     return -1;
                 }
 
-                var isValidExtension = this.reportGenerator.IsValidExcelReportExtension(this.OutputReport);
+                var isValidExtension = this.xlReportGenerator.IsValidExcelReportExtension(this.OutputReport);
                 if (!isValidExtension.Item1)
                 {
                     AnsiConsole.WriteLine("");
@@ -164,7 +165,7 @@ namespace ECoreNetto.Tools.Commands
                             
                             Thread.Sleep(1500);
 
-                            this.reportGenerator.GenerateTable(this.InputModel, this.OutputReport);
+                            this.xlReportGenerator.GenerateTable(this.InputModel, this.OutputReport);
 
                             AnsiConsole.MarkupLine($"[grey]LOG:[/] Ecore report generated at [bold]{this.OutputReport.FullName}[/]");
                             Thread.Sleep(1500);

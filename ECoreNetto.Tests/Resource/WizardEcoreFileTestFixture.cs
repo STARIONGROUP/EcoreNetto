@@ -24,9 +24,10 @@ namespace ECoreNetto.Tests.Resource
     using System.IO;
 
     using ECoreNetto.Resource;
-
+    using Microsoft.Extensions.Logging;
     using NUnit.Framework;
-    
+    using Serilog;
+
     /// <summary>
     /// Suite of tests to verify that the wizardEcore.ecore file can be loaded
     /// </summary>
@@ -37,7 +38,21 @@ namespace ECoreNetto.Tests.Resource
         private Uri uri;
         private Resource resource;
         private ResourceSet resourceSet;
+        private ILoggerFactory loggerFactory;
 
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console()
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
         [SetUp]
         public void SetUp()
         {
@@ -49,7 +64,7 @@ namespace ECoreNetto.Tests.Resource
         [Test]
         public void Verify_that_the_ecore_file_can_be_loaded_as_a_resource()
         {
-            this.resourceSet = new ResourceSet();
+            this.resourceSet = new ResourceSet(this.loggerFactory);
             this.resource = this.resourceSet.CreateResource(this.uri);
             
             Assert.DoesNotThrow(() => this.resource.Load(null));

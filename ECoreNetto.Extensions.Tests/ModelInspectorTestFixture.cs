@@ -24,15 +24,32 @@ namespace ECoreNetto.Extensions.Tests
     using System.IO;
     using ECoreNetto.Extensions;
     using ECoreNetto.Resource;
-
+    using Microsoft.Extensions.Logging;
     using NUnit.Framework;
-    
+    using Serilog;
+
     [TestFixture]
     public class ModelInspectorTestFixture
     {
         private EPackage rootPackage;
 
         private ModelInspector modelInspector;
+
+        private ILoggerFactory loggerFactory;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console()
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
 
         [SetUp]
         public void SetUp()
@@ -41,12 +58,12 @@ namespace ECoreNetto.Extensions.Tests
             var filePath = Path.GetFullPath(path);
             var uri = new System.Uri(filePath);
 
-            var resourceSet = new ResourceSet();
+            var resourceSet = new ResourceSet(this.loggerFactory);
             var resource = resourceSet.CreateResource(uri);
 
             this.rootPackage = resource.Load(null);
 
-            this.modelInspector = new ModelInspector();
+            this.modelInspector = new ModelInspector(this.loggerFactory);
         }
 
         [Test]
