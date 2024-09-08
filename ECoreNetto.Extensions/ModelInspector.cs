@@ -20,19 +20,21 @@
 
 namespace ECoreNetto.Extensions
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.IO;
     using System.Linq;
     using System.Text;
 
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Logging.Abstractions;
-    
+
     /// <summary>
     /// The purpose of the <see cref="ModelInspector"/> is to iterate through the model and report on the various kinds of
     /// patters that exist in the ECore model that need to be taken into account for code-generation
     /// </summary>
-    public class ModelInspector : IModelInspector
+    public class ModelInspector : ReportGenerator, IModelInspector
     {
         /// <summary>
         /// The <see cref="ILogger"/> used to log
@@ -53,7 +55,7 @@ namespace ECoreNetto.Extensions
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        public ModelInspector(ILoggerFactory loggerFactory = null)
+        public ModelInspector(ILoggerFactory loggerFactory = null) : base(loggerFactory)
         {
             this.logger = loggerFactory == null ? NullLogger<ModelInspector>.Instance : loggerFactory.CreateLogger<ModelInspector>();
         }
@@ -80,10 +82,13 @@ namespace ECoreNetto.Extensions
             var sb = new StringBuilder();
 
             sb.AppendLine($"----- PACKAGE {package.Name} ANALYSIS ------");
+            sb.AppendLine("");
 
             this.Inspect(package, sb, recursive);
 
+            sb.AppendLine("");
             sb.AppendLine("----- MULTIPLICITY RESULTS ------");
+            sb.AppendLine("");
 
             this.logger.LogInformation("MULTIPLICITY RESULTS - Inspecting the Reference Types");
 
@@ -112,7 +117,9 @@ namespace ECoreNetto.Extensions
                 sb.AppendLine($"value type: {valueType}");
             }
 
+            sb.AppendLine("");
             sb.AppendLine("----- INTERESTING CLASSES ------");
+            sb.AppendLine("");
 
             this.logger.LogInformation("INTERESTING CLASSES - Listing interesting Classes");
 
@@ -120,6 +127,8 @@ namespace ECoreNetto.Extensions
             {
                 sb.AppendLine($"class: {package.Name}:{@class.Name}");
             }
+
+            sb.AppendLine("");
 
             this.logger.LogInformation("ECore Model Inspection of EPackage {0}:{1} finished in {2} [ms]", package.Identifier, package.Name, sw.ElapsedMilliseconds);
 
@@ -330,9 +339,12 @@ namespace ECoreNetto.Extensions
 
             var sb = new StringBuilder();
 
-            sb.AppendLine("----- DOCUMENTATION ANALYSIS ------");
+            sb.AppendLine("----- MISSING DOCUMENTATION ANALYSIS ------");
+            sb.AppendLine("");
 
             this.AnalyzeDocumentation(package, sb, recursive);
+
+            sb.AppendLine("");
 
             this.logger.LogInformation("Inspection of EPackage documentation {0}:{1} finished in {3} [ms]", package.Identifier, package.Name, sw.ElapsedMilliseconds);
 
@@ -351,6 +363,9 @@ namespace ECoreNetto.Extensions
         /// </param>
         private void AnalyzeDocumentation(EPackage package, StringBuilder sb, bool recursive = false)
         {
+            sb.AppendLine($"Package.Class:Feature");
+            sb.AppendLine();
+
             foreach (var eClass in package.EClassifiers.OfType<EClass>().OrderBy(x => x.Name))
             {
                 if (string.IsNullOrEmpty(eClass.QueryRawDocumentation()))
@@ -374,6 +389,104 @@ namespace ECoreNetto.Extensions
                     this.AnalyzeDocumentation(subPackage, sb, true);
                 }
             }
+        }
+
+        /// <summary>
+        /// Verifies whether the extension of the <paramref name="outputPath"/> is valid or not
+        /// </summary>
+        /// <param name="outputPath">
+        /// The subject <see cref="FileInfo"/> to check
+        /// </param>
+        /// <returns>
+        /// A Tuple of bool and string, where the string contains a description of the verification.
+        /// Either stating that the extension is valid or not.
+        /// </returns>
+        public override Tuple<bool, string> IsValidReportExtension(FileInfo outputPath)
+        {
+            if (outputPath.Extension == ".txt")
+            {
+                return new Tuple<bool, string>(true, ".txt is a supported report extension");
+            }
+
+            return new Tuple<bool, string>(false,
+                $"The Extension of the output file '{outputPath.Extension}' is not supported. Supported extensions is '.txt'");
+        }
+
+        /// <summary>
+        /// Generates a table that contains all classes, attributes and their documentation
+        /// </summary>
+        /// <param name="modelPath">
+        /// the path to the Ecore model of which the report is to be generated.
+        /// </param>
+        /// <param name="outputPath">
+        /// the path, including filename, where the output is to be generated.
+        /// </param>
+        public void GenerateReport(FileInfo modelPath, FileInfo outputPath)
+        {
+            if (modelPath == null)
+            {
+                throw new ArgumentNullException(nameof(modelPath));
+            }
+
+            if (outputPath == null)
+            {
+                throw new ArgumentNullException(nameof(outputPath));
+            }
+
+            var sw = Stopwatch.StartNew();
+
+            this.logger.LogInformation("Start Generating Inspection Report");
+
+            var rootPackage = this.LoadRootPackage(modelPath);
+
+            var result = new StringBuilder();
+
+            result.Append(this.ReportHeader());
+            result.Append(this.Inspect(rootPackage, true));
+            result.Append(this.AnalyzeDocumentation(rootPackage, true));
+
+            if (outputPath.Exists)
+            {
+                outputPath.Delete(); 
+            }
+
+            using var writer = outputPath.CreateText();
+            writer.Write(result);
+
+            this.logger.LogInformation("Generated inspection report in {0} [ms]", sw.ElapsedMilliseconds);
+        }
+
+        /// <summary>
+        /// Generates the report header that is the first part of the text report
+        /// </summary>
+        /// <returns>
+        /// a string containing the header information
+        /// </returns>
+        private string ReportHeader()
+        {
+            this.logger.LogDebug("Generate report header");
+
+            var header = new StringBuilder();
+
+            header.AppendLine("The purpose of this report is to provide an overview of the");
+            header.AppendLine("contents of an ECore model.");
+            header.AppendLine("");
+            header.AppendLine("1. This report shows the variation of value-types reference-types");
+            header.AppendLine("   and enumerations");
+            header.AppendLine("2. The report provides an overview of the variation of");
+            header.AppendLine("   used multiplicities. ");
+            header.AppendLine("3. The report shows an overview of interesting classes.");
+            header.AppendLine("   Interesting classes are those classes that should be used");
+            header.AppendLine("   when writing unit tests for code generation. By writing");
+            header.AppendLine("   tests for these classes all variations of types and multiplicities");
+            header.AppendLine("   are covered.");
+            header.AppendLine("4. The report lists each class and feature that does contain");
+            header.AppendLine("   any documentation.");
+            header.AppendLine("");
+            header.AppendLine($"Inspection Report generated on {DateTime.Now:f}");
+            header.AppendLine("");
+
+            return header.ToString();
         }
     }
 }

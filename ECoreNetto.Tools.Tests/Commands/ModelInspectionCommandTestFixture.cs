@@ -1,5 +1,5 @@
 ﻿// -------------------------------------------------------------------------------------------------
-// <copyright file="ReportCommandTestFixture.cs" company="Starion Group S.A">
+// <copyright file="ModelInspectionCommandTestFixture.cs" company="Starion Group S.A">
 // 
 //   Copyright 2017-2024 Starion Group S.A.
 // 
@@ -27,7 +27,7 @@ namespace ECoreNetto.Tools.Tests.Commands
 
     using ECoreNetto.Extensions;
     using ECoreNetto.Tools.Commands;
-    
+
     using Moq;
 
     using NUnit.Framework;
@@ -36,31 +36,31 @@ namespace ECoreNetto.Tools.Tests.Commands
     /// Suite of tests for the <see cref="XlReportCommand"/> class.
     /// </summary>
     [TestFixture]
-    public class ReportCommandTestFixture
+    public class ModelInspectionCommandTestFixture
     {
-        private Mock<IXlReportGenerator> reportGenerator;
+        private Mock<IModelInspector> modelInspector;
 
-        private XlReportCommand.Handler handler;
+        private ModelInspectionCommand.Handler handler;
 
         [SetUp]
         public void SetUp()
         {
-            this.reportGenerator = new Mock<IXlReportGenerator>();
+            this.modelInspector = new Mock<IModelInspector>();
 
-            this.reportGenerator.Setup(x => x.IsValidReportExtension(It.IsAny<FileInfo>()))
+            this.modelInspector.Setup(x => x.IsValidReportExtension(It.IsAny<FileInfo>()))
                 .Returns(new Tuple<bool, string>(true, "valid extension"));
 
-            this.handler = new XlReportCommand.Handler(
-                this.reportGenerator.Object);
+            this.handler = new ModelInspectionCommand.Handler(
+                this.modelInspector.Object);
         }
 
         [Test]
-        public void Verify_that_report_command_can_be_constructed()
+        public void Verify_that_inspect_command_can_be_constructed()
         {
-             Assert.That(() =>
-             {
-                 var reportCommand = new XlReportCommand();
-             }, Throws.Nothing);
+            Assert.That(() =>
+            {
+                var reportCommand = new ModelInspectionCommand();
+            }, Throws.Nothing);
         }
 
         [Test]
@@ -69,11 +69,11 @@ namespace ECoreNetto.Tools.Tests.Commands
             var invocationContext = new InvocationContext(null!);
 
             this.handler.InputModel = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "recipe.ecore"));
-            this.handler.OutputReport = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "tabular-report.xlsx"));
+            this.handler.OutputReport = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "inspection-report.txt"));
 
             var result = await this.handler.InvokeAsync(invocationContext);
 
-            this.reportGenerator.Verify(x => x.GenerateReport(It.IsAny<FileInfo>(), It.IsAny<FileInfo>()), Times.Once);
+            this.modelInspector.Verify(x => x.GenerateReport(It.IsAny<FileInfo>(), It.IsAny<FileInfo>()), Times.Once);
 
             Assert.That(result, Is.EqualTo(0), "InvokeAsync should return 0 upon success.");
         }
@@ -84,7 +84,7 @@ namespace ECoreNetto.Tools.Tests.Commands
             var invocationContext = new InvocationContext(null!);
 
             this.handler.InputModel = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "non-existent.ecore"));
-            this.handler.OutputReport = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "tabular-report.xlsx"));
+            this.handler.OutputReport = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "inspection-report.txt"));
 
             var result = await this.handler.InvokeAsync(invocationContext);
 
@@ -96,11 +96,11 @@ namespace ECoreNetto.Tools.Tests.Commands
         {
             var invocationContext = new InvocationContext(null!);
 
-            this.reportGenerator.Setup(x => x.IsValidReportExtension(It.IsAny<FileInfo>()))
+            this.modelInspector.Setup(x => x.IsValidReportExtension(It.IsAny<FileInfo>()))
                 .Returns(new Tuple<bool, string>(false, "invalid extension"));
 
             this.handler.InputModel = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "recipe.ecore"));
-            
+
             var result = await this.handler.InvokeAsync(invocationContext);
 
             Assert.That(result, Is.EqualTo(-1), "InvokeAsync should return -1 upon failure.");

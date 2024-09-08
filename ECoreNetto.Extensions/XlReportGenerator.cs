@@ -37,13 +37,8 @@ namespace ECoreNetto.Extensions
     /// The purpose of the <see cref="XlReportGenerator"/> is to generate reports of an
     /// Ecore Model
     /// </summary>
-    public class XlReportGenerator : IXlReportGenerator
+    public class XlReportGenerator : ReportGenerator, IXlReportGenerator
     {
-        /// <summary>
-        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
-        /// </summary>
-        private readonly ILoggerFactory loggerFactory;
-
         /// <summary>
         /// The <see cref="ILogger"/> used to log
         /// </summary>
@@ -55,11 +50,9 @@ namespace ECoreNetto.Extensions
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        public XlReportGenerator(ILoggerFactory loggerFactory = null)
+        public XlReportGenerator(ILoggerFactory loggerFactory = null) : base(loggerFactory)
         {
-            this.loggerFactory = loggerFactory;
-
-            this.logger = this.loggerFactory == null ? NullLogger<XlReportGenerator>.Instance : this.loggerFactory.CreateLogger<XlReportGenerator>();
+            this.logger = loggerFactory == null ? NullLogger<XlReportGenerator>.Instance : loggerFactory.CreateLogger<XlReportGenerator>();
         }
 
         /// <summary>
@@ -71,7 +64,7 @@ namespace ECoreNetto.Extensions
         /// <param name="outputPath">
         /// the path, including filename, where the output is to be generated.
         /// </param>
-        public void GenerateTable(FileInfo modelPath, FileInfo outputPath)
+        public void GenerateReport(FileInfo modelPath, FileInfo outputPath)
         {
             if (modelPath == null)
             {
@@ -213,7 +206,7 @@ namespace ECoreNetto.Extensions
         /// A Tuple of bool and string, where the string contains a description of the verification.
         /// Either stating that the extension is valid or not.
         /// </returns>
-        public Tuple<bool, string>  IsValidExcelReportExtension(FileInfo outputPath)
+        public override Tuple<bool, string>  IsValidReportExtension(FileInfo outputPath)
         {
             switch (outputPath.Extension)
             {
@@ -228,29 +221,6 @@ namespace ECoreNetto.Extensions
                 default:
                     return new Tuple<bool, string>(false, $"The Extension of the output file '{outputPath.Extension}' is not supported. Supported extensions are '.xlsx', '.xlsm', '.xltx' and '.xltm'");
             }
-        }
-
-        /// <summary>
-        /// Loads the root Ecore package from the provided model
-        /// </summary>
-        /// <param name="modelPath">
-        /// the path to the Ecore model that is to be loaded
-        /// </param>
-        /// <returns>
-        /// an instance of <see cref="EPackage"/>
-        /// </returns>
-        private EPackage LoadRootPackage(FileInfo modelPath)
-        {
-            this.logger.LogInformation("Loading Ecore model from {0}", modelPath.FullName);
-
-            var uri = new System.Uri(modelPath.FullName);
-
-            var resourceSet = new ResourceSet(this.loggerFactory);
-            var resource = resourceSet.CreateResource(uri);
-
-            var rootPackage = resource.Load(null);
-
-            return rootPackage;
         }
     }
 }

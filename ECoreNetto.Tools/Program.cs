@@ -62,8 +62,11 @@ namespace ECoreNetto.Tools
                         .ConfigureServices((hostContext, services) =>
                         {
                             services.AddSingleton<IXlReportGenerator, XlReportGenerator>();
+                            services.AddSingleton<IModelInspector, ModelInspector>();
                         })
-                        .UseCommandHandler<XlReportCommand, XlReportCommand.Handler>())
+                        .UseCommandHandler<XlReportCommand, XlReportCommand.Handler>()
+                        .UseCommandHandler<ModelInspectionCommand, ModelInspectionCommand.Handler>()
+                    )
                 .UseDefaults()
 
                 .Build();
@@ -83,6 +86,9 @@ namespace ECoreNetto.Tools
 
             var reportCommand = new XlReportCommand();
             root.AddCommand(reportCommand);
+
+            var modelInspectionCommand = new ModelInspectionCommand();
+            root.AddCommand(modelInspectionCommand);
 
             return new CommandLineBuilder(root)
                 .UseHelp(ctx =>

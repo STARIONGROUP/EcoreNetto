@@ -31,6 +31,10 @@ namespace ECoreNetto.Extensions.Tests
     [TestFixture]
     public class ModelInspectorTestFixture
     {
+        private FileInfo modelFileInfo;
+
+        private FileInfo reportFileInfo;
+
         private EPackage rootPackage;
 
         private ModelInspector modelInspector;
@@ -62,6 +66,12 @@ namespace ECoreNetto.Extensions.Tests
             var resource = resourceSet.CreateResource(uri);
 
             this.rootPackage = resource.Load(null);
+
+            var modelPath = Path.GetFullPath(path);
+            this.modelFileInfo = new FileInfo(modelPath);
+
+            var outputPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "tabular-report.xlsx");
+            this.reportFileInfo = new FileInfo(outputPath);
 
             this.modelInspector = new ModelInspector(this.loggerFactory);
         }
@@ -114,6 +124,26 @@ namespace ECoreNetto.Extensions.Tests
             Assert.That(report, Is.Not.Empty);
 
             Console.Write(report);
+        }
+
+        [Test]
+        public void Verify_that_the_report_generator_generates_a_report()
+        {
+            Assert.That(() => this.modelInspector.GenerateReport(modelFileInfo, reportFileInfo), Throws.Nothing);
+        }
+
+        [Test]
+        public void Verify_that_IsValidExcelReportExtension_returns_false_when_invalid()
+        {
+            var inValidFileName = new FileInfo("output-report.invalid");
+            var invalidResult = this.modelInspector.IsValidReportExtension(inValidFileName);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(invalidResult.Item1, Is.False);
+                Assert.That(invalidResult.Item2,
+                    Is.EqualTo("The Extension of the output file '.invalid' is not supported. Supported extensions is '.txt'"));
+            });
         }
     }
 }

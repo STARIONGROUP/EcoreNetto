@@ -72,14 +72,14 @@ namespace ECoreNetto.Extensions.Tests
         [Test]
         public void Verify_that_the_report_generator_generates_a_report()
         {
-            Assert.That(() => this.xlXlReportGenerator.GenerateTable(modelFileInfo, reportFileInfo), Throws.Nothing);
+            Assert.That(() => this.xlXlReportGenerator.GenerateReport(modelFileInfo, reportFileInfo), Throws.Nothing);
         }
 
         [Test]
         public void Verify_that_IsValidExcelReportExtension_returns_false_when_invalid()
         {
             var inValidFileName = new FileInfo("output-report.invalid");
-            var invalidResult = this.xlXlReportGenerator.IsValidExcelReportExtension(inValidFileName);
+            var invalidResult = this.xlXlReportGenerator.IsValidReportExtension(inValidFileName);
 
             Assert.Multiple(() =>
             {
@@ -97,7 +97,7 @@ namespace ECoreNetto.Extensions.Tests
         public void Verify_that_IsValidExcelReportExtension_returns_true_when_valid(string extension)
         {
             var validFileName = new FileInfo($"output-report.{extension}");
-            var validResult = this.xlXlReportGenerator.IsValidExcelReportExtension(validFileName);
+            var validResult = this.xlXlReportGenerator.IsValidReportExtension(validFileName);
             Assert.That(validResult.Item1, Is.True);
             Assert.That(validResult.Item2, Is.EqualTo($".{extension} is a supported report extension"));
         }
