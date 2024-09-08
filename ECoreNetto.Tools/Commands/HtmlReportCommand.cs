@@ -1,5 +1,5 @@
 ﻿// -------------------------------------------------------------------------------------------------
-// <copyright file="ModelInspectionCommand.cs" company="Starion Group S.A">
+// <copyright file="HtmlReportCommand.cs" company="Starion Group S.A">
 // 
 //   Copyright 2017-2024 Starion Group S.A.
 // 
@@ -28,25 +28,23 @@ namespace ECoreNetto.Tools.Commands
     using System.Threading.Tasks;
 
     using ECoreNetto.Extensions;
-    using ECoreNetto.Processor.Resources;
-
+    using Generators;
     using Spectre.Console;
 
     /// <summary>
-    /// The <see cref="ModelInspectionCommand"/> that inspects an ECore model and generates
-    /// a text report
+    /// The <see cref="HtmlReportCommand"/> that generates an HTML report
     /// </summary>
-    public class ModelInspectionCommand : ReportCommand
+    public class HtmlReportCommand : ReportCommand
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ModelInspectionCommand"/>
+        /// Initializes a new instance of the <see cref="XlReportCommand"/>
         /// </summary>
-        public ModelInspectionCommand() : base("inspect", "Inspects an ECore model and generates a text report")
+        public HtmlReportCommand() : base("html-report", "Generates a html report of the ECore model")
         {
             var reportFileOption = new Option<FileInfo>(
                 name: "--output-report",
-                description: "The path to the text report file. Supported extensions is '.txt'",
-                getDefaultValue: () => new FileInfo("inspection-report.txt"));
+                description: "The path to the html report file. Supported extensions are '.html'",
+                getDefaultValue: () => new FileInfo("html-report.html"));
             reportFileOption.AddAlias("-o");
             reportFileOption.IsRequired = true;
             this.AddOption(reportFileOption);
@@ -61,18 +59,18 @@ namespace ECoreNetto.Tools.Commands
             /// The (injected) <see cref="IXlReportGenerator"/> that is used to generate the
             /// excel report
             /// </summary>
-            private readonly IModelInspector modelInspector;
+            private readonly IHtmlReportGenerator htmlReportGenerator;
 
             /// <summary>
             /// Initializes a nwe instance of the <see cref="Handler"/> class.
             /// </summary>
-            /// <param name="modelInspector">
-            /// The (injected) <see cref="IModelInspector"/> that is used to generate the
-            /// inspection report
+            /// <param name="htmlReportGenerator">
+            /// The (injected) <see cref="IHtmlReportGenerator"/> that is used to generate the
+            /// excel report
             /// </param>
-            public Handler(IModelInspector modelInspector)
+            public Handler(IHtmlReportGenerator htmlReportGenerator)
             {
-                this.modelInspector = modelInspector ?? throw new ArgumentNullException(nameof(modelInspector));
+                this.htmlReportGenerator = htmlReportGenerator ?? throw new ArgumentNullException(nameof(htmlReportGenerator));
             }
 
             /// <summary>
@@ -91,7 +89,7 @@ namespace ECoreNetto.Tools.Commands
                     return -1;
                 }
 
-                var isValidExtension = this.modelInspector.IsValidReportExtension(this.OutputReport);
+                var isValidExtension = this.htmlReportGenerator.IsValidReportExtension(this.OutputReport);
                 if (!isValidExtension.Item1)
                 {
                     AnsiConsole.WriteLine("");
@@ -106,7 +104,7 @@ namespace ECoreNetto.Tools.Commands
                     await AnsiConsole.Status()
                         .AutoRefresh(true)
                         .SpinnerStyle(Style.Parse("green bold"))
-                        .Start("Preparing Warp Engines for inspection reporting...", ctx =>
+                        .Start("Preparing Warp Engines for html reporting...", ctx =>
                         {
                             Thread.Sleep(1500);
 
@@ -114,9 +112,10 @@ namespace ECoreNetto.Tools.Commands
 
                             Thread.Sleep(1500);
 
-                            this.modelInspector.GenerateReport(this.InputModel, this.OutputReport);
+                            this.htmlReportGenerator.GenerateReport(this.InputModel, this.OutputReport);
 
-                            AnsiConsole.MarkupLine($"[grey]LOG:[/] Ecore inspection report generated at [bold]{this.OutputReport.FullName}[/]");
+                            AnsiConsole.MarkupLine(
+                                $"[grey]LOG:[/] Ecore html report generated at [bold]{this.OutputReport.FullName}[/]");
                             Thread.Sleep(1500);
 
                             this.ExecuteAutOpen(ctx);
@@ -127,6 +126,16 @@ namespace ECoreNetto.Tools.Commands
                             return Task.FromResult(0);
 
                         });
+                }
+                catch (System.IO.IOException ex)
+                {
+                    AnsiConsole.WriteLine();
+                    AnsiConsole.MarkupLine("[red]The report file could not be generated or opened. Make sure the file is not open and try again.[/]");
+                    AnsiConsole.WriteLine();
+                    AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
+                    AnsiConsole.WriteLine();
+                    AnsiConsole.MarkupLine("[green]Dropping to impulse speed[/]");
+                    AnsiConsole.WriteLine();
                 }
                 catch (Exception ex)
                 {

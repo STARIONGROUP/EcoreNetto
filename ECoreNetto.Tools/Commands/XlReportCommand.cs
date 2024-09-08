@@ -106,7 +106,7 @@ namespace ECoreNetto.Tools.Commands
                     await AnsiConsole.Status()
                         .AutoRefresh(true)
                         .SpinnerStyle(Style.Parse("green bold"))
-                        .Start("Preparing Warp Engines for reporting...", ctx =>
+                        .Start("Preparing Warp Engines for excel reporting...", ctx =>
                         {
                             Thread.Sleep(1500);
 

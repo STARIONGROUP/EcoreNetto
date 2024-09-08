@@ -20,6 +20,8 @@
 
 namespace ECoreNetto.Extensions
 {
+    using System.Collections.Generic;
+    
     /// <summary>
     /// Extension methods for <see cref="EStructuralFeature"/> class
     /// </summary>
@@ -155,6 +157,46 @@ namespace ECoreNetto.Extensions
         public static bool QueryHasDefaultValue(this EStructuralFeature eStructuralFeature)
         {
             return !string.IsNullOrEmpty(eStructuralFeature.DefaultValueLiteral);
+        }
+
+        /// <summary>
+        /// Queries the type-name of the <see cref="EStructuralFeature"/>
+        /// </summary>
+        /// <param name="eStructuralFeature">
+        /// The subject <see cref="EStructuralFeature"/>
+        /// </param>
+        /// <returns>
+        /// the name of the type
+        /// </returns>
+        public static string QueryTypeName(this EStructuralFeature eStructuralFeature)
+        {
+            var typeName = "";
+
+            if (eStructuralFeature is EAttribute eAttribute)
+            {
+                typeName = eAttribute.EType?.Name;
+
+            }
+            else if (eStructuralFeature is EReference eReference)
+            {
+                typeName = eReference.EType?.Name;
+            }
+
+            return typeName;
+        }
+
+        /// <summary>
+        /// Queries whether the <see cref="EStructuralFeature"/> is nullable
+        /// </summary>
+        /// <param name="eStructuralFeature">
+        /// The subject <see cref="EStructuralFeature"/>
+        /// </param>
+        /// <returns>
+        /// true if <see cref="EStructuralFeature.LowerBound"/> = 0, false if not
+        /// </returns>
+        public static bool QueryIsNullable(this EStructuralFeature eStructuralFeature)
+        {
+            return eStructuralFeature.LowerBound == 0 && !eStructuralFeature.QueryIsEnumerable();
         }
     }
 }

@@ -20,6 +20,7 @@
 
 namespace ECoreNetto.HandleBars
 {
+    using System;
     using System.Linq;
 
     using ECoreNetto;
@@ -209,6 +210,16 @@ namespace ECoreNetto.HandleBars
                 var eStructuralFeature = arguments.Single() as EStructuralFeature;
 
                 return eStructuralFeature.QueryIsContainment();
+            });
+
+            handlebars.RegisterHelper("StructuralFeature.QueryTypeName", (writer, context, parameters) =>
+            {
+                if (!(context.Value is EStructuralFeature eStructuralFeature))
+                    throw new ArgumentException("supposed to be EStructuralFeature");
+
+                var typeName = eStructuralFeature.QueryTypeName();
+
+                writer.WriteSafeString($"{typeName}");
             });
         }
     }

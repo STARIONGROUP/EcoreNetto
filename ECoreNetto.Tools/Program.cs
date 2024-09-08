@@ -38,6 +38,7 @@ namespace ECoreNetto.Tools
     using Microsoft.Extensions.Hosting;
 
     using Spectre.Console;
+    using ECoreNetto.Tools.Generators;
 
     /// <summary>
     /// Main entry point for the command line application
@@ -63,9 +64,11 @@ namespace ECoreNetto.Tools
                         {
                             services.AddSingleton<IXlReportGenerator, XlReportGenerator>();
                             services.AddSingleton<IModelInspector, ModelInspector>();
+                            services.AddSingleton<IHtmlReportGenerator, HtmlReportGenerator>();
                         })
                         .UseCommandHandler<XlReportCommand, XlReportCommand.Handler>()
                         .UseCommandHandler<ModelInspectionCommand, ModelInspectionCommand.Handler>()
+                        .UseCommandHandler<HtmlReportCommand, HtmlReportCommand.Handler>()
                     )
                 .UseDefaults()
 
@@ -89,6 +92,9 @@ namespace ECoreNetto.Tools
 
             var modelInspectionCommand = new ModelInspectionCommand();
             root.AddCommand(modelInspectionCommand);
+
+            var htmlReportCommand = new HtmlReportCommand();
+            root.AddCommand(htmlReportCommand);
 
             return new CommandLineBuilder(root)
                 .UseHelp(ctx =>
