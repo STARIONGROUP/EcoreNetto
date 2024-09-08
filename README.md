@@ -18,7 +18,7 @@ The **ECoreNetto.HandleBars** library provides [HandleBars](https://github.com/H
 
 ## ECoreNetto.Tools
 
-The **ECoreNetto.Tools** commandline application is used to generate reports on the content of the Ecore model.
+The **ECoreNetto.Tools** commandline application is used to generate reports on the content of the Ecore model. Find the documentation [here](https://github.com/STARIONGROUP/EcoreNetto/wiki/ECoreNetto.Tools).
 
 ## Code Quality
 
@@ -37,10 +37,10 @@ The **ECoreNetto.Tools** commandline application is used to generate reports on 
 
 The package are available on Nuget at:
 
-  - ECoreNetto: [![NuGet Badge](https://buildstats.info/nuget/ECoreNetto)](https://buildstats.info/nuget/ECoreNetto)
-  - ECoreNetto.Extensions: [![NuGet Badge](https://buildstats.info/nuget/ECoreNetto.Extensions)](https://buildstats.info/nuget/ECoreNetto.Extensions)
-  - ECoreNetto.HandleBars: [![NuGet Badge](https://buildstats.info/nuget/ECoreNetto.HandleBars)](https://buildstats.info/nuget/ECoreNetto.HandleBars)
-  - ECoreNetto.Tools: [![NuGet Badge](https://buildstats.info/nuget/ECoreNetto.Tools)](https://buildstats.info/nuget/ECoreNetto.Tools) 
+  - ECoreNetto: ![NuGet Downloads](https://img.shields.io/nuget/dt/:ECoreNetto)
+  - ECoreNetto.Extensions: ![NuGet Downloads](https://img.shields.io/nuget/dt/:ECoreNetto.Extensions)
+  - ECoreNetto.HandleBars: ![NuGet Downloads](https://img.shields.io/nuget/dt/:ECoreNetto.HandleBars)
+  - ECoreNetto.Tools: ![NuGet Downloads](https://img.shields.io/nuget/dt/:ECoreNetto.Tools)
 
 ## Build Status
 
@@ -54,3 +54,12 @@ Development | ![Build Status](https://github.com/STARIONGROUP/EcoreNetto/actions
 ## Ecore Documentation
 
 http://download.eclipse.org/modeling/emf/emf/javadoc/2.10.0/index.html?org/eclipse/emf/ecore/EObject.html
+
+# License
+
+The EcoreNetto libraries are provided to the community under the Apache License 2.0.
+
+# Contributions
+
+Contributions to the code-base are welcome. However, before we can accept your contributions we ask any contributor to sign 
+the Contributor License Agreement (CLA) and send this digitaly signed to s.gerene@stariongroup.eu. You can find the CLA's in the CLA folder.
