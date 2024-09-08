@@ -2,7 +2,7 @@
 
     <PropertyGroup Label="Package">
         <Title>ECoreNetto.Tools</Title>
-        <Description>A command line application that processes an Ecore file and generates output in the form a report.</Description>
+        <Description>A command line application that processes an Ecore file and generates various reports.</Description>
         <TargetFramework>net8.0</TargetFramework>
         <OutputType>Exe</OutputType>
         <PackAsTool>true</PackAsTool>

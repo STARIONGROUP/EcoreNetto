@@ -1,4 +1,4 @@
-<img src="https://github.com/STARIONGROUP/EcoreNetto/raw/development/Ecorenetto-Logo-text.png" width="350">
+![EcoreNetto](https://raw.githubusercontent.com/STARIONGROUP/EcoreNetto/development/Ecorenetto-Logo-text.png)
 
 ## Introduction
 
