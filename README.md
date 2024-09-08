@@ -37,10 +37,10 @@ The **ECoreNetto.Tools** commandline application is used to generate reports on 
 
 The package are available on Nuget at:
 
-  - ECoreNetto: ![NuGet Downloads](https://img.shields.io/nuget/dt/:ECoreNetto)
-  - ECoreNetto.Extensions: ![NuGet Downloads](https://img.shields.io/nuget/dt/:ECoreNetto.Extensions)
-  - ECoreNetto.HandleBars: ![NuGet Downloads](https://img.shields.io/nuget/dt/:ECoreNetto.HandleBars)
-  - ECoreNetto.Tools: ![NuGet Downloads](https://img.shields.io/nuget/dt/:ECoreNetto.Tools)
+  - ECoreNetto: ![NuGet Version](https://img.shields.io/nuget/v/EcoreNetto)
+  - ECoreNetto.Extensions: ![NuGet Version](https://img.shields.io/nuget/v/EcoreNetto.Extensions)
+  - ECoreNetto.HandleBars: ![NuGet Version](https://img.shields.io/nuget/v/EcoreNetto.HandleBars)
+  - ECoreNetto.Tools: ![NuGet Version](https://img.shields.io/nuget/v/EcoreNetto.Tools)
 
 ## Build Status
 
@@ -61,5 +61,4 @@ The EcoreNetto libraries are provided to the community under the Apache License 
 
 # Contributions
 
-Contributions to the code-base are welcome. However, before we can accept your contributions we ask any contributor to sign 
-the Contributor License Agreement (CLA) and send this digitaly signed to s.gerene@stariongroup.eu. You can find the CLA's in the CLA folder.
+Contributions to the code-base are welcome. However, before we can accept your contributions we ask any contributor to sign the Contributor License Agreement (CLA) and send this digitaly signed to s.gerene@stariongroup.eu. You can find the CLA's in the CLA folder.
