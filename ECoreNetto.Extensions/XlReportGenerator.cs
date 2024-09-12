@@ -21,14 +21,13 @@
 namespace ECoreNetto.Extensions
 {
     using System;
+    using System.Collections.Generic;
     using System.Data;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
 
     using ClosedXML.Excel;
-
-    using ECoreNetto.Resource;
 
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Logging.Abstractions;
@@ -86,107 +85,11 @@ namespace ECoreNetto.Extensions
 
             using (var workbook = new XLWorkbook())
             {
-                this.logger.LogDebug("Add EClass reports");
+                this.AddClassSheet(workbook, packages);
 
-                var classWorksheet = workbook.Worksheets.Add("Classes");
+                this.AddEnumSheet(workbook, packages);
 
-                var dataTable = new DataTable();
-
-                dataTable.Columns.Add("Class", typeof(string));
-                dataTable.Columns.Add("Feature", typeof(string));
-                dataTable.Columns.Add("EType", typeof(string));
-                dataTable.Columns.Add("Multiplicity", typeof(string));
-                dataTable.Columns.Add("IsContainment", typeof(string));
-                dataTable.Columns.Add("Documentation", typeof(string));
-
-                foreach (var package in packages)
-                {
-                    foreach (var eClass in package.EClassifiers.OfType<EClass>().OrderBy(x => x.Name))
-                    {
-                        var classDataRow = dataTable.NewRow();
-                        classDataRow["Class"] = eClass.Name;
-                        classDataRow["Feature"] = "--";
-                        classDataRow["EType"] = "--";
-                        classDataRow["Multiplicity"] = "--";
-                        classDataRow["IsContainment"] = "--";
-                        classDataRow["Documentation"] = eClass.QueryRawDocumentation();
-                        dataTable.Rows.Add(classDataRow);
-
-                        foreach (var structuralFeature in eClass.EStructuralFeatures)
-                        {
-                            if (structuralFeature.Derived || structuralFeature.Transient)
-                            {
-                                continue;
-                            }
-
-                            var structuralFeatureDataRow = dataTable.NewRow();
-                            structuralFeatureDataRow["Class"] = eClass.Name;
-                            structuralFeatureDataRow["Feature"] = structuralFeature.Name;
-                            structuralFeatureDataRow["EType"] = structuralFeature.EType.Name;
-                            structuralFeatureDataRow["Multiplicity"] = $"{structuralFeature.LowerBound}:{structuralFeature.UpperBound}";
-                            structuralFeatureDataRow["IsContainment"] = structuralFeature.QueryIsContainment();
-                            structuralFeatureDataRow["Documentation"] = structuralFeature.QueryRawDocumentation();
-
-                            dataTable.Rows.Add(structuralFeatureDataRow);
-                        }
-                    }
-                }
-
-                classWorksheet.Cell(1, 1).InsertTable(dataTable, "Classes", true);
-
-                try {
-                    classWorksheet.Rows().AdjustToContents();
-                    classWorksheet.Columns().AdjustToContents();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Problem loading fonts {0}", e);
-                }
-
-                var enumWorksheet = workbook.Worksheets.Add("Enums");
-
-                this.logger.LogDebug("Add EEnum reports");
-
-                dataTable = new DataTable();
-
-                dataTable.Columns.Add("Enum", typeof(string));
-                dataTable.Columns.Add("Literal", typeof(string));
-                dataTable.Columns.Add("Documentation", typeof(string));
-
-                foreach (var package in packages)
-                {
-                    foreach (var eEnum in package.EClassifiers.OfType<EEnum>().OrderBy(x => x.Name))
-                    {
-                        var enumDataRow = dataTable.NewRow();
-                        enumDataRow["Enum"] = eEnum.Name;
-                        enumDataRow["Literal"] = "--";
-                        enumDataRow["Documentation"] = eEnum.QueryRawDocumentation();
-                        dataTable.Rows.Add(enumDataRow);
-
-                        foreach (var eEnumLiteral in eEnum.ELiterals)
-                        {
-                            var eEnumLiteralRow = dataTable.NewRow();
-                            eEnumLiteralRow["Enum"] = eEnum.Name;
-                            eEnumLiteralRow["Literal"] = eEnumLiteral.Name;
-                            eEnumLiteralRow["Documentation"] = eEnumLiteral.QueryRawDocumentation();
-                            dataTable.Rows.Add(eEnumLiteralRow);
-                        }
-                    }
-                }
-
-                enumWorksheet.Cell(1, 1).InsertTable(dataTable, "Enums", true);
-
-                try
-                {
-                    enumWorksheet.Rows().AdjustToContents();
-                    enumWorksheet.Columns().AdjustToContents();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Problem loading fonts {0}", e);
-
-                    this.logger.LogWarning("Problem loading fonts when adjusting to contents {0}", e);
-                }
+                this.AddEDataTypeSheet(workbook, packages);
 
                 this.logger.LogInformation("Saving report file to {0}", outputPath.FullName);
 
@@ -194,6 +97,173 @@ namespace ECoreNetto.Extensions
             }
 
             this.logger.LogInformation("Generated Excel report tables in {0} [ms]", sw.ElapsedMilliseconds);
+        }
+
+        /// <summary>
+        /// Adds a worksheet to the workbook with EClass data
+        /// </summary>
+        /// <param name="workbook">
+        /// The target <see cref="XLWorkbook"/> to which the EClass worksheet is added
+        /// </param>
+        /// <param name="packages">
+        /// The <see cref="EPackage"/>s that contain the EClass instances to report on
+        /// </param>
+        private void AddClassSheet(XLWorkbook workbook, IEnumerable<EPackage> packages)
+        {
+            this.logger.LogDebug("Add EClass reports");
+
+            var classWorksheet = workbook.Worksheets.Add("EClass");
+
+            var dataTable = new DataTable();
+
+            dataTable.Columns.Add("Class", typeof(string));
+            dataTable.Columns.Add("Feature", typeof(string));
+            dataTable.Columns.Add("EType", typeof(string));
+            dataTable.Columns.Add("Multiplicity", typeof(string));
+            dataTable.Columns.Add("IsContainment", typeof(string));
+            dataTable.Columns.Add("Documentation", typeof(string));
+
+            foreach (var package in packages)
+            {
+                foreach (var eClass in package.EClassifiers.OfType<EClass>().OrderBy(x => x.Name))
+                {
+                    var classDataRow = dataTable.NewRow();
+                    classDataRow["Class"] = eClass.Name;
+                    classDataRow["Feature"] = "--";
+                    classDataRow["EType"] = "--";
+                    classDataRow["Multiplicity"] = "--";
+                    classDataRow["IsContainment"] = "--";
+                    classDataRow["Documentation"] = eClass.QueryRawDocumentation();
+                    dataTable.Rows.Add(classDataRow);
+
+                    foreach (var structuralFeature in eClass.EStructuralFeatures)
+                    {
+                        if (structuralFeature.Derived || structuralFeature.Transient)
+                        {
+                            continue;
+                        }
+
+                        var structuralFeatureDataRow = dataTable.NewRow();
+                        structuralFeatureDataRow["Class"] = eClass.Name;
+                        structuralFeatureDataRow["Feature"] = structuralFeature.Name;
+                        structuralFeatureDataRow["EType"] = structuralFeature.EType.Name;
+                        structuralFeatureDataRow["Multiplicity"] = $"{structuralFeature.LowerBound}:{structuralFeature.UpperBound}";
+                        structuralFeatureDataRow["IsContainment"] = structuralFeature.QueryIsContainment();
+                        structuralFeatureDataRow["Documentation"] = structuralFeature.QueryRawDocumentation();
+
+                        dataTable.Rows.Add(structuralFeatureDataRow);
+                    }
+                }
+            }
+
+            classWorksheet.Cell(1, 1).InsertTable(dataTable, "Classes", true);
+
+            this.FormatSheet(classWorksheet);
+        }
+
+        /// <summary>
+        /// Adds a worksheet to the workbook with EEnum data
+        /// </summary>
+        /// <param name="workbook">
+        /// The target <see cref="XLWorkbook"/> to which the EEnum worksheet is added
+        /// </param>
+        /// <param name="packages">
+        /// The <see cref="EPackage"/>s that contain the EEnum instances to report on
+        /// </param>
+        private void AddEnumSheet(XLWorkbook workbook, IEnumerable<EPackage> packages)
+        {
+            var enumWorksheet = workbook.Worksheets.Add("EEnum");
+
+            this.logger.LogDebug("Add EEnum reports");
+
+            var dataTable = new DataTable();
+
+            dataTable.Columns.Add("Enum", typeof(string));
+            dataTable.Columns.Add("Literal", typeof(string));
+            dataTable.Columns.Add("Documentation", typeof(string));
+
+            foreach (var package in packages)
+            {
+                foreach (var eEnum in package.EClassifiers.OfType<EEnum>().OrderBy(x => x.Name))
+                {
+                    var enumDataRow = dataTable.NewRow();
+                    enumDataRow["Enum"] = eEnum.Name;
+                    enumDataRow["Literal"] = "--";
+                    enumDataRow["Documentation"] = eEnum.QueryRawDocumentation();
+                    dataTable.Rows.Add(enumDataRow);
+
+                    foreach (var eEnumLiteral in eEnum.ELiterals)
+                    {
+                        var eEnumLiteralRow = dataTable.NewRow();
+                        eEnumLiteralRow["Enum"] = eEnum.Name;
+                        eEnumLiteralRow["Literal"] = eEnumLiteral.Name;
+                        eEnumLiteralRow["Documentation"] = eEnumLiteral.QueryRawDocumentation();
+                        dataTable.Rows.Add(eEnumLiteralRow);
+                    }
+                }
+            }
+
+            enumWorksheet.Cell(1, 1).InsertTable(dataTable, "Enums", true);
+
+            this.FormatSheet(enumWorksheet);
+        }
+
+        /// <summary>
+        /// Adds a worksheet to the workbook with EDataType data
+        /// </summary>
+        /// <param name="workbook">
+        /// The target <see cref="XLWorkbook"/> to which the EDataType worksheet is added
+        /// </param>
+        /// <param name="packages">
+        /// The <see cref="EPackage"/>s that contain the EDataType instances to report on
+        /// </param>
+        private void AddEDataTypeSheet(XLWorkbook workbook, IEnumerable<EPackage> packages)
+        {
+            var dataTypeWorksheet = workbook.Worksheets.Add("EDataType");
+
+            this.logger.LogDebug("Add EDataType reports");
+
+            var dataTable = new DataTable();
+
+            dataTable.Columns.Add("DataType", typeof(string));
+            dataTable.Columns.Add("Documentation", typeof(string));
+
+            foreach (var package in packages)
+            {
+                foreach (var eDataType in package.EClassifiers
+                             .OfType<EDataType>()
+                             .Where(x => !(x is EEnum))
+                             .OrderBy(x => x.Name))
+                {
+                    var dataTypeRow = dataTable.NewRow();
+                    dataTypeRow["DataType"] = eDataType.Name;
+                    dataTypeRow["Documentation"] = eDataType.QueryRawDocumentation();
+                    dataTable.Rows.Add(dataTypeRow);
+                }
+            }
+
+            dataTypeWorksheet.Cell(1, 1).InsertTable(dataTable, "DataTypes", true);
+
+            this.FormatSheet(dataTypeWorksheet);
+        }
+
+        /// <summary>
+        /// Format the provided sheet
+        /// </summary>
+        /// <param name="worksheet">
+        /// The <see cref="IXLWorksheet"/> that is to be formatted
+        /// </param>
+        private void FormatSheet(IXLWorksheet worksheet)
+        {
+            try
+            {
+                worksheet.Rows().AdjustToContents();
+                worksheet.Columns().AdjustToContents();
+            }
+            catch (Exception e)
+            {
+                this.logger.LogWarning("Problem loading fonts when adjusting to contents {0}", e);
+            }
         }
 
         /// <summary>
