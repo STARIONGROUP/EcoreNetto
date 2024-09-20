@@ -36,6 +36,7 @@
     <ItemGroup>
       <None Remove="Resources\ascii-art.txt" />
       <None Remove="Templates\ecore-to-html-docs.hbs" />
+      <None Remove="Templates\ecore-to-markdown-docs.hbs" />
     </ItemGroup>
 
     <ItemGroup>
@@ -43,6 +44,9 @@
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
         <EmbeddedResource Include="Templates\ecore-to-html-docs.hbs">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Templates\ecore-to-markdown-docs.hbs">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
     </ItemGroup>

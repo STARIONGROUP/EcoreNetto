@@ -65,10 +65,12 @@ namespace ECoreNetto.Tools
                             services.AddSingleton<IXlReportGenerator, XlReportGenerator>();
                             services.AddSingleton<IModelInspector, ModelInspector>();
                             services.AddSingleton<IHtmlReportGenerator, HtmlReportGenerator>();
+                            services.AddSingleton<IMarkdownReportGenerator, MarkdownReportGenerator>();
                         })
                         .UseCommandHandler<XlReportCommand, XlReportCommand.Handler>()
                         .UseCommandHandler<ModelInspectionCommand, ModelInspectionCommand.Handler>()
                         .UseCommandHandler<HtmlReportCommand, HtmlReportCommand.Handler>()
+                        .UseCommandHandler<MarkdownReportCommand, MarkdownReportCommand.Handler>()
                     )
                 .UseDefaults()
 
@@ -85,16 +87,7 @@ namespace ECoreNetto.Tools
         /// </returns>
         private static CommandLineBuilder BuildCommandLine()
         {
-            var root = new RootCommand("ECoreNetto Tools");
-
-            var reportCommand = new XlReportCommand();
-            root.AddCommand(reportCommand);
-
-            var modelInspectionCommand = new ModelInspectionCommand();
-            root.AddCommand(modelInspectionCommand);
-
-            var htmlReportCommand = new HtmlReportCommand();
-            root.AddCommand(htmlReportCommand);
+            var root = CreateCommandChain();
 
             return new CommandLineBuilder(root)
                 .UseHelp(ctx =>
@@ -110,6 +103,31 @@ namespace ECoreNetto.Tools
                                 }
                             ));
                 });
+        }
+
+        /// <summary>
+        /// Creates the root and sub commands
+        /// </summary>
+        /// <returns>
+        /// returns an instance of <see cref="RootCommand"/>
+        /// </returns>
+        private static RootCommand CreateCommandChain()
+        {
+            var root = new RootCommand("ECoreNetto Tools");
+
+            var reportCommand = new XlReportCommand();
+            root.AddCommand(reportCommand);
+
+            var modelInspectionCommand = new ModelInspectionCommand();
+            root.AddCommand(modelInspectionCommand);
+
+            var htmlReportCommand = new HtmlReportCommand();
+            root.AddCommand(htmlReportCommand);
+
+            var markdownReportCommand = new MarkdownReportCommand();
+            root.AddCommand(markdownReportCommand);
+
+            return root;
         }
     }
 }

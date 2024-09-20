@@ -1,0 +1,60 @@
+﻿<!--
+    This Markdown Report is generated using the ECoreNetto.Tools application
+    The ECoreNetto.Tools application is copyright of Starion Group S.A.
+    Find it at: https://github.com/STARIONGROUP/EcoreNetto
+    Find it at: https://www.nuget.org/packages/ECoreNetto.Tools 
+-->
+
+## Model Information
+
+<div style="border: 1px solid orange; padding: 10px; margin-bottom: 20px;">
+
+**Name:** {{ this.RootPackage.Name }}  
+**Namespace URI:** {{ this.RootPackage.NsUri }}  
+**Namespace Prefix:** {{ this.RootPackage.NsPrefix }}  
+</div>
+
+## Data Types
+
+{{#each this.DataTypes as | datatype |}}
+<div style="border: 1px solid orange; padding: 10px; margin-bottom: 20px;">
+
+**Name:** {{datatype.Name}}  
+**Definition:** {{ #RawDocumentation datatype }}  
+</div>
+{{/each}}
+
+## Enumeration Types
+
+{{#each this.Enums as | enum |}}
+
+<div style="border: 1px solid orange; padding: 10px; margin-bottom: 20px;">
+
+**Name:** {{enum.Name}}  
+**Definition:** {{ #RawDocumentation enum }}  
+
+| Name  | Description |
+| ----- | ----------- |
+{{#each enum.ELiterals as | enumerationLiteral |}}
+| {{enumerationLiteral.Name}} | {{ #RawDocumentation enumerationLiteral }} |
+{{/each}}
+</div>
+{{/each}}
+
+## Classes
+
+{{#each this.Classes as | eClass |}}
+<div style="border: 1px solid orange; padding: 10px; margin-bottom: 20px;">
+
+**Name:** {{eClass.Name}}  
+**Definition:** {{ #RawDocumentation eClass }}  
+**Is Abstract:** {{#if this.Abstract}} TRUE {{else}} FALSE {{/if}}  
+**Generalizations:** {{#each eClass.ESuperTypes as | superClass |}} {{superClass.Name}} {{/each}}  
+
+| Name                       | Type | IsDerived | IsComposite |  Default | Description | Inheritance |
+| -------------------------- | ---- | --------- | ----------- | -------- | ----------- | ----------- |
+{{#each this.AllEStructuralFeaturesOrderByName as | structuralFeature |}}
+{{ structuralFeature.Name }} | {{StructuralFeature.QueryTypeName structuralFeature}} [{{ structuralFeature.LowerBound }}..{{ structuralFeature.UpperBound }}] | {{#if this.Derived}} TRUE {{else}} FALSE {{/if}} | {{#if (StructuralFeature.QueryIsContainment structuralFeature) }} TRUE {{else}} FALSE {{/if}} | {{ structuralFeature.DefaultValueLiteral }} | {{ #RawDocumentation structuralFeature }} | {{structuralFeature.EContainingClass.Name}} | 
+{{/each}}
+</div>
+{{/each}}

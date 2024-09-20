@@ -1,5 +1,5 @@
 ﻿// -------------------------------------------------------------------------------------------------
-// <copyright file="HtmlReportGeneratorTestFixture.cs" company="Starion Group S.A">
+// <copyright file="MarkdownReportGeneratorTestFixture.cs" company="Starion Group S.A">
 // 
 //   Copyright 2017-2024 Starion Group S.A.
 // 
@@ -21,19 +21,19 @@
 namespace ECoreNetto.Tools.Tests.Generators
 {
     using Microsoft.Extensions.Logging;
-
+    
     using NUnit.Framework;
     using Serilog;
     using System.IO;
     using Tools.Generators;
 
     /// <summary>
-    /// Suite of tests for the <see cref="HtmlReportGenerator"/> class.
+    /// Suite of tests for the <see cref="MarkdownReportGenerator"/> class.
     /// </summary>
     [TestFixture]
-    public class HtmlReportGeneratorTestFixture
+    public class MarkdownReportGeneratorTestFixture
     {
-        private HtmlReportGenerator htmlReportGenerator;
+        private MarkdownReportGenerator markdownReportGenerator;
 
         private ILoggerFactory? loggerFactory;
 
@@ -54,7 +54,7 @@ namespace ECoreNetto.Tools.Tests.Generators
         [SetUp]
         public void SetUp()
         {
-            this.htmlReportGenerator = new HtmlReportGenerator(this.loggerFactory);
+            this.markdownReportGenerator = new MarkdownReportGenerator(this.loggerFactory);
         }
 
         [Test]
@@ -65,9 +65,9 @@ namespace ECoreNetto.Tools.Tests.Generators
         {
             var modelFileInfo = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", $"{model}.ecore"));
 
-            var reportFileInfo = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, $"html-report.{model}.html"));
+            var reportFileInfo = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, $"markdown-report.{model}.md"));
 
-            Assert.That(() => this.htmlReportGenerator.GenerateReport(modelFileInfo, reportFileInfo), Throws.Nothing);
+            Assert.That(() => this.markdownReportGenerator.GenerateReport(modelFileInfo, reportFileInfo), Throws.Nothing);
         }
     }
 }
