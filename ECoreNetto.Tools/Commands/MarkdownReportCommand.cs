@@ -39,7 +39,7 @@ namespace ECoreNetto.Tools.Commands
             var reportFileOption = new Option<FileInfo>(
                 name: "--output-report",
                 description: "The path to the markdown report file. Supported extensions are '.md'",
-                getDefaultValue: () => new FileInfo("md-report.html"));
+                getDefaultValue: () => new FileInfo("md-report.md"));
             reportFileOption.AddAlias("-o");
             reportFileOption.IsRequired = true;
             this.AddOption(reportFileOption);
