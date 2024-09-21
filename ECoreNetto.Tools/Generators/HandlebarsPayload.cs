@@ -1,5 +1,5 @@
 ﻿// -------------------------------------------------------------------------------------------------
-// <copyright file="GeneratorPayload.cs" company="Starion Group S.A">
+// <copyright file="HandlebarsPayload.cs" company="Starion Group S.A">
 // 
 //   Copyright 2017-2024 Starion Group S.A.
 // 
@@ -29,10 +29,10 @@ namespace ECoreNetto.Tools.Generators
     /// represents the payload for the generators that require all <see cref="EEnum"/>,
     /// <see cref="EDataType"/> and <see cref="EClass"/>
     /// </summary>
-    public class GeneratorPayload
+    public class HandlebarsPayload
     {
         /// <summary>
-        /// initializes an instance of the <see cref="GeneratorPayload"/> class.
+        /// initializes an instance of the <see cref="HandlebarsPayload"/> class.
         /// </summary>
         /// <param name="rootPackage">
         /// The root <see cref="EPackage"/> of the ECore model
@@ -46,7 +46,7 @@ namespace ECoreNetto.Tools.Generators
         /// <param name="classes">
         /// the <see cref="EClass"/>es in the ECore model
         /// </param>
-        public GeneratorPayload(EPackage rootPackage, IEnumerable<EEnum> enums, IEnumerable<EDataType> dataTypes, IEnumerable<EClass> classes)
+        public HandlebarsPayload(EPackage rootPackage, IEnumerable<EEnum> enums, IEnumerable<EDataType> dataTypes, IEnumerable<EClass> classes)
         {
             this.RootPackage = rootPackage;
             this.Enums = enums.ToArray();

@@ -1,5 +1,5 @@
 ﻿// -------------------------------------------------------------------------------------------------
-// <copyright file="IHtmlReportGenerator.cs" company="Starion Group S.A">
+// <copyright file="IXlReportGenerator.cs" company="Starion Group S.A">
 // 
 //   Copyright 2017-2024 Starion Group S.A.
 // 
@@ -21,10 +21,10 @@
 namespace ECoreNetto.Tools.Generators
 {
     /// <summary>
-    /// The purpose of the <see cref="IHtmlReportGenerator"/> is to generate an HTML report of an
+    /// The purpose of the <see cref="IXlReportGenerator"/> is to generate reports of an
     /// Ecore Model
     /// </summary>
-    public interface IHtmlReportGenerator : IReportGenerator
+    public interface IXlReportGenerator : IReportGenerator
     {
     }
 }

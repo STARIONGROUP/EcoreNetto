@@ -18,14 +18,17 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
-namespace ECoreNetto.Extensions.Tests
+namespace ECoreNetto.Tools.Tests.Generators
 {
     using System;
     using System.IO;
-    using ECoreNetto.Extensions;
+    
     using ECoreNetto.Resource;
+    using ECoreNetto.Tools.Generators;
     using Microsoft.Extensions.Logging;
+
     using NUnit.Framework;
+
     using Serilog;
 
     [TestFixture]

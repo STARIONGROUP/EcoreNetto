@@ -18,14 +18,15 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
-namespace ECoreNetto.Extensions
+namespace ECoreNetto.Tools.Generators
 {
     using System.IO;
+
+    using ECoreNetto.Resource;
 
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Logging.Abstractions;
 
-    using ECoreNetto.Resource;
     using System;
 
     /// <summary>

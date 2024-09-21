@@ -18,15 +18,18 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
-namespace ECoreNetto.Extensions
+namespace ECoreNetto.Tools.Generators
 {
     using System.Collections.Generic;
+    using System.Linq;
+
+    using ECoreNetto.Extensions;
+    using ECoreNetto.Processor.Resources;
 
     using HandlebarsDotNet;
     using HandlebarsDotNet.Helpers;
 
     using Microsoft.Extensions.Logging;
-    using Processor.Resources;
 
     /// <summary>
     /// Abstract super class from which all <see cref="HandlebarsDotNet"/> generators
@@ -52,8 +55,8 @@ namespace ECoreNetto.Extensions
             this.Handlebars = HandlebarsDotNet.Handlebars.CreateSharedEnvironment();
             HandlebarsHelpers.Register(Handlebars);
 
-            RegisterHelpers();
-            RegisterTemplates();
+            this.RegisterHelpers();
+            this.RegisterTemplates();
         }
 
         /// <summary>
@@ -64,7 +67,13 @@ namespace ECoreNetto.Extensions
         /// <summary>
         /// Register the custom helpers
         /// </summary>
-        protected abstract void RegisterHelpers();
+        protected virtual void RegisterHelpers()
+        {
+            ECoreNetto.HandleBars.StringHelper.RegisterStringHelper(this.Handlebars);
+            ECoreNetto.HandleBars.StructuralFeatureHelper.RegisterStructuralFeatureHelper(this.Handlebars);
+            ECoreNetto.HandleBars.GeneralizationHelper.RegisterGeneralizationHelper(this.Handlebars);
+            ECoreNetto.HandleBars.DocumentationHelper.RegisteredDocumentationHelper(this.Handlebars);
+        }
 
         /// <summary>
         /// Register the code templates
@@ -85,7 +94,45 @@ namespace ECoreNetto.Extensions
 
             var compiledTemplate = Handlebars.Compile(template);
 
-            Templates.Add(name, compiledTemplate);
+            this.Templates.Add(name, compiledTemplate);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="HandlebarsPayload"/> based on the provided root <see cref="EPackage"/>
+        /// </summary>
+        /// <param name="rootPackage">
+        /// the subject root <see cref="EPackage"/>
+        /// </param>
+        /// <returns>
+        /// an instance of <see cref="HandlebarsPayload"/>
+        /// </returns>
+        protected static HandlebarsPayload CreateHandlebarsPayload(EPackage rootPackage)
+        {
+            var packages = rootPackage.QueryPackages();
+
+            var enums = new List<EEnum>();
+            var dataTypes = new List<EDataType>();
+            var eClasses = new List<EClass>();
+
+            foreach (var package in packages)
+            {
+                enums.AddRange(package.EClassifiers.OfType<EEnum>());
+
+                dataTypes.AddRange(package.EClassifiers
+                    .OfType<EDataType>()
+                    .Where(x => !(x is EEnum))
+                    .OrderBy(x => x.Name));
+
+                eClasses.AddRange(package.EClassifiers.OfType<EClass>());
+            }
+
+            var orderedEnums = enums.OrderBy(x => x.Name);
+            var orderedDataTypes = dataTypes.OrderBy(x => x.Name);
+            var orderedClasses = eClasses.OrderBy(x => x.Name);
+
+            var payload = new HandlebarsPayload(rootPackage, orderedEnums, orderedDataTypes, orderedClasses);
+
+            return payload;
         }
     }
 }

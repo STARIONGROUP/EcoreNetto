@@ -1,5 +1,5 @@
 ﻿// -------------------------------------------------------------------------------------------------
-// <copyright file="ReportGeneratorTestFixture.cs" company="Starion Group S.A">
+// <copyright file="XlReportGeneratorTestFixture.cs" company="Starion Group S.A">
 // 
 //   Copyright 2017-2024 Starion Group S.A.
 // 
@@ -18,7 +18,7 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
-namespace ECoreNetto.Extensions.Tests
+namespace ECoreNetto.Tools.Tests.Generators
 {
     using System.IO;
     
@@ -26,12 +26,13 @@ namespace ECoreNetto.Extensions.Tests
     using Microsoft.Extensions.Logging;
     using NUnit.Framework;
     using Serilog;
+    using Tools.Generators;
 
     /// <summary>
-    /// Suite of tests for the <see cref="ReportGeneratorTestFixture"/> class
+    /// Suite of tests for the <see cref="XlReportGenerator"/> class
     /// </summary>
     [TestFixture]
-    public class ReportGeneratorTestFixture
+    public class XlReportGeneratorTestFixture
     {
         private FileInfo modelFileInfo;
 

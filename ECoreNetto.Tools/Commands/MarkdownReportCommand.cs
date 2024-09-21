@@ -56,21 +56,14 @@ namespace ECoreNetto.Tools.Commands
         public new class Handler : ReportHandler, ICommandHandler
         {
             /// <summary>
-            /// The (injected) <see cref="IMarkdownReportGenerator"/> that is used to generate the
-            /// markdown report
-            /// </summary>
-            private readonly IMarkdownReportGenerator markdownReportGenerator;
-
-            /// <summary>
             /// Initializes a nwe instance of the <see cref="Handler"/> class.
             /// </summary>
             /// <param name="markdownReportGenerator">
             /// The (injected) <see cref="IMarkdownReportGenerator"/> that is used to generate the
             /// excel report
             /// </param>
-            public Handler(IMarkdownReportGenerator markdownReportGenerator)
+            public Handler(IMarkdownReportGenerator markdownReportGenerator) : base(markdownReportGenerator)
             {
-                this.markdownReportGenerator = markdownReportGenerator ?? throw new ArgumentNullException(nameof(markdownReportGenerator));
             }
 
             /// <summary>
@@ -89,7 +82,7 @@ namespace ECoreNetto.Tools.Commands
                     return -1;
                 }
 
-                var isValidExtension = this.markdownReportGenerator.IsValidReportExtension(this.OutputReport);
+                var isValidExtension = this.ReportGenerator.IsValidReportExtension(this.OutputReport);
                 if (!isValidExtension.Item1)
                 {
                     AnsiConsole.WriteLine("");
@@ -112,13 +105,13 @@ namespace ECoreNetto.Tools.Commands
 
                             Thread.Sleep(1500);
 
-                            this.markdownReportGenerator.GenerateReport(this.InputModel, this.OutputReport);
+                            this.ReportGenerator.GenerateReport(this.InputModel, this.OutputReport);
 
                             AnsiConsole.MarkupLine(
                                 $"[grey]LOG:[/] Ecore markdown report generated at [bold]{this.OutputReport.FullName}[/]");
                             Thread.Sleep(1500);
 
-                            this.ExecuteAutOpen(ctx);
+                            this.ExecuteAutoOpen(ctx);
 
                             ctx.Status("[green]Dropping to impulse speed[/]");
                             Thread.Sleep(1500);

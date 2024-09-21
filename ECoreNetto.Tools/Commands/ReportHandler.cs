@@ -27,6 +27,7 @@ namespace ECoreNetto.Tools.Commands
     using System.Threading;
 
     using ECoreNetto.Processor.Resources;
+    using ECoreNetto.Tools.Generators;
 
     using Spectre.Console;
 
@@ -35,6 +36,22 @@ namespace ECoreNetto.Tools.Commands
     /// </summary>
     public abstract class ReportHandler
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReportHandler"/>
+        /// </summary>
+        /// <param name="reportGenerator">
+        /// The <see cref="IReportGenerator"/> used to generate an ECore report
+        /// </param>
+        protected ReportHandler(IReportGenerator reportGenerator)
+        {
+            this.ReportGenerator = reportGenerator ?? throw new ArgumentNullException(nameof(reportGenerator));
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="IReportGenerator"/> used to generate an ECore report
+        /// </summary>
+        public IReportGenerator ReportGenerator { get; private set; }
+
         /// <summary>
         /// Gets or sets the value indicating whether the logo should be shown or not
         /// </summary>
@@ -101,7 +118,7 @@ namespace ECoreNetto.Tools.Commands
         /// <param name="ctx">
         /// Spectre Console <see cref="StatusContext"/>
         /// </param>
-        protected void ExecuteAutOpen(StatusContext ctx)
+        protected void ExecuteAutoOpen(StatusContext ctx)
         {
             if (this.AutoOpenReport)
             {

@@ -25,7 +25,6 @@ namespace ECoreNetto.Tools.Tests.Commands
     using System.IO;
     using System.Threading.Tasks;
 
-    using ECoreNetto.Extensions;
     using ECoreNetto.Tools.Commands;
 
     using Moq;

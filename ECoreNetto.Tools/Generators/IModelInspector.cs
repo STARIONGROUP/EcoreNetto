@@ -18,17 +18,13 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
-namespace ECoreNetto.Extensions
+namespace ECoreNetto.Tools.Generators
 {
-    using System.IO;
-
-    using System;
-
     /// <summary>
-    /// The purpose of the <see cref="ModelInspector"/> is to iterate through the model and report on the various kinds of
+    /// The purpose of the <see cref="IModelInspector"/> is to iterate through the model and report on the various kinds of
     /// patters that exist in the ECore model that need to be taken into account for code-generation
     /// </summary>
-    public interface IModelInspector
+    public interface IModelInspector : IReportGenerator
     {
         /// <summary>
         /// Inspect the content of the provided <see cref="EPackage"/> and returns the variation 
@@ -75,28 +71,5 @@ namespace ECoreNetto.Extensions
         /// returns a report of the classes and properties that do not contain any documentation
         /// </returns>
         public string AnalyzeDocumentation(EPackage package, bool recursive = false);
-
-        /// <summary>
-        /// Verifies whether the extension of the <paramref name="outputPath"/> is valid or not
-        /// </summary>
-        /// <param name="outputPath">
-        /// The subject <see cref="FileInfo"/> to check
-        /// </param>
-        /// <returns>
-        /// A Tuple of bool and string, where the string contains a description of the verification.
-        /// Either stating that the extension is valid or not.
-        /// </returns>
-        public Tuple<bool, string> IsValidReportExtension(FileInfo outputPath);
-
-        /// <summary>
-        /// Generates a text file that contains an inspection report.
-        /// </summary>
-        /// <param name="modelPath">
-        /// the path to the Ecore model of which the report is to be generated.
-        /// </param>
-        /// <param name="outputPath">
-        /// the path, including filename, where the output is to be generated.
-        /// </param>
-        public void GenerateReport(FileInfo modelPath, FileInfo outputPath);
     }
 }

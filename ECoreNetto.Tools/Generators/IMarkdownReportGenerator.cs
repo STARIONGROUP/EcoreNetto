@@ -20,37 +20,11 @@
 
 namespace ECoreNetto.Tools.Generators
 {
-    using System.IO;
-
-    using System;
-
     /// <summary>
     /// The purpose of the <see cref="IMarkdownReportGenerator"/> is to generate a Markdown report of an
     /// Ecore Model
     /// </summary>
-    public interface IMarkdownReportGenerator
+    public interface IMarkdownReportGenerator : IReportGenerator
     {
-        /// <summary>
-        /// Generates a Markdown document with a table that contains all classes, attributes and their documentation
-        /// </summary>
-        /// <param name="modelPath">
-        /// the path to the Ecore model of which the report is to be generated.
-        /// </param>
-        /// <param name="outputPath">
-        /// the path, including filename, where the output is to be generated.
-        /// </param>
-        public void GenerateReport(FileInfo modelPath, FileInfo outputPath);
-
-        /// <summary>
-        /// Verifies whether the extension of the <paramref name="outputPath"/> is valid or not
-        /// </summary>
-        /// <param name="outputPath">
-        /// The subject <see cref="FileInfo"/> to check
-        /// </param>
-        /// <returns>
-        /// A Tuple of bool and string, where the string contains a description of the verification.
-        /// Either stating that the extension is valid or not.
-        /// </returns>
-        public Tuple<bool, string> IsValidReportExtension(FileInfo outputPath);
     }
 }

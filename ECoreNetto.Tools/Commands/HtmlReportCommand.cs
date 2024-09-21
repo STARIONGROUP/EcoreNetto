@@ -27,8 +27,8 @@ namespace ECoreNetto.Tools.Commands
     using System.Threading;
     using System.Threading.Tasks;
 
-    using ECoreNetto.Extensions;
-    using Generators;
+    using ECoreNetto.Tools.Generators;
+
     using Spectre.Console;
 
     /// <summary>
@@ -56,21 +56,14 @@ namespace ECoreNetto.Tools.Commands
         public new class Handler : ReportHandler, ICommandHandler
         {
             /// <summary>
-            /// The (injected) <see cref="IXlReportGenerator"/> that is used to generate the
-            /// excel report
-            /// </summary>
-            private readonly IHtmlReportGenerator htmlReportGenerator;
-
-            /// <summary>
             /// Initializes a nwe instance of the <see cref="Handler"/> class.
             /// </summary>
             /// <param name="htmlReportGenerator">
             /// The (injected) <see cref="IHtmlReportGenerator"/> that is used to generate the
             /// excel report
             /// </param>
-            public Handler(IHtmlReportGenerator htmlReportGenerator)
+            public Handler(IHtmlReportGenerator htmlReportGenerator) : base(htmlReportGenerator)
             {
-                this.htmlReportGenerator = htmlReportGenerator ?? throw new ArgumentNullException(nameof(htmlReportGenerator));
             }
 
             /// <summary>
@@ -89,7 +82,7 @@ namespace ECoreNetto.Tools.Commands
                     return -1;
                 }
 
-                var isValidExtension = this.htmlReportGenerator.IsValidReportExtension(this.OutputReport);
+                var isValidExtension = this.ReportGenerator.IsValidReportExtension(this.OutputReport);
                 if (!isValidExtension.Item1)
                 {
                     AnsiConsole.WriteLine("");
@@ -112,13 +105,13 @@ namespace ECoreNetto.Tools.Commands
 
                             Thread.Sleep(1500);
 
-                            this.htmlReportGenerator.GenerateReport(this.InputModel, this.OutputReport);
+                            this.ReportGenerator.GenerateReport(this.InputModel, this.OutputReport);
 
                             AnsiConsole.MarkupLine(
                                 $"[grey]LOG:[/] Ecore html report generated at [bold]{this.OutputReport.FullName}[/]");
                             Thread.Sleep(1500);
 
-                            this.ExecuteAutOpen(ctx);
+                            this.ExecuteAutoOpen(ctx);
 
                             ctx.Status("[green]Dropping to impulse speed[/]");
                             Thread.Sleep(1500);

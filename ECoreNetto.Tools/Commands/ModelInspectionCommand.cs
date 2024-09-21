@@ -27,8 +27,7 @@ namespace ECoreNetto.Tools.Commands
     using System.Threading;
     using System.Threading.Tasks;
 
-    using ECoreNetto.Extensions;
-    using ECoreNetto.Processor.Resources;
+    using ECoreNetto.Tools.Generators;
 
     using Spectre.Console;
 
@@ -58,21 +57,14 @@ namespace ECoreNetto.Tools.Commands
         public new class Handler : ReportHandler, ICommandHandler
         {
             /// <summary>
-            /// The (injected) <see cref="IXlReportGenerator"/> that is used to generate the
-            /// excel report
-            /// </summary>
-            private readonly IModelInspector modelInspector;
-
-            /// <summary>
             /// Initializes a nwe instance of the <see cref="Handler"/> class.
             /// </summary>
             /// <param name="modelInspector">
             /// The (injected) <see cref="IModelInspector"/> that is used to generate the
             /// inspection report
             /// </param>
-            public Handler(IModelInspector modelInspector)
+            public Handler(IModelInspector modelInspector) : base(modelInspector)
             {
-                this.modelInspector = modelInspector ?? throw new ArgumentNullException(nameof(modelInspector));
             }
 
             /// <summary>
@@ -91,7 +83,7 @@ namespace ECoreNetto.Tools.Commands
                     return -1;
                 }
 
-                var isValidExtension = this.modelInspector.IsValidReportExtension(this.OutputReport);
+                var isValidExtension = this.ReportGenerator.IsValidReportExtension(this.OutputReport);
                 if (!isValidExtension.Item1)
                 {
                     AnsiConsole.WriteLine("");
@@ -114,12 +106,12 @@ namespace ECoreNetto.Tools.Commands
 
                             Thread.Sleep(1500);
 
-                            this.modelInspector.GenerateReport(this.InputModel, this.OutputReport);
+                            this.ReportGenerator.GenerateReport(this.InputModel, this.OutputReport);
 
                             AnsiConsole.MarkupLine($"[grey]LOG:[/] Ecore inspection report generated at [bold]{this.OutputReport.FullName}[/]");
                             Thread.Sleep(1500);
 
-                            this.ExecuteAutOpen(ctx);
+                            this.ExecuteAutoOpen(ctx);
 
                             ctx.Status("[green]Dropping to impulse speed[/]");
                             Thread.Sleep(1500);
