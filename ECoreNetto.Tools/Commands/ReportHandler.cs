@@ -27,9 +27,10 @@ namespace ECoreNetto.Tools.Commands
     using System.Threading;
 
     using ECoreNetto.Processor.Resources;
-    using ECoreNetto.Tools.Generators;
+    using ECoreNetto.Reporting.Generators;
 
     using Spectre.Console;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Abstract super class from which all Report <see cref="ICommandHandler"/>s need to derive
@@ -85,6 +86,86 @@ namespace ECoreNetto.Tools.Commands
         public int Invoke(InvocationContext context)
         {
             throw new NotSupportedException("Please use InvokeAsync");
+        }
+
+        /// <summary>
+        /// Asynchronously invokes the <see cref="ICommandHandler"/>
+        /// </summary>
+        /// <param name="context">
+        /// The <see cref="InvocationContext"/> 
+        /// </param>
+        /// <returns>
+        /// 0 when successful, another if not
+        /// </returns>
+        public async Task<int> InvokeAsync(InvocationContext context)
+        {
+            if (!this.InputValidation())
+            {
+                return -1;
+            }
+
+            var isValidExtension = this.ReportGenerator.IsValidReportExtension(this.OutputReport);
+            if (!isValidExtension.Item1)
+            {
+                AnsiConsole.WriteLine("");
+                AnsiConsole.MarkupLine($"[red] {isValidExtension.Item2} [/]");
+                AnsiConsole.MarkupLine($"[purple]{this.InputModel.FullName}[/]");
+                AnsiConsole.WriteLine("");
+                return -1;
+            }
+
+            try
+            {
+                await AnsiConsole.Status()
+                    .AutoRefresh(true)
+                    .SpinnerStyle(Style.Parse("green bold"))
+                    .Start($"Preparing Warp Engines for {this.ReportGenerator.QueryReportType()} reporting...", ctx =>
+                    {
+                        Thread.Sleep(1500);
+
+                        ctx.Status($"Generating Ecore Model report at Warp 11, Captain..., SLOW DOWN!");
+
+                        Thread.Sleep(1500);
+
+                        this.ReportGenerator.GenerateReport(this.InputModel, this.OutputReport);
+
+                        AnsiConsole.MarkupLine(
+                            $"[grey]LOG:[/] Ecore {this.ReportGenerator.QueryReportType()} report generated at [bold]{this.OutputReport.FullName}[/]");
+                        Thread.Sleep(1500);
+
+                        this.ExecuteAutoOpen(ctx);
+
+                        ctx.Status("[green]Dropping to impulse speed[/]");
+                        Thread.Sleep(1500);
+
+                        return Task.FromResult(0);
+
+                    });
+            }
+            catch (System.IO.IOException ex)
+            {
+                AnsiConsole.WriteLine();
+                AnsiConsole.MarkupLine("[red]The report file could not be generated or opened. Make sure the file is not open and try again.[/]");
+                AnsiConsole.WriteLine();
+                AnsiConsole.MarkupLine($"[red]{ex.Message}[/]");
+                AnsiConsole.WriteLine();
+                AnsiConsole.MarkupLine("[green]Dropping to impulse speed[/]");
+                AnsiConsole.WriteLine();
+            }
+            catch (Exception ex)
+            {
+                AnsiConsole.WriteLine();
+                AnsiConsole.MarkupLine("[red]An exception occurred[/]");
+                AnsiConsole.MarkupLine("[green]Dropping to impulse speed[/]");
+                AnsiConsole.MarkupLine("[red]please report an issue at[/]");
+                AnsiConsole.MarkupLine("[link] https://github.com/STARIONGROUP/EcoreNetto/issues [/]");
+                AnsiConsole.WriteLine();
+                AnsiConsole.WriteException(ex);
+
+                return -1;
+            }
+
+            return 0;
         }
 
         /// <summary>

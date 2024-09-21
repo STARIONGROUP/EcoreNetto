@@ -6,7 +6,7 @@
         <Company>Starion Group S.A.</Company>
         <Copyright>Copyright © Starion Group S.A.</Copyright>
         <Title>ECoreNetto.Extensions</Title>
-        <Version>4.0.1</Version>
+        <Version>5.0.0</Version>
         <Description>Extension methods for the ECoreNetto library that are typically used to support code generation</Description>
         <PackageId>ECoreNetto.Extensions</PackageId>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>

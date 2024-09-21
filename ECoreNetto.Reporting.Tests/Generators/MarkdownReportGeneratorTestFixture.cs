@@ -20,13 +20,16 @@
 
 namespace ECoreNetto.Tools.Tests.Generators
 {
+    using System.IO;
+
+    using ECoreNetto.Reporting.Generators;
+
     using Microsoft.Extensions.Logging;
     
     using NUnit.Framework;
-    using Serilog;
-    using System.IO;
-    using Tools.Generators;
 
+    using Serilog;
+    
     /// <summary>
     /// Suite of tests for the <see cref="MarkdownReportGenerator"/> class.
     /// </summary>

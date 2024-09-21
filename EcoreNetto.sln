@@ -41,9 +41,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestData", "TestData", "{9F
 		TestData\wizardEcore.ecore = TestData\wizardEcore.ecore
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECoreNetto.Tools", "ECoreNetto.Tools\ECoreNetto.Tools.csproj", "{7F62EF37-4698-40F3-92C0-307A9A00D82C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECoreNetto.Tools", "ECoreNetto.Tools\ECoreNetto.Tools.csproj", "{7F62EF37-4698-40F3-92C0-307A9A00D82C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECoreNetto.Tools.Tests", "ECoreNetto.Tools.Tests\ECoreNetto.Tools.Tests.csproj", "{652B0FB8-3D26-4E0F-97F1-FEA5E03448AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECoreNetto.Tools.Tests", "ECoreNetto.Tools.Tests\ECoreNetto.Tools.Tests.csproj", "{652B0FB8-3D26-4E0F-97F1-FEA5E03448AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECoreNetto.Reporting", "ECoreNetto.Reporting\ECoreNetto.Reporting.csproj", "{AD0A62C0-981B-458B-9C52-B82623069094}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECoreNetto.Reporting.Tests", "ECoreNetto.Reporting.Tests\ECoreNetto.Reporting.Tests.csproj", "{994CA2B5-F5C2-4E81-88EE-3A6E35626A69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +87,14 @@ Global
 		{652B0FB8-3D26-4E0F-97F1-FEA5E03448AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{652B0FB8-3D26-4E0F-97F1-FEA5E03448AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{652B0FB8-3D26-4E0F-97F1-FEA5E03448AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD0A62C0-981B-458B-9C52-B82623069094}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD0A62C0-981B-458B-9C52-B82623069094}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD0A62C0-981B-458B-9C52-B82623069094}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD0A62C0-981B-458B-9C52-B82623069094}.Release|Any CPU.Build.0 = Release|Any CPU
+		{994CA2B5-F5C2-4E81-88EE-3A6E35626A69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{994CA2B5-F5C2-4E81-88EE-3A6E35626A69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{994CA2B5-F5C2-4E81-88EE-3A6E35626A69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{994CA2B5-F5C2-4E81-88EE-3A6E35626A69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

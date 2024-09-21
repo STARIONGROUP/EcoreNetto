@@ -18,7 +18,7 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
-namespace ECoreNetto.Tools.Generators
+namespace ECoreNetto.Reporting.Payload
 {
     using System.Collections.Generic;
     using System.Linq;

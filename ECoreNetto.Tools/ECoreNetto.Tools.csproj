@@ -9,7 +9,7 @@
         <PackAsTool>true</PackAsTool>
         <PackageId>ECoreNetto.Tools</PackageId>
         <ToolCommandName>ecoretools</ToolCommandName>
-        <Version>4.1.0</Version>
+        <Version>5.0.0</Version>
         <ImplicitUsings>disable</ImplicitUsings>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageIcon>ecorenetto-Icon.png</PackageIcon>
@@ -35,19 +35,11 @@
 
     <ItemGroup>
       <None Remove="Resources\ascii-art.txt" />
-      <None Remove="Templates\ecore-to-html-docs.hbs" />
-      <None Remove="Templates\ecore-to-markdown-docs.hbs" />
     </ItemGroup>
 
     <ItemGroup>
         <EmbeddedResource Include="Resources\ascii-art.txt">
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>
-        <EmbeddedResource Include="Templates\ecore-to-html-docs.hbs">
-          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>
-        <EmbeddedResource Include="Templates\ecore-to-markdown-docs.hbs">
-          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
     </ItemGroup>
 
@@ -59,13 +51,16 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ECoreNetto.Extensions\ECoreNetto.Extensions.csproj" />
-      <ProjectReference Include="..\ECoreNetto.HandleBars\ECoreNetto.HandleBars.csproj" />
+        <None Include="..\ecorenetto-Icon.png" Pack="true" PackagePath="" />
+        <None Include="..\README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="..\ecorenetto-Icon.png" Pack="true" PackagePath="" />
-        <None Include="..\README.md" Pack="true" PackagePath="\" />
+      <Folder Include="Generators\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ECoreNetto.Reporting\ECoreNetto.Reporting.csproj" />
     </ItemGroup>
 
 </Project>

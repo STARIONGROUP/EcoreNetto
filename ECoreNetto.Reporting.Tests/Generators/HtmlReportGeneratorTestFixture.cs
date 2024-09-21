@@ -20,13 +20,16 @@
 
 namespace ECoreNetto.Tools.Tests.Generators
 {
+    using System.IO;
+
+    using ECoreNetto.Reporting.Generators;
+
     using Microsoft.Extensions.Logging;
 
     using NUnit.Framework;
+    
     using Serilog;
-    using System.IO;
-    using Tools.Generators;
-
+    
     /// <summary>
     /// Suite of tests for the <see cref="HtmlReportGenerator"/> class.
     /// </summary>

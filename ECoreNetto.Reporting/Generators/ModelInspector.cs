@@ -18,7 +18,7 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
-namespace ECoreNetto.Tools.Generators
+namespace ECoreNetto.Reporting.Generators
 {
     using System;
     using System.Collections.Generic;
@@ -436,9 +436,15 @@ namespace ECoreNetto.Tools.Generators
         /// </param>
         public void GenerateReport(FileInfo modelPath, FileInfo outputPath)
         {
-            ArgumentNullException.ThrowIfNull(modelPath);
+            if (modelPath == null)
+            {
+                throw new ArgumentNullException(nameof(modelPath));
+            }
 
-            ArgumentNullException.ThrowIfNull(outputPath);
+            if (outputPath == null)
+            {
+                throw new ArgumentNullException(nameof(outputPath));
+            }
 
             var sw = Stopwatch.StartNew();
 

@@ -1,5 +1,5 @@
 ﻿// -------------------------------------------------------------------------------------------------
-// <copyright file="ModelInspectorTestFixture.cs" company="Starion Group S.A.">
+// <copyright file="XlReportGeneratorTestFixture.cs" company="Starion Group S.A">
 // 
 //   Copyright 2017-2024 Starion Group S.A.
 // 
@@ -20,27 +20,27 @@
 
 namespace ECoreNetto.Tools.Tests.Generators
 {
-    using System;
     using System.IO;
-    
-    using ECoreNetto.Resource;
-    using ECoreNetto.Tools.Generators;
+
+    using ECoreNetto.Reporting.Generators;
+
     using Microsoft.Extensions.Logging;
 
     using NUnit.Framework;
 
     using Serilog;
 
+    /// <summary>
+    /// Suite of tests for the <see cref="XlReportGenerator"/> class
+    /// </summary>
     [TestFixture]
-    public class ModelInspectorTestFixture
+    public class XlReportGeneratorTestFixture
     {
         private FileInfo modelFileInfo;
 
         private FileInfo reportFileInfo;
 
-        private EPackage rootPackage;
-
-        private ModelInspector modelInspector;
+        private XlReportGenerator xlXlReportGenerator;
 
         private ILoggerFactory loggerFactory;
 
@@ -62,91 +62,47 @@ namespace ECoreNetto.Tools.Tests.Generators
         public void SetUp()
         {
             var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "recipe.ecore");
-            var filePath = Path.GetFullPath(path);
-            var uri = new System.Uri(filePath);
-
-            var resourceSet = new ResourceSet(this.loggerFactory);
-            var resource = resourceSet.CreateResource(uri);
-
-            this.rootPackage = resource.Load(null);
-
+            
             var modelPath = Path.GetFullPath(path);
             this.modelFileInfo = new FileInfo(modelPath);
 
             var outputPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "tabular-report.xlsx");
             this.reportFileInfo = new FileInfo(outputPath);
 
-            this.modelInspector = new ModelInspector(this.loggerFactory);
-        }
-
-        [Test]
-        public void Verify_that_inspects_non_recursive_executes_as_expected()
-        {
-            var report = this.modelInspector.Inspect(this.rootPackage, false);
-
-            Assert.That(report, Is.Not.Empty);
-
-            Console.Write(report);
-        }
-
-        [Test]
-        public void Verify_that_inspects_recursive_executes_as_expected()
-        {
-            var report = this.modelInspector.Inspect(this.rootPackage, true);
-
-            Assert.That(report, Is.Not.Empty);
-
-            Console.Write(report);
-        }
-
-        [Test]
-        public void Verify_that_inspect_class_executes_as_expected()
-        {
-            var report = this.modelInspector.Inspect(this.rootPackage, "Container");
-
-            Assert.That(report, Is.Not.Empty);
-
-            Console.Write(report);
-        }
-
-        [Test]
-        public void Verify_that_analyze_docs_non_recursive_executes_as_expected()
-        {
-            var report = this.modelInspector.AnalyzeDocumentation(this.rootPackage, false);
-
-            Assert.That(report, Is.Not.Empty);
-
-            Console.Write(report);
-        }
-
-        [Test]
-        public void Verify_that_analyze_docs_recursive_executes_as_expected()
-        {
-            var report = this.modelInspector.AnalyzeDocumentation(this.rootPackage, true);
-
-            Assert.That(report, Is.Not.Empty);
-
-            Console.Write(report);
+            this.xlXlReportGenerator = new XlReportGenerator(this.loggerFactory);
         }
 
         [Test]
         public void Verify_that_the_report_generator_generates_a_report()
         {
-            Assert.That(() => this.modelInspector.GenerateReport(modelFileInfo, reportFileInfo), Throws.Nothing);
+            Assert.That(() => this.xlXlReportGenerator.GenerateReport(modelFileInfo, reportFileInfo), Throws.Nothing);
         }
 
         [Test]
         public void Verify_that_IsValidExcelReportExtension_returns_false_when_invalid()
         {
             var inValidFileName = new FileInfo("output-report.invalid");
-            var invalidResult = this.modelInspector.IsValidReportExtension(inValidFileName);
+            var invalidResult = this.xlXlReportGenerator.IsValidReportExtension(inValidFileName);
 
             Assert.Multiple(() =>
             {
                 Assert.That(invalidResult.Item1, Is.False);
                 Assert.That(invalidResult.Item2,
-                    Is.EqualTo("The Extension of the output file '.invalid' is not supported. Supported extensions is '.txt'"));
+                    Is.EqualTo("The Extension of the output file '.invalid' is not supported. Supported extensions are '.xlsx', '.xlsm', '.xltx' and '.xltm'"));
             });
+        }
+
+        [Test]
+        [TestCase("xlsx")]
+        [TestCase("xltx")]
+        [TestCase("xlsm")]
+        [TestCase("xltm")]
+        public void Verify_that_IsValidExcelReportExtension_returns_true_when_valid(string extension)
+        {
+            var validFileName = new FileInfo($"output-report.{extension}");
+            var validResult = this.xlXlReportGenerator.IsValidReportExtension(validFileName);
+            Assert.That(validResult.Item1, Is.True);
+            Assert.That(validResult.Item2, Is.EqualTo($".{extension} is a supported report extension"));
         }
     }
 }

@@ -18,18 +18,19 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
-namespace ECoreNetto.Tools.Generators
+namespace ECoreNetto.Reporting.Generators
 {
     using System.Collections.Generic;
     using System.Linq;
 
     using ECoreNetto.Extensions;
-    using ECoreNetto.Processor.Resources;
+    using ECoreNetto.Reporting.Resources;
 
     using HandlebarsDotNet;
     using HandlebarsDotNet.Helpers;
 
     using Microsoft.Extensions.Logging;
+    using Payload;
 
     /// <summary>
     /// Abstract super class from which all <see cref="HandlebarsDotNet"/> generators
@@ -88,7 +89,7 @@ namespace ECoreNetto.Tools.Generators
         /// </param>
         protected void RegisterEmbeddedTemplate(string name)
         {
-            var templatePath = $"ECoreNetto.Tools.Templates.{name}.hbs";
+            var templatePath = $"ECoreNetto.Reporting.Templates.{name}.hbs";
 
             var template = ResourceLoader.LoadEmbeddedResource(templatePath);
 

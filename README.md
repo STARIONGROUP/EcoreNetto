@@ -16,6 +16,10 @@ The **ECoreNetto.Extensions** library provides extensions methods to the EcoreNe
 
 The **ECoreNetto.HandleBars** library provides [HandleBars](https://github.com/Handlebars-Net/Handlebars.Net) helpers to support code generation. This library is part of the EcoreNetto ecosystem.
 
+## ECoreNetto.Reporting
+
+The **ECoreNetto.Reporting** library contains reporting generators. This library is part of the EcoreNetto ecosystem.
+
 ## ECoreNetto.Tools
 
 The **ECoreNetto.Tools** commandline application is used to generate reports on the content of the Ecore model. Find the documentation [here](https://github.com/STARIONGROUP/EcoreNetto/wiki/ECoreNetto.Tools).

@@ -18,7 +18,7 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
-namespace ECoreNetto.Tools.Generators
+namespace ECoreNetto.Reporting.Generators
 {
     /// <summary>
     /// The purpose of the <see cref="IMarkdownReportGenerator"/> is to generate a Markdown report of an

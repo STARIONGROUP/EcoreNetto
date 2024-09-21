@@ -18,7 +18,7 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
-namespace ECoreNetto.Tools.Generators
+namespace ECoreNetto.Reporting.Generators
 {
     /// <summary>
     /// The purpose of the <see cref="IModelInspector"/> is to iterate through the model and report on the various kinds of

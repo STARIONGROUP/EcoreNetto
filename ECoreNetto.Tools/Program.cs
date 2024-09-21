@@ -28,7 +28,6 @@ namespace ECoreNetto.Tools
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
-    using ECoreNetto.Extensions;
     using ECoreNetto.Processor.Resources;
     using ECoreNetto.Tools.Commands;
     
@@ -38,7 +37,7 @@ namespace ECoreNetto.Tools
     using Microsoft.Extensions.Hosting;
 
     using Spectre.Console;
-    using ECoreNetto.Tools.Generators;
+    using ECoreNetto.Reporting.Generators;
 
     /// <summary>
     /// Main entry point for the command line application

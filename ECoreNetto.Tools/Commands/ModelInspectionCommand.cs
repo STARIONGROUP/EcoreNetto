@@ -20,16 +20,11 @@
 
 namespace ECoreNetto.Tools.Commands
 {
-    using System;
     using System.CommandLine;
     using System.CommandLine.Invocation;
     using System.IO;
-    using System.Threading;
-    using System.Threading.Tasks;
 
-    using ECoreNetto.Tools.Generators;
-
-    using Spectre.Console;
+    using ECoreNetto.Reporting.Generators;
 
     /// <summary>
     /// The <see cref="ModelInspectionCommand"/> that inspects an ECore model and generates
@@ -65,75 +60,6 @@ namespace ECoreNetto.Tools.Commands
             /// </param>
             public Handler(IModelInspector modelInspector) : base(modelInspector)
             {
-            }
-
-            /// <summary>
-            /// Asynchronously invokes the <see cref="ICommandHandler"/>
-            /// </summary>
-            /// <param name="context">
-            /// The <see cref="InvocationContext"/> 
-            /// </param>
-            /// <returns>
-            /// 0 when successful, another if not
-            /// </returns>
-            public async Task<int> InvokeAsync(InvocationContext context)
-            {
-                if (!this.InputValidation())
-                {
-                    return -1;
-                }
-
-                var isValidExtension = this.ReportGenerator.IsValidReportExtension(this.OutputReport);
-                if (!isValidExtension.Item1)
-                {
-                    AnsiConsole.WriteLine("");
-                    AnsiConsole.MarkupLine($"[red] {isValidExtension.Item2} [/]");
-                    AnsiConsole.MarkupLine($"[purple]{this.InputModel.FullName}[/]");
-                    AnsiConsole.WriteLine("");
-                    return -1;
-                }
-
-                try
-                {
-                    await AnsiConsole.Status()
-                        .AutoRefresh(true)
-                        .SpinnerStyle(Style.Parse("green bold"))
-                        .Start("Preparing Warp Engines for inspection reporting...", ctx =>
-                        {
-                            Thread.Sleep(1500);
-
-                            ctx.Status($"Generating Ecore Model report at Warp 11, Captain..., SLOW DOWN!");
-
-                            Thread.Sleep(1500);
-
-                            this.ReportGenerator.GenerateReport(this.InputModel, this.OutputReport);
-
-                            AnsiConsole.MarkupLine($"[grey]LOG:[/] Ecore inspection report generated at [bold]{this.OutputReport.FullName}[/]");
-                            Thread.Sleep(1500);
-
-                            this.ExecuteAutoOpen(ctx);
-
-                            ctx.Status("[green]Dropping to impulse speed[/]");
-                            Thread.Sleep(1500);
-
-                            return Task.FromResult(0);
-
-                        });
-                }
-                catch (Exception ex)
-                {
-                    AnsiConsole.WriteLine();
-                    AnsiConsole.MarkupLine("[red]An exception occurred[/]");
-                    AnsiConsole.MarkupLine("[green]Dropping to impulse speed[/]");
-                    AnsiConsole.MarkupLine("[red]please report an issue at[/]");
-                    AnsiConsole.MarkupLine("[link] https://github.com/STARIONGROUP/EcoreNetto/issues [/]");
-                    AnsiConsole.WriteLine();
-                    AnsiConsole.WriteException(ex);
-
-                    return -1;
-                }
-
-                return 0;
             }
         }
     }

@@ -1,19 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
-        <Company>Starion Group S.A.</Company>
-        <Authors>Sam Gerene</Authors>
-        <AssemblyName>ECoreNetto.HandleBars.Tests</AssemblyName>
-        <Copyright>Starion Group S.A.</Copyright>
-        <PackageProjectUrl>https://ecorenetto.org</PackageProjectUrl>
-        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <RepositoryUrl>https://github.com/STARIONGROUP/EcoreNetto.git</RepositoryUrl>
-        <RepositoryType>Git</RepositoryType>
+        <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
+        <Company>Starion Group S.A.</Company>
+        <Authors>Sam Gerené</Authors>
+        <Copyright>Copyright © Starion Group S.A.</Copyright>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Moq" Version="4.20.72" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
         <PackageReference Include="NUnit" Version="4.2.2" />
         <PackageReference Include="NUnit.Console" Version="3.18.2" />
@@ -34,10 +31,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\ECoreNetto.HandleBars\ECoreNetto.HandleBars.csproj" />
+        <ProjectReference Include="..\ECoreNetto.Tools\ECoreNetto.Tools.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+        <None Include="..\TestData\ecore.ecore" Link="Data\ecore.ecore">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
         <None Include="..\TestData\recipe.ecore" Link="Data\recipe.ecore">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>

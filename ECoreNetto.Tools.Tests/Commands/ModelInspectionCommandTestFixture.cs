@@ -25,12 +25,12 @@ namespace ECoreNetto.Tools.Tests.Commands
     using System.IO;
     using System.Threading.Tasks;
 
+    using ECoreNetto.Reporting.Generators;
     using ECoreNetto.Tools.Commands;
-
+    
     using Moq;
 
     using NUnit.Framework;
-    using Tools.Generators;
 
     /// <summary>
     /// Suite of tests for the <see cref="XlReportCommand"/> class.

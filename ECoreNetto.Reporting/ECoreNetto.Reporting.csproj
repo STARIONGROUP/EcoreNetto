@@ -5,10 +5,10 @@
         <LangVersion>10.0</LangVersion>
         <Company>Starion Group S.A.</Company>
         <Copyright>Copyright © Starion Group S.A.</Copyright>
-        <Title>ECoreNetto.HandleBars</Title>
+        <Title>ECoreNetto.Reporting</Title>
         <Version>5.0.0</Version>
-        <Description>HandleBarHelpers for use in combination with the ECoreNetto library to support HandleBarHelpers based code generation</Description>
-        <PackageId>ECoreNetto.HandleBars</PackageId>
+        <Description>Ecore Reporting use in combination with the ECoreNetto library generate reports</Description>
+        <PackageId>ECoreNetto.Reporting</PackageId>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <PackageProjectUrl>https://ecorenetto.org</PackageProjectUrl>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
@@ -17,24 +17,37 @@
         <RepositoryUrl>https://github.com/STARIONGROUP/EcoreNetto</RepositoryUrl>
         <RepositoryType>Git</RepositoryType>
         <PackageIcon>ecorenetto-Icon.png</PackageIcon>
-        <AssemblyTitle>EcoreNetto.HandleBars</AssemblyTitle>
+        <AssemblyTitle>EcoreNetto.Reporting</AssemblyTitle>
         <NeutralLanguage>en-US</NeutralLanguage>
         <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
         <Authors>Sam Gerene</Authors>
-        <PackageTags>Ecore HandleBars</PackageTags>
+        <PackageTags>Ecore HandleBars Reporting</PackageTags>
         <PackageReleaseNotes>
-            [Add] DocumentationHelper
-            [Update] StructuralFeatureHelper
+            [Add] Report Generators
         </PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Handlebars.Net.Helpers" Version="2.4.5" />
+      <None Remove="Templates\ecore-to-html-docs.hbs" />
+      <None Remove="Templates\ecore-to-markdown-docs.hbs" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\ECoreNetto.Extensions\ECoreNetto.Extensions.csproj" />
+      <EmbeddedResource Include="Templates\ecore-to-html-docs.hbs">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="Templates\ecore-to-markdown-docs.hbs">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="ClosedXML" Version="0.102.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\ECoreNetto.HandleBars\ECoreNetto.HandleBars.csproj" />
     </ItemGroup>
 
     <ItemGroup>
