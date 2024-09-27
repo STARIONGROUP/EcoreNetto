@@ -64,21 +64,16 @@ namespace ECoreNetto.Reporting.Generators
         /// Generates a table that contains all classes, attributes and their documentation
         /// </summary>
         /// <param name="modelPath">
-        /// the path to the Ecore model of which the report is to be generated.
+        /// /// the path to the Ecore model of which the report is to be generated.
         /// </param>
-        /// <param name="outputPath">
-        /// the path, including filename, where the output is to be generated.
-        /// </param>
-        public void GenerateReport(FileInfo modelPath, FileInfo outputPath)
+        /// <returns>
+        /// the content of an HTML report in a string
+        /// </returns>
+        public string GenerateReport(FileInfo modelPath)
         {
             if (modelPath == null)
             {
                 throw new ArgumentNullException(nameof(modelPath));
-            }
-
-            if (outputPath == null)
-            {
-                throw new ArgumentNullException(nameof(outputPath));
             }
 
             var sw = Stopwatch.StartNew();
@@ -93,6 +88,31 @@ namespace ECoreNetto.Reporting.Generators
 
             var generatedHtml = template(payload);
 
+            this.logger.LogInformation("Generated HTML report in {ElapsedTime} [ms]", sw.ElapsedMilliseconds);
+
+            return generatedHtml;
+        }
+
+        /// <summary>
+        /// Generates a table that contains all classes, attributes and their documentation
+        /// </summary>
+        /// <param name="modelPath">
+        /// the path to the Ecore model of which the report is to be generated.
+        /// </param>
+        /// <param name="outputPath">
+        /// the path, including filename, where the output is to be generated.
+        /// </param>
+        public void GenerateReport(FileInfo modelPath, FileInfo outputPath)
+        {
+            if (outputPath == null)
+            {
+                throw new ArgumentNullException(nameof(outputPath));
+            }
+
+            var sw = Stopwatch.StartNew();
+
+            var generatedHtml = this.GenerateReport(modelPath);
+
             if (outputPath.Exists)
             {
                 outputPath.Delete();
@@ -101,7 +121,7 @@ namespace ECoreNetto.Reporting.Generators
             using var writer = outputPath.CreateText();
             writer.Write(generatedHtml);
 
-            this.logger.LogInformation("Generated HTML report in {ElapsedTime} [ms]", sw.ElapsedMilliseconds);
+            this.logger.LogInformation("Generated and saved HTML report in {ElapsedTime} [ms]", sw.ElapsedMilliseconds);
         }
 
         /// <summary>
