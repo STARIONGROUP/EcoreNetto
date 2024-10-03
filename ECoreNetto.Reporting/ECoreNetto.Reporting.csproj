@@ -6,7 +6,7 @@
         <Company>Starion Group S.A.</Company>
         <Copyright>Copyright © Starion Group S.A.</Copyright>
         <Title>ECoreNetto.Reporting</Title>
-        <Version>5.1.0</Version>
+        <Version>5.2.0</Version>
         <Description>Ecore Reporting use in combination with the ECoreNetto library generate reports</Description>
         <PackageId>ECoreNetto.Reporting</PackageId>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -43,7 +43,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="ClosedXML" Version="0.102.3" />
+        <PackageReference Include="ClosedXML" Version="0.104.1" />
     </ItemGroup>
 
     <ItemGroup>

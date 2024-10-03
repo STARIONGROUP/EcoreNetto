@@ -9,7 +9,7 @@
         <PackAsTool>true</PackAsTool>
         <PackageId>ECoreNetto.Tools</PackageId>
         <ToolCommandName>ecoretools</ToolCommandName>
-        <Version>5.1.0</Version>
+        <Version>5.2.0</Version>
         <ImplicitUsings>disable</ImplicitUsings>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageIcon>ecorenetto-Icon.png</PackageIcon>
@@ -44,7 +44,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="ClosedXML" Version="0.102.3" />
+        <PackageReference Include="ClosedXML" Version="0.104.1" />
         <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
         <PackageReference Include="System.CommandLine.Hosting" Version="0.4.0-alpha.22272.1" />
         <PackageReference Include="Spectre.Console" Version="0.49.1" />
