@@ -79,15 +79,11 @@ namespace ECoreNetto.Tools.Middlewares
 
                     await next(context);
                 }
-                catch (TaskCanceledException ex)
+                catch (TaskCanceledException)
                 {
                     AnsiConsole.WriteLine("");
                     AnsiConsole.MarkupLine($"[Red] Checking version at GitHub API timed out. [/]");
                     AnsiConsole.WriteLine("");
-                }
-                catch (Exception ex)
-                {
-                    throw;
                 }
             }, MiddlewareOrder.ExceptionHandler);
         }
