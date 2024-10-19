@@ -22,6 +22,7 @@ namespace ECoreNetto.Reporting.Payload
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     using ECoreNetto;
 
@@ -73,5 +74,10 @@ namespace ECoreNetto.Reporting.Payload
         /// Gets the array of <see cref="EClass"/>
         /// </summary>
         public EClass[] Classes { get; private set; }
+
+        /// <summary>
+        /// Gets the version of the reporting library
+        /// </summary>
+        public string Version => Assembly.GetExecutingAssembly().GetName().Version?.ToString();
     }
 }

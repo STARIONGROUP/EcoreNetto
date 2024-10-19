@@ -7,7 +7,7 @@
         <LangVersion>10.0</LangVersion>
         <Company>Starion Group S.A.</Company>
         <Title>EcoreNetto</Title>
-        <Version>5.2.0</Version>
+        <Version>5.2.1</Version>
         <Description>ECoreNetto is a dotnet core library that is used to deserialize an Ecore meta-model for the purpose of code generation. Ecore is a meta-model used to represent models in the Eclipse Modelling Framework. EMF is a powerful framework and code generation facility for building Java applications based on simple model definitions. The intention of ECoreNetto is not to be a port of EMF, it aims at bridging the gap to the .NET world to facilitate code generation of C# class libraries based on an Ecore model using the .NET code available tooling and libraries.</Description>
         <PackageId>ECoreNetto</PackageId>
         <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
@@ -26,7 +26,7 @@
         <Authors>Sam Gerene</Authors>
         <PackageTags>Ecore</PackageTags>
         <PackageReleaseNotes>
-            [Add] logging
+            [Update] Microsoft.Extensions.Logging.Abstractions to version 8.0.2
         </PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
@@ -37,7 +37,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
         <PackageReference Include="Serilog" Version="4.0.2" />
         <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
         <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />

@@ -26,13 +26,14 @@ namespace ECoreNetto.Reporting.Generators
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
-
+    using System.Reflection;
     using ClosedXML.Excel;
 
     using ECoreNetto.Extensions;
 
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Logging.Abstractions;
+    using Resources;
 
     /// <summary>
     /// The purpose of the <see cref="XlReportGenerator"/> is to generate reports of an
@@ -98,6 +99,8 @@ namespace ECoreNetto.Reporting.Generators
 
             using (var workbook = new XLWorkbook())
             {
+                this.AddInfoSheet(workbook, rootPackage);
+
                 this.AddClassSheet(workbook, packages);
 
                 this.AddEnumSheet(workbook, packages);
@@ -110,6 +113,39 @@ namespace ECoreNetto.Reporting.Generators
             }
 
             this.logger.LogInformation("Generated Excel report tables in {0} [ms]", sw.ElapsedMilliseconds);
+        }
+
+        /// <summary>
+        /// Adds a worksheet that contains information about the model and generator
+        /// </summary>
+        /// <param name="workbook">
+        /// The target <see cref="XLWorkbook"/> to which the info worksheet is added
+        /// </param>
+        /// <param name="rootPackage">
+        /// The root <see cref="EPackage"/>
+        /// </param>
+        private void AddInfoSheet(XLWorkbook workbook, EPackage rootPackage)
+        {
+            this.logger.LogDebug("Add info sheet");
+
+            var infoWorksheet = workbook.Worksheets.Add("Model Info");
+
+            infoWorksheet.Cell(1, 1).Value = "ECoreNetto.Reporting Version";
+            infoWorksheet.Cell(1, 2).Value = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
+            
+            infoWorksheet.Cell(2, 1).Value = "Generation Date";
+            infoWorksheet.Cell(2, 2).Value =  DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+            infoWorksheet.Cell(3, 1).Value = "Root Package - name";
+            infoWorksheet.Cell(3, 2).Value = rootPackage.Name;
+
+            infoWorksheet.Cell(4, 1).Value = "Root Package - ns prefix";
+            infoWorksheet.Cell(4, 2).Value = rootPackage.NsPrefix;
+
+            infoWorksheet.Cell(4, 1).Value = "Root Package - ns uri";
+            infoWorksheet.Cell(4, 2).Value = rootPackage.NsUri;
+
+            this.FormatSheet(infoWorksheet);
         }
 
         /// <summary>
