@@ -38,6 +38,8 @@ namespace ECoreNetto.Tools
 
     using Spectre.Console;
     using ECoreNetto.Reporting.Generators;
+    using ECoreNetto.Tools.Services;
+    using Middlewares;
 
     /// <summary>
     /// Main entry point for the command line application
@@ -65,6 +67,7 @@ namespace ECoreNetto.Tools
                             services.AddSingleton<IModelInspector, ModelInspector>();
                             services.AddSingleton<IHtmlReportGenerator, HtmlReportGenerator>();
                             services.AddSingleton<IMarkdownReportGenerator, MarkdownReportGenerator>();
+
                         })
                         .UseCommandHandler<XlReportCommand, XlReportCommand.Handler>()
                         .UseCommandHandler<ModelInspectionCommand, ModelInspectionCommand.Handler>()
@@ -101,7 +104,8 @@ namespace ECoreNetto.Tools
                                     AnsiConsole.Markup($"[blue]{ResourceLoader.QueryLogo()}[/]");
                                 }
                             ));
-                });
+                })
+                .UseVersionChecker();
         }
 
         /// <summary>

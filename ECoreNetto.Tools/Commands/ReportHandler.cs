@@ -20,8 +20,8 @@
 
 namespace ECoreNetto.Tools.Commands
 {
-    using System.CommandLine.Invocation;
     using System;
+    using System.CommandLine.Invocation;
     using System.Diagnostics;
     using System.IO;
     using System.Threading;

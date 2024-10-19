@@ -25,7 +25,7 @@ namespace ECoreNetto.Tools.Commands
     using System.IO;
 
     using ECoreNetto.Reporting.Generators;
-
+    
     /// <summary>
     /// The <see cref="MarkdownReportCommand"/> that generates a Markdown report
     /// </summary>
