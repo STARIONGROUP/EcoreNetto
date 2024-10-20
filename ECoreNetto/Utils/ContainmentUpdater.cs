@@ -29,7 +29,7 @@ namespace ECoreNetto.Utils
     internal static class ContainmentUpdater
     {
         /// <summary>
-        /// Removes the 
+        /// Removes the object from its container
         /// </summary>
         /// <param name="object">
         /// The subject <see cref="EObject"/> that is to be removed from its container
@@ -45,51 +45,44 @@ namespace ECoreNetto.Utils
             {
                 return;
             }
-            
-            var annotation = @object as EAnnotation;
-            if (annotation != null)
+
+            if (@object is EAnnotation annotation)
             {
                 RemoveFromContainer(annotation);
                 return;
             }
 
-            var package = @object as EPackage;
-            if (package != null)
+            if (@object is EPackage package)
             {
                 RemoveFromContainer(package);
                 return;
             }
 
-            var classifier = @object as EClassifier;
-            if (classifier != null)
+            if (@object is EClassifier classifier)
             {
                 RemoveFromContainer(classifier);
                 return;
             }
 
-            var parameter = @object as EParameter;
-            if (parameter != null)
+            if (@object is EParameter parameter)
             {
                 RemoveFromContainer(parameter);
                 return;
             }
 
-            var operation = @object as EOperation;
-            if (operation != null)
+            if (@object is EOperation operation)
             {
                 RemoveFromContainer(operation);
                 return;
             }
 
-            var structuralFeature = @object as EStructuralFeature;
-            if (structuralFeature != null)
+            if (@object is EStructuralFeature structuralFeature)
             {
                 RemoveFromContainer(structuralFeature);
                 return;
             }
 
-            var enumLiteral = @object as EEnumLiteral;
-            if (enumLiteral != null)
+            if (@object is EEnumLiteral enumLiteral)
             {
                 RemoveFromContainer(enumLiteral);                
             }

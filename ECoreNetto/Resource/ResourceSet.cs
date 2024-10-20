@@ -20,10 +20,11 @@
 
 namespace ECoreNetto.Resource
 {
-    using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Logging.Abstractions;
     using System;
     using System.Collections.Generic;
+
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// A collection of related persistent documents. 

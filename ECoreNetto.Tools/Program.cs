@@ -28,7 +28,8 @@ namespace ECoreNetto.Tools
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
-    using ECoreNetto.Processor.Resources;
+    using ECoreNetto.Reporting.Generators;
+    using ECoreNetto.Tools.Resources;
     using ECoreNetto.Tools.Commands;
     
     using Microsoft.Extensions.DependencyInjection;
@@ -37,8 +38,7 @@ namespace ECoreNetto.Tools
     using Microsoft.Extensions.Hosting;
 
     using Spectre.Console;
-    using ECoreNetto.Reporting.Generators;
-    using ECoreNetto.Tools.Services;
+    
     using Middlewares;
 
     /// <summary>
@@ -61,7 +61,7 @@ namespace ECoreNetto.Tools
                             loggingBuilder.AddFilter<ConsoleLoggerProvider>(level =>
                                 level == LogLevel.None))
                     , builder => builder
-                        .ConfigureServices((hostContext, services) =>
+                        .ConfigureServices((services) =>
                         {
                             services.AddSingleton<IXlReportGenerator, XlReportGenerator>();
                             services.AddSingleton<IModelInspector, ModelInspector>();

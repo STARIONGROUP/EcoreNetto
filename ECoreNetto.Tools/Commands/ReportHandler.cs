@@ -26,11 +26,12 @@ namespace ECoreNetto.Tools.Commands
     using System.IO;
     using System.Threading;
 
-    using ECoreNetto.Processor.Resources;
+    using ECoreNetto.Tools.Resources;
     using ECoreNetto.Reporting.Generators;
 
     using Spectre.Console;
     using System.Threading.Tasks;
+    using Resources;
 
     /// <summary>
     /// Abstract super class from which all Report <see cref="ICommandHandler"/>s need to derive
@@ -142,7 +143,7 @@ namespace ECoreNetto.Tools.Commands
 
                     });
             }
-            catch (System.IO.IOException ex)
+            catch (IOException ex)
             {
                 AnsiConsole.WriteLine();
                 AnsiConsole.MarkupLine("[red]The report file could not be generated or opened. Make sure the file is not open and try again.[/]");

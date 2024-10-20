@@ -122,13 +122,7 @@ namespace ECoreNetto
         /// <summary>
         /// Gets the containing <see cref="EClass"/>
         /// </summary>
-        public EClass EContainingClass
-        {
-            get
-            {
-                return (EClass)this.EContainer;
-            }
-        }
+        public EClass EContainingClass => (EClass)this.EContainer;
 
         /// <summary>
         /// Read the attributes of the current node

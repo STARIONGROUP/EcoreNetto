@@ -50,13 +50,7 @@ namespace ECoreNetto
         /// <summary>
         /// Gets the containing <see cref="EEnum"/>
         /// </summary>
-        public EEnum EEnum
-        {
-            get
-            {
-                return (EEnum)this.EContainer;
-            }
-        }
+        public EEnum EEnum => (EEnum)this.EContainer;
 
         /// <summary>
         /// Gets or sets int value of an enumerator. 

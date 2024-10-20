@@ -271,7 +271,7 @@ namespace ECoreNetto.Reporting.Generators
 
                 if (structuralFeature is EReference reference)
                 {
-                    var referenceType = string.Empty;
+                    string referenceType;
                     if (reference.IsContainment)
                     {
                         referenceType = $"{reference.Name}:{reference.EType.Name} [{reference.LowerBound}..{reference.UpperBound}] - CONTAINED REFERENCE TYPE";

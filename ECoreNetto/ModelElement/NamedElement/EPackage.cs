@@ -100,7 +100,7 @@ namespace ECoreNetto
         /// <summary>
         /// Gets the collection of sub <see cref="EPackage"/>
         /// </summary>
-        public ContainerList<EPackage> ESubPackages { get; private set; }
+        public ContainerList<EPackage> ESubPackages { get; }
 
         /// <summary>
         /// Gets the collection of <see cref="EClassifier"/> contained in this <see cref="EPackage"/>
@@ -113,13 +113,7 @@ namespace ECoreNetto
         /// <remarks>
         /// This may be null if this is the top <see cref="EPackage"/>
         /// </remarks>
-        public EPackage ESuperPackage
-        {
-            get
-            {
-                return (EPackage)this.EContainer;
-            }
-        }
+        public EPackage ESuperPackage => (EPackage)this.EContainer;
 
         /// <summary>
         /// Read the attributes of the current node

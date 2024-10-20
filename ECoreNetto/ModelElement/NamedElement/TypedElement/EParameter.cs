@@ -21,7 +21,6 @@
 namespace ECoreNetto
 {
     using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The ECore parameter class.
@@ -44,13 +43,7 @@ namespace ECoreNetto
         /// <summary>
         /// Gets the containing <see cref="EOperation"/>
         /// </summary>
-        public EOperation EOperation
-        {
-            get
-            {
-                return (EOperation)this.EContainer;
-            }
-        }
+        public EOperation EOperation => (EOperation)this.EContainer;
 
         /// <summary>
         /// Build the <see cref="EModelElement.Identifier"/> property

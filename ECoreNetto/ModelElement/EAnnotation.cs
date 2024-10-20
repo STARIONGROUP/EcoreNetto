@@ -65,13 +65,7 @@ namespace ECoreNetto
         /// <summary>
         /// Gets the <see cref="EModelElement"/> that is annotated by the current <see cref="EAnnotation"/>
         /// </summary>
-        public EModelElement EModelElement
-        {
-            get
-            {
-                return (EModelElement)this.EContainer;
-            }
-        }
+        public EModelElement EModelElement => (EModelElement)this.EContainer;
 
         /// <summary>
         /// Set the properties of this <see cref="EModelElement"/>

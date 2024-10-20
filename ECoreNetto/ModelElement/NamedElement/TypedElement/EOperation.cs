@@ -74,13 +74,7 @@ namespace ECoreNetto
         /// <summary>
         /// Gets the containing <see cref="EClass"/>
         /// </summary>
-        public EClass EContainingClass
-        {
-            get
-            {
-                return (EClass)this.EContainer;
-            }
-        }
+        public EClass EContainingClass => (EClass)this.EContainer;
 
         /// <summary>
         /// Returns whether this operation is an override of some other operation

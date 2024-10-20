@@ -362,26 +362,15 @@ namespace ECoreNetto.Resource
         /// <remarks>
         /// These will typically be produced as the resource is loaded. 
         /// </remarks>
-        public IEnumerable<Diagnostic> Errors
-        {
-            get
-            {
-                return this.errors;
-            }
-        }
-
+        public IEnumerable<Diagnostic> Errors => this.errors;
+        
         /// <summary>
         /// Gets an <see cref="IEnumerable{String}"/> of the warnings in the resource;
         /// </summary>
         /// <remarks>
         /// These will typically be produced as the resource is loaded. 
         /// </remarks>
-        public IEnumerable<Diagnostic> Warnings
-        {
-            get
-            {
-                return this.warnings;
-            }
-        }
+        public IEnumerable<Diagnostic> Warnings => this.warnings;
+        
     }
 }

@@ -57,13 +57,7 @@ namespace ECoreNetto
         /// <summary>
         /// Gets the containing <see cref="EPackage"/>
         /// </summary>
-        public EPackage EPackage
-        {
-            get
-            {
-                return (EPackage)this.EContainer;
-            }
-        }
+        public EPackage EPackage => (EPackage)this.EContainer;
 
         /// <summary>
         /// Gets the hierarchy of  containing <see cref="EPackage"/>

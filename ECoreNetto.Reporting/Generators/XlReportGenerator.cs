@@ -33,7 +33,6 @@ namespace ECoreNetto.Reporting.Generators
 
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Logging.Abstractions;
-    using Resources;
 
     /// <summary>
     /// The purpose of the <see cref="XlReportGenerator"/> is to generate reports of an

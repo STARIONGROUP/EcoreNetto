@@ -75,12 +75,6 @@ namespace ECoreNetto
         /// <exception cref="FileNotFoundException">
         /// If the source file not found
         /// </exception>
-        /// <exception cref="UriFormatException">
-        /// An invalid URI was detected
-        /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// An invalid argument was supplied
-        /// </exception>
         internal EPackage ParseXml()
         {
             this.logger.LogDebug("start parsing Ecore file");

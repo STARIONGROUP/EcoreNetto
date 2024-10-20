@@ -18,7 +18,7 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
-namespace ECoreNetto.Processor.Resources
+namespace ECoreNetto.Tools.Resources
 {
     using System.IO;
     using System.Reflection;

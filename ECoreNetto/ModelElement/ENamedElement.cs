@@ -23,7 +23,6 @@ namespace ECoreNetto
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The base abstract type for <see cref="EModelElement"/> with a name

@@ -21,7 +21,6 @@
 namespace ECoreNetto
 {
     using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The type representing a ECore Factory
