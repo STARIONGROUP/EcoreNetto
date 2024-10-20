@@ -50,6 +50,10 @@
         <PackageReference Include="Spectre.Console" Version="0.49.1" />
     </ItemGroup>
 
+    <ItemGroup Label="Transitive Dependency overrides">
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+    </ItemGroup>
+
     <ItemGroup>
         <None Include="..\ecorenetto-Icon.png" Pack="true" PackagePath="" />
         <None Include="..\README.md" Pack="true" PackagePath="\" />
