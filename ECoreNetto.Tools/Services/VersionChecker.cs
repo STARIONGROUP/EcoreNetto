@@ -83,7 +83,7 @@ namespace ECoreNetto.Tools.Services
                     return release;
                 }
             }
-            catch (TaskCanceledException ex)
+            catch (TaskCanceledException)
             {
                 this.logger.LogWarning("Contacting the GitGub API at {url} timed out", requestUrl);
             }
