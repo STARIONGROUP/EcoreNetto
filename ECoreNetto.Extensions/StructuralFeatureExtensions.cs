@@ -20,8 +20,6 @@
 
 namespace ECoreNetto.Extensions
 {
-    using System.Collections.Generic;
-    
     /// <summary>
     /// Extension methods for <see cref="EStructuralFeature"/> class
     /// </summary>

@@ -6,7 +6,7 @@
         <Company>Starion Group S.A.</Company>
         <Copyright>Copyright © Starion Group S.A.</Copyright>
         <Title>ECoreNetto.Reporting</Title>
-        <Version>5.2.1</Version>
+        <Version>5.2.2</Version>
         <Description>Ecore Reporting use in combination with the ECoreNetto library generate reports</Description>
         <PackageId>ECoreNetto.Reporting</PackageId>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -23,7 +23,7 @@
         <Authors>Sam Gerene</Authors>
         <PackageTags>Ecore HandleBars Reporting</PackageTags>
         <PackageReleaseNotes>
-            [Update] ECoreNetto.HandleBars version 5.2.1
+            [Update] ECoreNetto.HandleBars version 5.2.2
         </PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
@@ -43,11 +43,15 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="ClosedXML" Version="0.104.1" />
+        <ProjectReference Include="..\ECoreNetto.HandleBars\ECoreNetto.HandleBars.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\ECoreNetto.HandleBars\ECoreNetto.HandleBars.csproj" />
+        <PackageReference Include="ClosedXML" Version="0.104.1" />
+    </ItemGroup>
+
+    <ItemGroup Label="Transitive Dependency overrides">
+        <PackageReference Include="System.IO.Packaging" Version="8.0.1" />
     </ItemGroup>
 
     <ItemGroup>
