@@ -6,7 +6,7 @@
         <Company>Starion Group S.A.</Company>
         <Copyright>Copyright © Starion Group S.A.</Copyright>
         <Title>ECoreNetto.HandleBars</Title>
-        <Version>6.0.0</Version>
+        <Version>6.0.1</Version>
         <Description>HandleBarHelpers for use in combination with the ECoreNetto library to support HandleBarHelpers based code generation</Description>
         <PackageId>ECoreNetto.HandleBars</PackageId>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -23,7 +23,7 @@
         <Authors>Sam Gerene</Authors>
         <PackageTags>Ecore HandleBars</PackageTags>
         <PackageReleaseNotes>
-            [Update] ECoreNetto.Extensions version 6.0.0
+            [Update] ECoreNetto.Extensions version 6.0.1
         </PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>

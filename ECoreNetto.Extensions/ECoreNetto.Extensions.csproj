@@ -23,7 +23,7 @@
         <Authors>Sam Gerene</Authors>
         <PackageTags>Ecore</PackageTags>
         <PackageReleaseNotes>
-            [Update] to EcoreNetto version 6.0.0
+            [Update] to HtmlAgilityPack version 1.11.68
         </PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
