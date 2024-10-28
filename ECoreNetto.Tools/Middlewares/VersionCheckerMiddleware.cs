@@ -66,7 +66,7 @@ namespace ECoreNetto.Tools.Middlewares
                         {
                             AnsiConsole.WriteLine("");
                             AnsiConsole.MarkupLine($"[Green] a newer version is available at {payload.HtmlUrl} [/]");
-                            AnsiConsole.MarkupLine($"[Green] {payload.Body} [/]");
+                            AnsiConsole.MarkupLine($"[Green] {payload.Body.EscapeMarkup()} [/]");
                             AnsiConsole.WriteLine("");
                         }
                         else
