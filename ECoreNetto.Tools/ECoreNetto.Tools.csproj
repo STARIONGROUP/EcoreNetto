@@ -13,6 +13,7 @@
         <ImplicitUsings>disable</ImplicitUsings>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageIcon>ecorenetto-Icon.png</PackageIcon>
+        <ApplicationIcon>icon.ico</ApplicationIcon>
         <NeutralLanguage>en-US</NeutralLanguage>
         <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
         <PackageReleaseNotes>
@@ -59,6 +60,7 @@
     <ItemGroup>
         <None Include="..\ecorenetto-Icon.png" Pack="true" PackagePath="" />
         <None Include="..\README.md" Pack="true" PackagePath="\" />
+        <Content Include="icon.ico" />
     </ItemGroup>
 
     <ItemGroup>
