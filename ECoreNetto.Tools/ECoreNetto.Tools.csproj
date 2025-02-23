@@ -9,15 +9,16 @@
         <PackAsTool>true</PackAsTool>
         <PackageId>ECoreNetto.Tools</PackageId>
         <ToolCommandName>ecoretools</ToolCommandName>
-        <Version>6.0.2</Version>
+        <Version>6.0.3</Version>
         <ImplicitUsings>disable</ImplicitUsings>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageIcon>ecorenetto-Icon.png</PackageIcon>
         <NeutralLanguage>en-US</NeutralLanguage>
         <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
         <PackageReleaseNotes>
-            [Update] to ECoreNetto.Reporting version 6.0.2
-            [Fix] VersionCheckerMiddleware: use EscapeMarkup
+            [Update] to ECoreNetto.Reporting version 6.0.3
+            [Update] Microsoft.Extensions.Http version 9.0.2
+            [Update] Microsoft.Extensions.Hosting version 9.0.2
         </PackageReleaseNotes>
     </PropertyGroup>
 

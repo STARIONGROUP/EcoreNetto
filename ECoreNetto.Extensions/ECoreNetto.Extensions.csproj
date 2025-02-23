@@ -6,7 +6,7 @@
         <Company>Starion Group S.A.</Company>
         <Copyright>Copyright © Starion Group S.A.</Copyright>
         <Title>ECoreNetto.Extensions</Title>
-        <Version>6.0.2</Version>
+        <Version>6.0.3</Version>
         <Description>Extension methods for the ECoreNetto library that are typically used to support code generation</Description>
         <PackageId>ECoreNetto.Extensions</PackageId>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -23,7 +23,8 @@
         <Authors>Sam Gerene</Authors>
         <PackageTags>Ecore</PackageTags>
         <PackageReleaseNotes>
-            [Update] to HtmlAgilityPack version 1.11.70
+            [Update] to ECoreNetto version 6.0.1
+            [Update] to HtmlAgilityPack version 1.11.72
         </PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
