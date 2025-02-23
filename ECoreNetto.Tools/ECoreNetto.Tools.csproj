@@ -4,7 +4,7 @@
         <LangVersion>10.0</LangVersion>
         <Title>ECoreNetto.Tools</Title>
         <Description>A command line application that processes an Ecore file and generates various reports.</Description>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
         <OutputType>Exe</OutputType>
         <PackAsTool>true</PackAsTool>
         <PackageId>ECoreNetto.Tools</PackageId>
@@ -45,14 +45,14 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.2" />
         <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
         <PackageReference Include="System.CommandLine.Hosting" Version="0.4.0-alpha.22272.1" />
         <PackageReference Include="Spectre.Console" Version="0.49.1" />
     </ItemGroup>
 
     <ItemGroup Label="Transitive Dependency overrides">
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.2" />
     </ItemGroup>
 
     <ItemGroup>
