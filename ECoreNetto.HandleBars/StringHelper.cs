@@ -37,7 +37,7 @@ namespace ECoreNetto.HandleBars
         /// </param>
         public static void RegisterStringHelper(this IHandlebars handlebars)
         {
-            handlebars.RegisterHelper("String.CapitalizeFirstLetter", (writer, context, parameters) =>
+            handlebars.RegisterHelper("String.CapitalizeFirstLetter", (writer, _, parameters) =>
             {
                 if (parameters.Length != 1)
                 {
@@ -49,7 +49,7 @@ namespace ECoreNetto.HandleBars
                 writer.WriteSafeString(value.CapitalizeFirstLetter());
             });
 
-            handlebars.RegisterHelper("String.LowerCaseFirstLetter", (writer, context, parameters) =>
+            handlebars.RegisterHelper("String.LowerCaseFirstLetter", (writer, _, parameters) =>
             {
                 if (parameters.Length != 1)
                 {

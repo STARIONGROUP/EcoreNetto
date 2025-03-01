@@ -39,6 +39,11 @@ namespace ECoreNetto.Extensions
         /// <returns></returns>
         public static IEnumerable<string> QueryDocumentation(this EModelElement eModelElement)
         {
+            if (eModelElement == null)
+            {
+                throw new ArgumentNullException(nameof(eModelElement));
+            }
+
             var annotation = eModelElement.EAnnotations.FirstOrDefault(x => x.Details.ContainsKey("documentation"));
             if (annotation == null)
             {
@@ -67,6 +72,11 @@ namespace ECoreNetto.Extensions
         /// <returns></returns>
         public static string QueryRawDocumentation(this EModelElement eModelElement)
         {
+            if (eModelElement == null)
+            {
+                throw new ArgumentNullException(nameof(eModelElement));
+            }
+
             var annotation = eModelElement.EAnnotations.FirstOrDefault(x => x.Details.ContainsKey("documentation"));
             if (annotation == null)
             {
@@ -99,6 +109,11 @@ namespace ECoreNetto.Extensions
         /// </returns>
         public static string RemoveUnwantedHtmlTags(this string html, List<string> unwantedTags)
         {
+            if (string.IsNullOrEmpty(html))
+            {
+                throw new ArgumentException("string can't be null or empty!", nameof(html));
+            }
+
             if (string.IsNullOrEmpty(html))
             {
                 return html;

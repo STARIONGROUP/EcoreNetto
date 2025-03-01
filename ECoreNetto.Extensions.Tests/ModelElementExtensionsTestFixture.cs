@@ -20,6 +20,7 @@
 
 namespace ECoreNetto.Extensions.Tests
 {
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
 
@@ -79,6 +80,30 @@ namespace ECoreNetto.Extensions.Tests
             documentation = undocumentedClass.QueryDocumentation();
 
             Assert.That(documentation, Is.Empty);
+        }
+
+        [Test]
+        public void Verify_that_QueryDocumentation_throws_Exception_when_argument_null()
+        {
+            EModelElement eModelElement = null;
+
+            Assert.That(() => ModelElementExtensions.QueryDocumentation(eModelElement), Throws.ArgumentNullException);
+        }
+
+        [Test]
+        public void Verify_that_QueryRawDocumentation_throws_Exception_when_argument_null()
+        {
+            EModelElement eModelElement = null;
+
+            Assert.That(() => ModelElementExtensions.QueryRawDocumentation(eModelElement), Throws.ArgumentNullException);
+        }
+
+        [Test]
+        public void Verify_that_RemoveUnwantedHtmlTags_throws_Exception_when_argument_null()
+        {
+            string html = null;
+
+            Assert.That(() => ModelElementExtensions.RemoveUnwantedHtmlTags(html, new List<string>()), Throws.ArgumentException);
         }
     }
 }

@@ -41,7 +41,7 @@ namespace ECoreNetto.HandleBars
         /// </param>
         public static void RegisterStructuralFeatureHelper(this IHandlebars handlebars)
         {
-            handlebars.RegisterHelper("StructuralFeature.QueryIsEnumerable", (context, arguments) =>
+            handlebars.RegisterHelper("StructuralFeature.QueryIsEnumerable", (_, arguments) =>
             {
                 if (arguments.Length != 1)
                 {
@@ -70,7 +70,7 @@ namespace ECoreNetto.HandleBars
                 }
             });
 
-            handlebars.RegisterHelper("StructuralFeature.QueryIsAttribute", (context, arguments) =>
+            handlebars.RegisterHelper("StructuralFeature.QueryIsAttribute", (_, arguments) =>
             {
                 if (arguments.Length != 1)
                 {
@@ -99,7 +99,7 @@ namespace ECoreNetto.HandleBars
                 }
             });
 
-            handlebars.RegisterHelper("StructuralFeature.QueryIsReference", (context, arguments) =>
+            handlebars.RegisterHelper("StructuralFeature.QueryIsReference", (_, arguments) =>
             {
                 if (arguments.Length != 1)
                 {
@@ -128,7 +128,7 @@ namespace ECoreNetto.HandleBars
                 }
             });
 
-            handlebars.RegisterHelper("StructuralFeature.QueryStructuralFeatureNameEqualsEnclosingType", (context, arguments) =>
+            handlebars.RegisterHelper("StructuralFeature.QueryStructuralFeatureNameEqualsEnclosingType", (_, arguments) =>
             {
                 if (arguments.Length != 2)
                 {
@@ -188,7 +188,7 @@ namespace ECoreNetto.HandleBars
                 }
             });
 
-            handlebars.RegisterHelper("StructuralFeature.QueryHasDefaultValue", (context, arguments) =>
+            handlebars.RegisterHelper("StructuralFeature.QueryHasDefaultValue", (_, arguments) =>
             {
                 if (arguments.Length != 1)
                 {
@@ -200,7 +200,7 @@ namespace ECoreNetto.HandleBars
                 return eStructuralFeature.QueryHasDefaultValue();
             });
 
-            handlebars.RegisterHelper("StructuralFeature.QueryIsContainment", (context, arguments) =>
+            handlebars.RegisterHelper("StructuralFeature.QueryIsContainment", (_, arguments) =>
             {
                 if (arguments.Length != 1)
                 {
@@ -212,7 +212,7 @@ namespace ECoreNetto.HandleBars
                 return eStructuralFeature.QueryIsContainment();
             });
 
-            handlebars.RegisterHelper("StructuralFeature.QueryTypeName", (writer, context, parameters) =>
+            handlebars.RegisterHelper("StructuralFeature.QueryTypeName", (writer, context, _) =>
             {
                 if (!(context.Value is EStructuralFeature eStructuralFeature))
                     throw new ArgumentException("supposed to be EStructuralFeature");

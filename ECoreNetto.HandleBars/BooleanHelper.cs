@@ -35,7 +35,7 @@ namespace ECoreNetto.HandleBars
         /// </param>
         public static void RegisterBooleanHelper(this IHandlebars handlebars)
         {
-            handlebars.RegisterHelper("Boolean.ToLowerCase", (writer, context, parameters) =>
+            handlebars.RegisterHelper("Boolean.ToLowerCase", (writer, _, parameters) =>
             {
                 if (parameters.Length != 1)
                 {

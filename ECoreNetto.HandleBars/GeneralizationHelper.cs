@@ -40,10 +40,12 @@ namespace ECoreNetto.HandleBars
         /// </param>
         public static void RegisterGeneralizationHelper(this IHandlebars handlebars)
         {
-            handlebars.RegisterHelper("Generalization.Interfaces", (writer, context, parameters) =>
+            handlebars.RegisterHelper("Generalization.Interfaces", (writer, context, _) =>
             {
                 if (!(context.Value is EClass eClass))
+                {
                     throw new ArgumentException("The context shall be an EClass");
+                }
 
                 if (eClass.ESuperTypes.Any())
                 {
@@ -53,10 +55,12 @@ namespace ECoreNetto.HandleBars
                 }
             });
 
-            handlebars.RegisterHelper("Generalization.Classes", (writer, context, parameters) =>
+            handlebars.RegisterHelper("Generalization.Classes", (writer, context, _) =>
             {
                 if (!(context.Value is EClass eClass))
+                {
                     throw new ArgumentException("The context shall be an EClass");
+                }
 
                 if (!eClass.ESuperTypes.Any())
                 {
@@ -64,7 +68,7 @@ namespace ECoreNetto.HandleBars
                     return;
                 }
 
-                writer.WriteSafeString($": {eClass.ESuperTypes.First().Name}, I{eClass.Name}");
+                writer.WriteSafeString($": {eClass.ESuperTypes[0].Name}, I{eClass.Name}");
             });
         }
     }

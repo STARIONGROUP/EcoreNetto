@@ -40,10 +40,12 @@ namespace ECoreNetto.HandleBars
         /// </param>
         public static void RegisteredDocumentationHelper(this IHandlebars handlebars)
         {
-            handlebars.RegisterHelper("RawDocumentation", (writer, context, parameters) =>
+            handlebars.RegisterHelper("RawDocumentation", (writer, context, _) =>
             {
                 if (!(context.Value is EModelElement eModelElement))
+                {
                     throw new ArgumentException("supposed to be EModelElement");
+                }
 
                 var rawDocumentation = eModelElement.QueryRawDocumentation();
 

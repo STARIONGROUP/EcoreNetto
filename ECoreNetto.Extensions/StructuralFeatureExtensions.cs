@@ -20,6 +20,8 @@
 
 namespace ECoreNetto.Extensions
 {
+    using System;
+
     /// <summary>
     /// Extension methods for <see cref="EStructuralFeature"/> class
     /// </summary>
@@ -36,6 +38,11 @@ namespace ECoreNetto.Extensions
         /// </returns>
         public static bool QueryIsEnum(this EStructuralFeature eStructuralFeature)
         {
+            if (eStructuralFeature == null)
+            {
+                throw new ArgumentNullException(nameof(eStructuralFeature));
+            }
+
             if (eStructuralFeature is EAttribute eAttribute)
             {
                 return eAttribute.EType is EEnum;
@@ -56,6 +63,11 @@ namespace ECoreNetto.Extensions
         /// </returns>
         public static EClass QueryClass(this EStructuralFeature eStructuralFeature)
         {
+            if (eStructuralFeature == null)
+            {
+                throw new ArgumentNullException(nameof(eStructuralFeature));
+            }
+
             return eStructuralFeature is EReference { EType: EClass eClass } ? eClass : null;
         }
 
@@ -70,6 +82,11 @@ namespace ECoreNetto.Extensions
         /// </returns>
         public static bool QueryIsEnumerable(this EStructuralFeature eStructuralFeature)
         {
+            if (eStructuralFeature == null)
+            {
+                throw new ArgumentNullException(nameof(eStructuralFeature));
+            }
+
             return eStructuralFeature.UpperBound is -1 or > 1;
         }
 
@@ -84,6 +101,11 @@ namespace ECoreNetto.Extensions
         /// </returns>
         public static bool QueryIsAttribute(this EStructuralFeature structuralFeature)
         {
+            if (structuralFeature == null)
+            {
+                throw new ArgumentNullException(nameof(structuralFeature));
+            }
+
             return structuralFeature is EAttribute;
         }
 
@@ -98,6 +120,11 @@ namespace ECoreNetto.Extensions
         /// </returns>
         public static bool QueryIsReference(this EStructuralFeature structuralFeature)
         {
+            if (structuralFeature == null)
+            {
+                throw new ArgumentNullException(nameof(structuralFeature));
+            }
+
             return structuralFeature is EReference;
         }
 
@@ -113,6 +140,11 @@ namespace ECoreNetto.Extensions
         /// </returns>
         public static bool QueryIsContainment(this EStructuralFeature structuralFeature)
         {
+            if (structuralFeature == null)
+            {
+                throw new ArgumentNullException(nameof(structuralFeature));
+            }
+
             if (structuralFeature is EReference reference)
             {
                 return reference.IsContainment;
@@ -135,6 +167,11 @@ namespace ECoreNetto.Extensions
         /// </returns>
         public static bool QueryStructuralFeatureNameEqualsEnclosingType(this EStructuralFeature structuralFeature, EClass @class)
         {
+            if (structuralFeature == null)
+            {
+                throw new ArgumentNullException(nameof(structuralFeature));
+            }
+
             if (structuralFeature.Name.ToLower() == @class.Name.ToLower())
             {
                 return true;
@@ -154,6 +191,11 @@ namespace ECoreNetto.Extensions
         /// </returns>
         public static bool QueryHasDefaultValue(this EStructuralFeature eStructuralFeature)
         {
+            if (eStructuralFeature == null)
+            {
+                throw new ArgumentNullException(nameof(eStructuralFeature));
+            }
+
             return !string.IsNullOrEmpty(eStructuralFeature.DefaultValueLiteral);
         }
 
@@ -168,6 +210,11 @@ namespace ECoreNetto.Extensions
         /// </returns>
         public static string QueryTypeName(this EStructuralFeature eStructuralFeature)
         {
+            if (eStructuralFeature == null)
+            {
+                throw new ArgumentNullException(nameof(eStructuralFeature));
+            }
+
             var typeName = "";
 
             if (eStructuralFeature is EAttribute eAttribute)
@@ -194,6 +241,11 @@ namespace ECoreNetto.Extensions
         /// </returns>
         public static bool QueryIsNullable(this EStructuralFeature eStructuralFeature)
         {
+            if (eStructuralFeature == null)
+            {
+                throw new ArgumentNullException(nameof(eStructuralFeature));
+            }
+
             return eStructuralFeature.LowerBound == 0 && !eStructuralFeature.QueryIsEnumerable();
         }
     }

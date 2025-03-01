@@ -26,12 +26,11 @@ namespace ECoreNetto.Tools.Commands
     using System.IO;
     using System.Threading;
 
-    using ECoreNetto.Tools.Resources;
     using ECoreNetto.Reporting.Generators;
+    using ECoreNetto.Tools.Resources;
 
     using Spectre.Console;
     using System.Threading.Tasks;
-    using Resources;
 
     /// <summary>
     /// Abstract super class from which all Report <see cref="ICommandHandler"/>s need to derive

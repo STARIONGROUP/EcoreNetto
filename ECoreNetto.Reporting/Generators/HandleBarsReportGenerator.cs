@@ -24,13 +24,13 @@ namespace ECoreNetto.Reporting.Generators
     using System.Linq;
 
     using ECoreNetto.Extensions;
+    using ECoreNetto.Reporting.Payload;
     using ECoreNetto.Reporting.Resources;
 
     using HandlebarsDotNet;
     using HandlebarsDotNet.Helpers;
 
     using Microsoft.Extensions.Logging;
-    using Payload;
 
     /// <summary>
     /// Abstract super class from which all <see cref="HandlebarsDotNet"/> generators
