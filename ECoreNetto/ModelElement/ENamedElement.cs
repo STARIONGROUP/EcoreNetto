@@ -71,19 +71,19 @@ namespace ECoreNetto
         /// <summary>
         /// Process the current node and its children of the current <see cref="XmlNode"/>
         /// </summary>
-        /// <param name="reader">
+        /// <param name="element">
         /// The <see cref="XmlNode"/>
         /// </param>
         /// <remarks>
         /// This overrides the base implementation to set the name property
         /// This is required as the name acts like an identifier for the <see cref="EModelElement"/>
         /// </remarks>
-        public override void ReadXml(XmlNode reader)
+        public override void ReadXml(XmlNode element)
         {
-            this.SetName(reader);
+            this.SetName(element);
             this.EResource.Cache.Add(this.Identifier, this);
             
-            base.ReadXml(reader);
+            base.ReadXml(element);
         }
         
         /// <summary>

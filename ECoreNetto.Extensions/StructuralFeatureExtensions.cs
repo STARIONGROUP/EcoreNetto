@@ -172,6 +172,11 @@ namespace ECoreNetto.Extensions
                 throw new ArgumentNullException(nameof(structuralFeature));
             }
 
+            if (@class == null)
+            {
+                throw new ArgumentNullException(nameof(@class));
+            }
+
             if (structuralFeature.Name.ToLower() == @class.Name.ToLower())
             {
                 return true;

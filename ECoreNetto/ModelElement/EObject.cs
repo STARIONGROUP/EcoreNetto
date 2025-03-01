@@ -345,6 +345,11 @@ namespace ECoreNetto
         /// </param>
         protected void SaveAttributes(XmlNode reader)
         {
+            if (reader == null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
             foreach (XmlAttribute readerAttribute in reader.Attributes)
             {
                 var attributeValue = this.ProcessAttributeValue(readerAttribute.Name, readerAttribute.Value);

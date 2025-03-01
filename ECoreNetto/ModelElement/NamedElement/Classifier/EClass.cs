@@ -194,6 +194,11 @@ namespace ECoreNetto
         /// <param name="reader">The <see cref="XmlNode"/></param>
         protected override void DeserializeChildNode(XmlNode reader)
         {
+            if (reader == null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
             this.logger.LogTrace("deserializing child nodes of EClass {0}:{1}", this.Identifier, this.Name);
 
             base.DeserializeChildNode(reader);

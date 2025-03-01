@@ -20,6 +20,7 @@
 
 namespace ECoreNetto
 {
+    using System;
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
@@ -88,6 +89,11 @@ namespace ECoreNetto
         /// <param name="reader">The <see cref="XmlReader"/></param>
         protected override void DeserializeChildNode(XmlNode reader)
         {
+            if (reader == null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
             this.logger.LogTrace("deserializing child nodes of EModelElement {0}", this.Identifier);
 
             if (reader.Name == EcoreAnnotation && reader.NodeType == XmlNodeType.Element)

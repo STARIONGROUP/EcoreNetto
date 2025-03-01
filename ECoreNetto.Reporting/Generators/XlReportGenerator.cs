@@ -326,6 +326,11 @@ namespace ECoreNetto.Reporting.Generators
         /// </returns>
         public override Tuple<bool, string>  IsValidReportExtension(FileInfo outputPath)
         {
+            if (outputPath == null)
+            {
+                throw new ArgumentNullException(nameof(outputPath));
+            }
+
             switch (outputPath.Extension)
             {
                 case ".xlsm":

@@ -88,6 +88,11 @@ namespace ECoreNetto.Reporting.Generators
         /// </returns>
         public string Inspect(EPackage package, bool recursive = false)
         {
+            if (package == null)
+            {
+                throw new ArgumentNullException(nameof(package));
+            }
+
             this.logger.LogInformation("Start ECore Model Inspection at EPackage {0}:{1}", package.Identifier, package.Name);
              
             var sw = Stopwatch.StartNew();
@@ -251,6 +256,16 @@ namespace ECoreNetto.Reporting.Generators
         /// </returns>
         public string Inspect(EPackage package, string className)
         {
+            if (package == null)
+            {
+                throw new ArgumentNullException(nameof(package));
+            }
+
+            if (string.IsNullOrEmpty(className))
+            {
+                throw new ArgumentException(nameof(className));
+            }
+
             this.logger.LogInformation("Start ECore named Class '{2}' Inspection at EPackage {0}:{1}", package.Identifier, package.Name, className);
 
             var sw = Stopwatch.StartNew();
@@ -346,6 +361,11 @@ namespace ECoreNetto.Reporting.Generators
         /// </returns>
         public string AnalyzeDocumentation(EPackage package, bool recursive = false)
         {
+            if (package == null)
+            {
+                throw new ArgumentNullException(nameof(package));
+            }
+
             this.logger.LogInformation("Start inspection of EPackage documentation {0}:{1}", package.Identifier, package.Name);
 
             var sw = Stopwatch.StartNew();
@@ -416,6 +436,11 @@ namespace ECoreNetto.Reporting.Generators
         /// </returns>
         public override Tuple<bool, string> IsValidReportExtension(FileInfo outputPath)
         {
+            if (outputPath == null)
+            {
+                throw new ArgumentNullException(nameof(outputPath));
+            }
+
             if (outputPath.Extension == ".txt")
             {
                 return new Tuple<bool, string>(true, ".txt is a supported report extension");

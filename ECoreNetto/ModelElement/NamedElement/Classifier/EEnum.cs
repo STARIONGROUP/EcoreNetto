@@ -20,6 +20,7 @@
 
 namespace ECoreNetto
 {
+    using System;
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
@@ -71,6 +72,11 @@ namespace ECoreNetto
         /// </param>
         protected override void DeserializeChildNode(XmlNode reader)
         {
+            if (reader == null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
             this.logger.LogTrace("deserializing child nodes of EEnum {0}:{1}", this.Identifier, this.Name);
 
             base.DeserializeChildNode(reader);

@@ -86,6 +86,11 @@ namespace ECoreNetto.Resource
         /// </returns>
         public Resource CreateResource(Uri uri)
         {
+            if (uri == null)
+            {
+                throw new ArgumentNullException(nameof(uri));
+            }
+
             this.logger.LogInformation("Creating resource for uri: {0}", uri);
 
             var resource = new Resource(this.loggerFactory)
@@ -140,6 +145,11 @@ namespace ECoreNetto.Resource
         /// </returns>
         public Resource Resource(Uri uri, bool loadOnDemand)
         {
+            if (uri == null)
+            {
+                throw new ArgumentNullException(nameof(uri));
+            }
+
             foreach (var resource in this.Resources)
             {
                 if (resource.URI.AbsoluteUri == uri.AbsoluteUri)

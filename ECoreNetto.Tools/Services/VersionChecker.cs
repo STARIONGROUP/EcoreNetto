@@ -67,7 +67,7 @@ namespace ECoreNetto.Tools.Services
         /// </returns>
         public async Task<GitHubRelease> QueryLatestRelease()
         {
-            var requestUrl = "https://api.github.com/repos/STARIONGROUP/EcoreNetto/releases/latest";
+            const string requestUrl = "https://api.github.com/repos/STARIONGROUP/EcoreNetto/releases/latest";
 
             try
             {
