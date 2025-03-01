@@ -24,6 +24,7 @@ namespace ECoreNetto.Reporting.Generators
     using System.Collections.Generic;
     using System.Data;
     using System.Diagnostics;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -162,7 +163,8 @@ namespace ECoreNetto.Reporting.Generators
 
             var classWorksheet = workbook.Worksheets.Add("EClass");
 
-            var dataTable = new DataTable();
+            var dataTable = new DataTable("EClass");
+            dataTable.Locale = CultureInfo.InvariantCulture;
 
             dataTable.Columns.Add("Class", typeof(string));
             dataTable.Columns.Add("Feature", typeof(string));
@@ -224,7 +226,8 @@ namespace ECoreNetto.Reporting.Generators
 
             this.logger.LogDebug("Add EEnum reports");
 
-            var dataTable = new DataTable();
+            var dataTable = new DataTable("EEnum");
+            dataTable.Locale = CultureInfo.InvariantCulture;
 
             dataTable.Columns.Add("Enum", typeof(string));
             dataTable.Columns.Add("Literal", typeof(string));
@@ -271,7 +274,8 @@ namespace ECoreNetto.Reporting.Generators
 
             this.logger.LogDebug("Add EDataType reports");
 
-            var dataTable = new DataTable();
+            var dataTable = new DataTable("EDataType");
+            dataTable.Locale = CultureInfo.InvariantCulture;
 
             dataTable.Columns.Add("DataType", typeof(string));
             dataTable.Columns.Add("Documentation", typeof(string));
@@ -310,7 +314,7 @@ namespace ECoreNetto.Reporting.Generators
             }
             catch (Exception e)
             {
-                this.logger.LogWarning("Problem loading fonts when adjusting to contents {0}", e);
+                this.logger.LogWarning("Problem loading fonts when adjusting to contents {Exception}", e);
             }
         }
 

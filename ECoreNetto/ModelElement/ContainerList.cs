@@ -72,6 +72,11 @@ namespace ECoreNetto
         /// </param>
         public new void Add(T @object)
         {
+            if (@object == null)
+            {
+                throw new ArgumentNullException(nameof(@object));
+            }
+
             @object.RemoveFromContainer();
 
             @object.EContainer = this.container;
@@ -92,6 +97,11 @@ namespace ECoreNetto
         /// </param>
         public new void AddRange(IEnumerable<T> objects)
         {
+            if (objects == null)
+            {
+                throw new ArgumentNullException(nameof(objects));
+            }
+
             foreach (var @object in objects)
             {
                 @object.EContainer = this.container;

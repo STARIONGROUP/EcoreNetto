@@ -114,7 +114,7 @@ namespace ECoreNetto.Extensions
                 throw new ArgumentException("string can't be null or empty!", nameof(html));
             }
 
-            if (string.IsNullOrEmpty(html))
+            if (!unwantedTags.Any())
             {
                 return html;
             }

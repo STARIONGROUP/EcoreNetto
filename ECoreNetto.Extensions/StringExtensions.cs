@@ -22,6 +22,7 @@ namespace ECoreNetto.Extensions
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     /// <summary>
@@ -46,7 +47,8 @@ namespace ECoreNetto.Extensions
             input = input.Replace("\r\n", " ").Trim();
 
             var words = input.Split(' ');
-            var line = words.First();
+            var line = words[0];
+
             foreach (var word in words.Skip(1))
             {
                 var test = $"{line} {word}";
@@ -80,7 +82,7 @@ namespace ECoreNetto.Extensions
                 throw new ArgumentException("string can't be empty!");
             }
 
-            return string.Concat(input[0].ToString().ToUpper(), input.Substring(1));
+            return string.Concat(input[0].ToString(CultureInfo.InvariantCulture).ToUpper(CultureInfo.InvariantCulture), input.Substring(1));
         }
 
         /// <summary>
@@ -99,7 +101,7 @@ namespace ECoreNetto.Extensions
                 throw new ArgumentException("string can't be empty!");
             }
 
-            return string.Concat(input.First().ToString().ToLower(), input.Substring(1));
+            return string.Concat(input[0].ToString(CultureInfo.InvariantCulture).ToLower(CultureInfo.InvariantCulture), input.Substring(1));
         }
 
         /// <summary>

@@ -159,7 +159,7 @@ namespace ECoreNetto.HandleBars
                 }
             });
 
-            handlebars.RegisterHelper("StructuralFeature.QueryIsEnum", (context, arguments) =>
+            handlebars.RegisterHelper("StructuralFeature.QueryIsEnum", (_, arguments) =>
             {
                 if (arguments.Length != 1)
                 {
@@ -215,7 +215,9 @@ namespace ECoreNetto.HandleBars
             handlebars.RegisterHelper("StructuralFeature.QueryTypeName", (writer, context, _) =>
             {
                 if (!(context.Value is EStructuralFeature eStructuralFeature))
+                {
                     throw new ArgumentException("supposed to be EStructuralFeature");
+                }
 
                 var typeName = eStructuralFeature.QueryTypeName();
 

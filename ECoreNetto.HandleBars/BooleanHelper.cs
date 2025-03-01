@@ -21,6 +21,7 @@
 namespace ECoreNetto.HandleBars
 {
     using HandlebarsDotNet;
+    using System.Globalization;
 
     /// <summary>
     /// A block helper that supports operations on boolean data types
@@ -44,7 +45,7 @@ namespace ECoreNetto.HandleBars
 
                 var value = (bool)parameters[0];
 
-                writer.WriteSafeString(value.ToString().ToLowerInvariant());
+                writer.WriteSafeString(value.ToString(CultureInfo.InvariantCulture).ToLowerInvariant());
             });
         }
     }

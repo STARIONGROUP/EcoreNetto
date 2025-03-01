@@ -65,7 +65,7 @@ namespace ECoreNetto.Tools.Tests.Services
         [Test]
         public async Task Verify_that_Query_version_returns_result()
         {
-            var result = await this.versionChecker.QueryLatestRelease();
+            var result = await this.versionChecker.QueryLatestReleaseAsync();
 
             Assert.That(result, Is.Not.Null);
 

@@ -20,6 +20,7 @@
 
 namespace ECoreNetto
 {
+    using System;
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
@@ -102,6 +103,11 @@ namespace ECoreNetto
         /// </param>
         protected void SetName(XmlNode reader)
         {
+            if (reader == null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
             var nameAtt = reader.Attributes["name"];
             if (nameAtt != null)
             {

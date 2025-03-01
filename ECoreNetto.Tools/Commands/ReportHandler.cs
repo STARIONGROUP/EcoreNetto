@@ -37,6 +37,8 @@ namespace ECoreNetto.Tools.Commands
     /// </summary>
     public abstract class ReportHandler
     {
+        private const int SleepTime = 1500;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ReportHandler"/>
         /// </summary>
@@ -121,22 +123,22 @@ namespace ECoreNetto.Tools.Commands
                     .SpinnerStyle(Style.Parse("green bold"))
                     .Start($"Preparing Warp Engines for {this.ReportGenerator.QueryReportType()} reporting...", ctx =>
                     {
-                        Thread.Sleep(1500);
+                        Thread.Sleep(SleepTime);
 
                         ctx.Status($"Generating Ecore Model report at Warp 11, Captain..., SLOW DOWN!");
 
-                        Thread.Sleep(1500);
+                        Thread.Sleep(SleepTime);
 
                         this.ReportGenerator.GenerateReport(this.InputModel, this.OutputReport);
 
                         AnsiConsole.MarkupLine(
                             $"[grey]LOG:[/] Ecore {this.ReportGenerator.QueryReportType()} report generated at [bold]{this.OutputReport.FullName}[/]");
-                        Thread.Sleep(1500);
+                        Thread.Sleep(SleepTime);
 
                         this.ExecuteAutoOpen(ctx);
 
                         ctx.Status("[green]Dropping to impulse speed[/]");
-                        Thread.Sleep(1500);
+                        Thread.Sleep(SleepTime);
 
                         return Task.FromResult(0);
 
@@ -204,7 +206,7 @@ namespace ECoreNetto.Tools.Commands
             if (this.AutoOpenReport)
             {
                 ctx.Status($"Opening generated report");
-                Thread.Sleep(1500);
+                Thread.Sleep(SleepTime);
 
                 try
                 {
@@ -215,7 +217,7 @@ namespace ECoreNetto.Tools.Commands
                 catch
                 {
                     ctx.Status($"Opening of generated report failed, please open manually");
-                    Thread.Sleep(1500);
+                    Thread.Sleep(SleepTime);
                 }
             }
         }

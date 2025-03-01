@@ -21,6 +21,7 @@
 namespace ECoreNetto.Extensions
 {
     using System;
+    using System.Globalization;
 
     /// <summary>
     /// Extension methods for <see cref="EStructuralFeature"/> class
@@ -177,7 +178,7 @@ namespace ECoreNetto.Extensions
                 throw new ArgumentNullException(nameof(@class));
             }
 
-            if (structuralFeature.Name.ToLower() == @class.Name.ToLower())
+            if (structuralFeature.Name.ToLower(CultureInfo.InvariantCulture) == @class.Name.ToLower(CultureInfo.InvariantCulture))
             {
                 return true;
             }

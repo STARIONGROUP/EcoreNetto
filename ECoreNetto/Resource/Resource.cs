@@ -333,7 +333,11 @@ namespace ECoreNetto.Resource
         /// </summary>
         /// <returns>
         /// <remarks>
-        /// This will be false when the resource is first created and will be set to false, when the resource is unloaded. It will be set to true when the resource is loaded and when contents are first added to a resource that isn't loaded. Calling clear for the contents of a resource that isn't loaded, will set the resource to be loaded; this is the simplest way to create an empty resource that's considered loaded
+        /// This will be false when the resource is first created and will be set to false, when the resource
+        /// is unloaded. It will be set to true when the resource is loaded and when contents are first added
+        /// to a resource that isn't loaded. Calling clear for the contents of a resource that isn't loaded,
+        /// will set the resource to be loaded; this is the simplest way to create an empty resource that's
+        /// considered loaded
         /// </remarks>
         /// whether the resource is loaded.
         /// </returns>

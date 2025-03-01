@@ -80,6 +80,11 @@ namespace ECoreNetto.Reporting.Generators
         /// </returns>
         protected EPackage LoadRootPackage(FileInfo modelPath)
         {
+            if (modelPath == null)
+            {
+                throw new ArgumentNullException(nameof(modelPath));
+            }
+
             this.logger.LogInformation("Loading Ecore model from {0}", modelPath.FullName);
 
             var uri = new System.Uri(modelPath.FullName);

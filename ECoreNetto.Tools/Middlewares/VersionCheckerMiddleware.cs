@@ -55,7 +55,7 @@ namespace ECoreNetto.Tools.Middlewares
 
                 try
                 {
-                    var payload = await versionChecker.QueryLatestRelease();
+                    var payload = await versionChecker.QueryLatestReleaseAsync();
 
                     if (payload != null)
                     {

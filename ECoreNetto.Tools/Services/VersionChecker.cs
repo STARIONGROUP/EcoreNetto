@@ -65,7 +65,7 @@ namespace ECoreNetto.Tools.Services
         /// an instance of <see cref="GitHubRelease"/> or null if not found or a connection
         /// error occured
         /// </returns>
-        public async Task<GitHubRelease> QueryLatestRelease()
+        public async Task<GitHubRelease> QueryLatestReleaseAsync()
         {
             const string requestUrl = "https://api.github.com/repos/STARIONGROUP/EcoreNetto/releases/latest";
 
@@ -85,7 +85,7 @@ namespace ECoreNetto.Tools.Services
             }
             catch (TaskCanceledException)
             {
-                this.logger.LogWarning("Contacting the GitGub API at {url} timed out", requestUrl);
+                this.logger.LogWarning("Contacting the GitGub API at {Url} timed out", requestUrl);
             }
             catch (Exception ex)
             {
