@@ -6,7 +6,7 @@
         <Company>Starion Group S.A.</Company>
         <Copyright>Copyright © Starion Group S.A.</Copyright>
         <Title>ECoreNetto.Reporting</Title>
-        <Version>6.0.4</Version>
+        <Version>7.0.0</Version>
         <Description>Ecore Reporting use in combination with the ECoreNetto library generate reports</Description>
         <PackageId>ECoreNetto.Reporting</PackageId>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -23,7 +23,8 @@
         <Authors>Sam Gerene</Authors>
         <PackageTags>Ecore HandleBars Reporting</PackageTags>
         <PackageReleaseNotes>
-            [Update] ECoreNetto.HandleBars version 6.0.4
+            [Update] ECoreNetto.HandleBars version 7.0.0
+            [Add] parameter validation
         </PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
