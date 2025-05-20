@@ -48,11 +48,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="ClosedXML" Version="0.104.2" />
+        <PackageReference Include="ClosedXML" Version="0.105.0" />
     </ItemGroup>
 
     <ItemGroup Label="Transitive Dependency overrides">
-        <PackageReference Include="System.IO.Packaging" Version="9.0.3" />
+        <PackageReference Include="System.IO.Packaging" Version="9.0.5" />
     </ItemGroup>
 
     <ItemGroup>
