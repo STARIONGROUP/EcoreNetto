@@ -52,7 +52,7 @@
     </ItemGroup>
 
     <ItemGroup Label="Transitive Dependency overrides">
-        <PackageReference Include="System.IO.Packaging" Version="9.0.5" />
+        <PackageReference Include="System.IO.Packaging" Version="9.0.7" />
     </ItemGroup>
 
     <ItemGroup>
