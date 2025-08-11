@@ -312,9 +312,9 @@ namespace ECoreNetto.Reporting.Generators
                 worksheet.Rows().AdjustToContents();
                 worksheet.Columns().AdjustToContents();
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                this.logger.LogWarning("Problem loading fonts when adjusting to contents {Exception}", e);
+                this.logger.LogWarning(ex, "Problem loading fonts when adjusting to contents");
             }
         }
 
