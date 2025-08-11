@@ -9,7 +9,7 @@
         <PackAsTool>true</PackAsTool>
         <PackageId>ECoreNetto.Tools</PackageId>
         <ToolCommandName>ecoretools</ToolCommandName>
-        <Version>7.0.1</Version>
+        <Version>7.0.2</Version>
         <ImplicitUsings>disable</ImplicitUsings>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageIcon>ecorenetto-Icon.png</PackageIcon>
@@ -20,7 +20,7 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <GenerateSBOM>true</GenerateSBOM>
         <PackageReleaseNotes>
-            [Update] to ECoreNetto.Reporting version 7.0.1
+            [Update] to ECoreNetto.Reporting version 7.0.2
             [Update] to Microsoft.Extensions.Hosting version 9.0.8
         </PackageReleaseNotes>
     </PropertyGroup>

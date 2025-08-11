@@ -6,7 +6,7 @@
         <Company>Starion Group S.A.</Company>
         <Copyright>Copyright © Starion Group S.A.</Copyright>
         <Title>ECoreNetto.Extensions</Title>
-        <Version>7.0.1</Version>
+        <Version>7.0.2</Version>
         <Description>Extension methods for the ECoreNetto library that are typically used to support code generation</Description>
         <PackageId>ECoreNetto.Extensions</PackageId>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -14,7 +14,6 @@
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        <DebugType>embedded</DebugType>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
         <RepositoryUrl>https://github.com/STARIONGROUP/EcoreNetto</RepositoryUrl>
@@ -28,7 +27,7 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <GenerateSBOM>true</GenerateSBOM>
         <PackageReleaseNotes>
-            [Update] to ECoreNetto version 7.0.1
+            [Update] to ECoreNetto version 7.0.2
             [Update] to HtmlAgilityPack version 1.12.2
             [Add] SBOM to nugets
             [Update] how symbols and sources are made available

@@ -39,7 +39,6 @@ ECHO Pushing to nuget.org ...
 ECHO.
 
 dotnet nuget push ReleaseBuilds\*.nupkg -s api.nuget.org -k %apikey% --skip-duplicate
-dotnet nuget push ReleaseBuilds\*.snupkg -s api.nuget.org -k %apikey% --skip-duplicate
 
 :End
 
