@@ -21,7 +21,8 @@
         <NeutralLanguage>en-US</NeutralLanguage>
         <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
         <Authors>Sam Gerene</Authors>
-        <PackageTags>Ecore</PackageTags>
+        <PackageTags>Ecore modeltopia</PackageTags>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageReleaseNotes>
             [Update] to ECoreNetto version 7.0.0
             [Update] to HtmlAgilityPack version 1.11.74

@@ -21,7 +21,8 @@
         <NeutralLanguage>en-US</NeutralLanguage>
         <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
         <Authors>Sam Gerene</Authors>
-        <PackageTags>Ecore HandleBars</PackageTags>
+        <PackageTags>Ecore HandleBars modeltopia</PackageTags>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageReleaseNotes>
             [Update] ECoreNetto.Extensions to version 7.0.0
             [Update] Handlebars.Net.Helpers to version 2.4.13

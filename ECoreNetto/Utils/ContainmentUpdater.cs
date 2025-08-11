@@ -163,7 +163,7 @@ namespace ECoreNetto.Utils
         }
 
         /// <summary>
-        /// removes the <see cref="EEnumLiteral"/> from its container <see cref=""/>
+        /// removes the <see cref="EEnumLiteral"/> from its container <see cref="EEnum"/>
         /// </summary>
         /// <param name="enumLiteral">
         /// the subject <see cref="EEnum"/>

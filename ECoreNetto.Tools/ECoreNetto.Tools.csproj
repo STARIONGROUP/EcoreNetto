@@ -16,6 +16,8 @@
         <ApplicationIcon>icon.ico</ApplicationIcon>
         <NeutralLanguage>en-US</NeutralLanguage>
         <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
+        <PackageTags>Ecore HandleBars Reporting modeltopia</PackageTags>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageReleaseNotes>
             [Update] to ECoreNetto.Reporting version 7.0.0
             [Add] parameter validation

@@ -21,7 +21,8 @@
         <NeutralLanguage>en-US</NeutralLanguage>
         <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
         <Authors>Sam Gerene</Authors>
-        <PackageTags>Ecore HandleBars Reporting</PackageTags>
+        <PackageTags>Ecore HandleBars Reporting modeltopia</PackageTags>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageReleaseNotes>
             [Update] ECoreNetto.HandleBars version 7.0.0
             [Add] parameter validation

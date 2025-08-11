@@ -46,7 +46,7 @@ namespace ECoreNetto
         public EOperation EOperation => (EOperation)this.EContainer;
 
         /// <summary>
-        /// Build the <see cref="EModelElement.Identifier"/> property
+        /// Build the EModelElement.Identifier property
         /// </summary>
         /// <returns>
         /// The identifier

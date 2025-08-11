@@ -79,7 +79,7 @@ namespace ECoreNetto.Extensions
         /// The subject <see cref="EStructuralFeature"/>
         /// </param>
         /// <returns>
-        /// true if <see cref="EStructuralFeature.UpperBound"/> = -1 or > 1, false if not
+        /// true if EStructuralFeature.UpperBound = -1 or > 1, false if not
         /// </returns>
         public static bool QueryIsEnumerable(this EStructuralFeature eStructuralFeature)
         {
@@ -155,7 +155,7 @@ namespace ECoreNetto.Extensions
         }
 
         /// <summary>
-        /// Queries whether the <see cref="EStructuralFeature.Name"/> is equal to the name of the containing <see cref="EClass"/>
+        /// Queries whether the EStructuralFeature.Name is equal to the name of the containing <see cref="EClass"/>
         /// </summary>
         /// <param name="structuralFeature">
         /// The subject <see cref="EStructuralFeature"/>
@@ -243,7 +243,7 @@ namespace ECoreNetto.Extensions
         /// The subject <see cref="EStructuralFeature"/>
         /// </param>
         /// <returns>
-        /// true if <see cref="EStructuralFeature.LowerBound"/> = 0, false if not
+        /// true if EStructuralFeature.LowerBound = 0, false if not
         /// </returns>
         public static bool QueryIsNullable(this EStructuralFeature eStructuralFeature)
         {

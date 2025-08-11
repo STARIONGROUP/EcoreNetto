@@ -60,7 +60,7 @@ namespace ECoreNetto
         /// <remarks>
         /// Containment applies only for references. A containment reference always
         /// has an implicit opposite, even if there is no explicit opposite and that
-        /// opposite is effectively a view on <see cref="EObject.eContainer()"/>.
+        /// opposite is effectively a view on EObject.eContainer().
         /// Whenever an object is added to a containment reference, it will be removed
         /// from any other containment reference currently holding it.
         /// That’s because an object can only have one container,so adding it to a
