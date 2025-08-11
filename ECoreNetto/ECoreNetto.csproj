@@ -26,6 +26,7 @@
         <Authors>Sam Gerene</Authors>
         <PackageTags>Ecore modeltopia</PackageTags>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <GenerateSBOM>true</GenerateSBOM>
         <PackageReleaseNotes>
             [Add] parameter validation
         </PackageReleaseNotes>
@@ -39,6 +40,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.8" />
+        <PackageReference Include="Microsoft.Sbom.Targets" Version="4.1.0" PrivateAssets="all" />
     </ItemGroup>
 
 </Project>

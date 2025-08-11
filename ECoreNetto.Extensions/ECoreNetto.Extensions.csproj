@@ -23,6 +23,7 @@
         <Authors>Sam Gerene</Authors>
         <PackageTags>Ecore modeltopia</PackageTags>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <GenerateSBOM>true</GenerateSBOM>
         <PackageReleaseNotes>
             [Update] to ECoreNetto version 7.0.0
             [Update] to HtmlAgilityPack version 1.11.74
@@ -37,6 +38,7 @@
 
     <ItemGroup>
         <PackageReference Include="HtmlAgilityPack" Version="1.12.2" />
+        <PackageReference Include="Microsoft.Sbom.Targets" Version="4.1.0" PrivateAssets="all" />
     </ItemGroup>
 
     <ItemGroup>

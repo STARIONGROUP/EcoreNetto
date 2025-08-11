@@ -18,6 +18,7 @@
         <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
         <PackageTags>Ecore HandleBars Reporting modeltopia</PackageTags>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <GenerateSBOM>true</GenerateSBOM>
         <PackageReleaseNotes>
             [Update] to ECoreNetto.Reporting version 7.0.0
             [Add] parameter validation
@@ -52,6 +53,7 @@
         <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
         <PackageReference Include="System.CommandLine.Hosting" Version="0.4.0-alpha.22272.1" />
         <PackageReference Include="Spectre.Console" Version="0.50.0" />
+        <PackageReference Include="Microsoft.Sbom.Targets" Version="4.1.0" PrivateAssets="all" />
     </ItemGroup>
 
     <ItemGroup Label="Transitive Dependency overrides">

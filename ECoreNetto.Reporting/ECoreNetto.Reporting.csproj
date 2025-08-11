@@ -23,6 +23,7 @@
         <Authors>Sam Gerene</Authors>
         <PackageTags>Ecore HandleBars Reporting modeltopia</PackageTags>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <GenerateSBOM>true</GenerateSBOM>
         <PackageReleaseNotes>
             [Update] ECoreNetto.HandleBars version 7.0.0
             [Add] parameter validation
@@ -50,6 +51,7 @@
 
     <ItemGroup>
         <PackageReference Include="ClosedXML" Version="0.105.0" />
+        <PackageReference Include="Microsoft.Sbom.Targets" Version="4.1.0" PrivateAssets="all" />
     </ItemGroup>
 
     <ItemGroup Label="Transitive Dependency overrides">
