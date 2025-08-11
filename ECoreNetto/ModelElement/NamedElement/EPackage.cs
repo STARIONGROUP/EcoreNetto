@@ -209,7 +209,9 @@ namespace ECoreNetto
                 superPackage = superPackage.ESuperPackage;
             }
 
-            packageHierarchy[packageHierarchy.Count - 1] = $"{packageHierarchy.Last()}.ecore#/";
+            packageHierarchy[packageHierarchy.Count - 1] = $"{packageHierarchy[packageHierarchy.Count - 1]}.ecore#/";
+
+
             packageHierarchy.Reverse();
 
             return string.Join("/", packageHierarchy);

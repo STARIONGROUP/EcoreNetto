@@ -26,7 +26,7 @@ namespace ECoreNetto
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
-    
+
     /// <summary>
     /// An <see cref="EObject"/> is the base of all modeled objects. All the method names start with "e" to distinguish the EMF methods from the client methods.
     /// It provides support for the behaviors and features common to all modeled objects.
@@ -89,7 +89,7 @@ namespace ECoreNetto
         {
             throw new NotImplementedException();
         }
-        
+
         /// <summary>
         /// Gets the containing object, or null.
         /// </summary>

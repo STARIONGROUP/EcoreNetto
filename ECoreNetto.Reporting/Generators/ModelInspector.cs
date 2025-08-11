@@ -391,6 +391,9 @@ namespace ECoreNetto.Reporting.Generators
         /// <param name="package">
         /// The <see cref="EPackage"/> which needs to be inspected
         /// </param>
+        /// <param name="sb">
+        /// The <see cref="StringBuilder"/>> to which the analysis results are appended
+        /// </param>
         /// <param name="recursive">
         /// A value indicating whether the sub <see cref="EPackage"/>s need to be Analyzed as well
         /// </param>
@@ -406,12 +409,10 @@ namespace ECoreNetto.Reporting.Generators
                     sb.AppendLine($"{package.Name}.{eClass.Name}");
                 }
 
-                foreach (var eStructuralFeature in eClass.EStructuralFeaturesOrderByName)
+                foreach (var eStructuralFeature in eClass.EStructuralFeaturesOrderByName
+                             .Where(f => string.IsNullOrEmpty(f.QueryRawDocumentation())))
                 {
-                    if (string.IsNullOrEmpty(eStructuralFeature.QueryRawDocumentation()))
-                    {
-                        sb.AppendLine($"{package.Name}.{eClass.Name}:{eStructuralFeature.Name}");
-                    }
+                    sb.AppendLine($"{package.Name}.{eClass.Name}:{eStructuralFeature.Name}");
                 }
             }
 

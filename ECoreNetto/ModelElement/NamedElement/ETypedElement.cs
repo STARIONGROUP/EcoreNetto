@@ -133,7 +133,8 @@ namespace ECoreNetto
 
             if (this.Attributes.TryGetValue("eType", out output))
             {
-                var typeName = output.Split(' ').Last();
+                var parts = output.Split(' ');
+                var typeName = parts[parts.Length - 1];
 
                 this.EType = (EClassifier)this.EResource.GetEObject(typeName);
             }
