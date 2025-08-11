@@ -72,5 +72,24 @@ namespace ECoreNetto.Tests.Resource
 
             Assert.That(root.EClassifiers.OfType<EClass>().Count(), Is.EqualTo(20));
         }
+
+        [Test]
+        public void Verify_that_when_urifragment_is_null_or_empty_exception_is_thrown()
+        {
+            Assert.That(() => this.resource.GetEObject(""), Throws.ArgumentException);
+
+            Assert.That(() => this.resource.GetEObject(null), Throws.ArgumentException);
+        }
+
+        [Test]
+        public void Verify_that_can_be_initialized_with_null_logger()
+        {
+            var uri = new System.Uri(this.filePath);
+
+            Assert.That(() => {
+                this.resource = new Resource() { URI = uri, ResourceSet = this.resourceSet };
+
+            }, Throws.Nothing);
+        }
     }
 }

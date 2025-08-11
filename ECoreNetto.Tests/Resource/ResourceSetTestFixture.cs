@@ -20,15 +20,12 @@
 
 namespace ECoreNetto.Tests.Resource
 {
-    using System.IO;
-
     using ECoreNetto.Resource;
-
     using Microsoft.Extensions.Logging;
-
     using NUnit.Framework;
-
     using Serilog;
+    using System;
+    using System.IO;
 
     /// <summary>
     /// Suite of tests for the <see cref="ResourceSet"/> class.
@@ -72,6 +69,25 @@ namespace ECoreNetto.Tests.Resource
         }
 
         [Test]
+        public void Verify_that_when_uri_is_null_exception_is_thrown()
+        {
+            Assert.That(() => this.resourceSet.CreateResource(null), Throws.ArgumentNullException);
+        }
+
+        [Test]
+        public void Verify_that_can_be_initialized_with_null_logger()
+        {
+            var uri = new System.Uri(this.filePath);
+
+            Assert.That(() => {
+                this.resourceSet = new ResourceSet(null);
+
+                resourceSet.CreateResource(uri);
+
+            }, Throws.Nothing);
+        }
+
+        [Test]
         public void VerifyThatAResourceCanBeCreated()
         {
             var uri = new System.Uri(this.filePath);
@@ -96,6 +112,12 @@ namespace ECoreNetto.Tests.Resource
             var result = this.resourceSet.Resource(uri, false);
 
             Assert.That(resource, Is.EqualTo(result));
+        }
+
+        [Test]
+        public void VerifyThat_when_resource_is_called_with_null_uri_exception_is_thrown()
+        {
+            Assert.That(() => this.resourceSet.Resource(null, false), Throws.ArgumentNullException);
         }
     }
 }
