@@ -91,5 +91,21 @@ namespace ECoreNetto.Tests.Resource
 
             }, Throws.Nothing);
         }
+
+        [Test]
+        public void Verify_that_resource_load_state_and_unload_work_as_expected()
+        {
+            this.resource.Load(null);
+
+            Assert.That(this.resource.IsLoaded(), Is.True);
+            Assert.That(this.resource.AllContents().Any(), Is.True);
+
+            this.resource.UnLoad();
+
+            Assert.That(this.resource.IsLoaded(), Is.False);
+            Assert.That(this.resource.Contents, Is.Empty);
+            Assert.That(this.resource.Errors, Is.Empty);
+            Assert.That(this.resource.Warnings, Is.Empty);
+        }
     }
 }

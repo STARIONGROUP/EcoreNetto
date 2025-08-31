@@ -105,5 +105,32 @@ namespace ECoreNetto.Extensions.Tests
 
             Assert.That(() => ModelElementExtensions.RemoveUnwantedHtmlTags(html, new List<string>()), Throws.ArgumentException);
         }
+
+        [Test]
+        public void Verify_that_QueryRawDocumentation_returns_expected_results()
+        {
+            var documentedClass = this.rootPackage.EClassifiers.Single(x => x.Name == "Ingredient");
+
+            var documentation = documentedClass.QueryRawDocumentation();
+
+            Assert.That(documentation, Is.EqualTo("Any of the foods or substances that are combined to make a particular dish."));
+
+            var undocumentedClass = this.rootPackage.EClassifiers.Single(x => x.Name == "Recipe");
+
+            documentation = undocumentedClass.QueryRawDocumentation();
+
+            Assert.That(documentation, Is.EqualTo(string.Empty));
+        }
+
+        [Test]
+        public void Verify_that_RemoveUnwantedHtmlTags_returns_expected_results()
+        {
+            const string html = "<p>Hello <em>World</em></p>";
+            var cleaned = ModelElementExtensions.RemoveUnwantedHtmlTags(html, new List<string> { "p", "em" });
+            Assert.That(cleaned, Is.EqualTo("Hello World"));
+
+            var unchanged = ModelElementExtensions.RemoveUnwantedHtmlTags(html, new List<string>());
+            Assert.That(unchanged, Is.EqualTo(html));
+        }
     }
 }
