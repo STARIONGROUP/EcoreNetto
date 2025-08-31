@@ -115,6 +115,16 @@ namespace ECoreNetto.Tests.Resource
         }
 
         [Test]
+        public void VerifyThatNullIsReturnedWhenResourceCannotBeFound()
+        {
+            var uri = new System.Uri(this.filePath);
+
+            var result = this.resourceSet.Resource(uri, false);
+
+            Assert.That(result, Is.Null);
+        }
+
+        [Test]
         public void VerifyThat_when_resource_is_called_with_null_uri_exception_is_thrown()
         {
             Assert.That(() => this.resourceSet.Resource(null, false), Throws.ArgumentNullException);

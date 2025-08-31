@@ -177,5 +177,33 @@ namespace ECoreNetto.Extensions.Tests
 
             Assert.That(minutesStructuralFeature.QueryIsContainment, Is.False);
         }
+
+        [Test]
+        public void Verify_that_QueryTypeName_returns_expected_results()
+        {
+            var ingredientClass = this.rootPackage.EClassifiers.OfType<EClass>().Single(x => x.Name == "Ingredient");
+            var amountStructuralFeature = ingredientClass.EStructuralFeatures.Single(x => x.Name == "amount");
+            Assert.That(amountStructuralFeature.QueryTypeName(), Is.EqualTo("Amount"));
+
+            var timeTriggerClass = this.rootPackage.EClassifiers.OfType<EClass>().Single(x => x.Name == "TimeTrigger");
+            var minutesStructuralFeature = timeTriggerClass.EStructuralFeatures.Single(x => x.Name == "minutes");
+            Assert.That(minutesStructuralFeature.QueryTypeName(), Is.EqualTo("EInt"));
+        }
+
+        [Test]
+        public void Verify_that_QueryIsNullable_returns_expected_results()
+        {
+            var relationClass = this.rootPackage.EClassifiers.OfType<EClass>().Single(x => x.Name == "ContainmentRelation");
+            var containerFeature = relationClass.EStructuralFeatures.Single(x => x.Name == "container");
+            Assert.That(containerFeature.QueryIsNullable(), Is.False);
+
+            var standardActionClass = this.rootPackage.EClassifiers.OfType<EClass>().Single(x => x.Name == "StandardAction");
+            var toolFeature = standardActionClass.EStructuralFeatures.Single(x => x.Name == "tool");
+            Assert.That(toolFeature.QueryIsNullable(), Is.True);
+
+            var recipeClass = this.rootPackage.EClassifiers.OfType<EClass>().Single(x => x.Name == "Recipe");
+            var ingredientsFeature = recipeClass.EStructuralFeatures.Single(x => x.Name == "ingredients");
+            Assert.That(ingredientsFeature.QueryIsNullable(), Is.False);
+        }
     }
 }
