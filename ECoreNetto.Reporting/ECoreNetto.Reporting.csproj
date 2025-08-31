@@ -56,8 +56,8 @@
 
     <ItemGroup>
         <PackageReference Include="ClosedXML" Version="0.105.0" />
-        <PackageReference Include="Microsoft.Sbom.Targets" Version="4.1.0" PrivateAssets="all" />
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
+        <PackageReference Include="Microsoft.Sbom.Targets" Version="4.1.1" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
     </ItemGroup>
 
     <ItemGroup Label="Transitive Dependency overrides">
