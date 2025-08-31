@@ -50,4 +50,8 @@
         <None Include="..\README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="$(MSBuildProjectName).Tests" />
+    </ItemGroup>
+
 </Project>

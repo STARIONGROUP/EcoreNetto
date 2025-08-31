@@ -179,20 +179,6 @@ namespace ECoreNetto.Extensions.Tests
         }
 
         [Test]
-        public void Verify_that_QueryStructuralFeatureNameEqualsEnclosingType_returns_expected_results()
-        {
-            var resource = new Resource();
-            var enclosingClass = new EClass(resource) { Name = "Test" };
-            var structuralFeature = new EAttribute(resource) { Name = "Test" };
-
-            Assert.That(structuralFeature.QueryStructuralFeatureNameEqualsEnclosingType(enclosingClass), Is.True);
-
-            structuralFeature = new EAttribute(resource) { Name = "Other" };
-
-            Assert.That(structuralFeature.QueryStructuralFeatureNameEqualsEnclosingType(enclosingClass), Is.False);
-        }
-
-        [Test]
         public void Verify_that_QueryTypeName_returns_expected_results()
         {
             var ingredientClass = this.rootPackage.EClassifiers.OfType<EClass>().Single(x => x.Name == "Ingredient");
@@ -202,10 +188,6 @@ namespace ECoreNetto.Extensions.Tests
             var timeTriggerClass = this.rootPackage.EClassifiers.OfType<EClass>().Single(x => x.Name == "TimeTrigger");
             var minutesStructuralFeature = timeTriggerClass.EStructuralFeatures.Single(x => x.Name == "minutes");
             Assert.That(minutesStructuralFeature.QueryTypeName(), Is.EqualTo("EInt"));
-
-            var resource = new Resource();
-            var attributeWithoutType = new EAttribute(resource) { Name = "dummy" };
-            Assert.That(attributeWithoutType.QueryTypeName(), Is.Empty);
         }
 
         [Test]

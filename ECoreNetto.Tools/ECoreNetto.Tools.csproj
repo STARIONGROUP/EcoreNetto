@@ -70,4 +70,8 @@
       <ProjectReference Include="..\ECoreNetto.Reporting\ECoreNetto.Reporting.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="$(MSBuildProjectName).Tests" />
+    </ItemGroup>
+
 </Project>
