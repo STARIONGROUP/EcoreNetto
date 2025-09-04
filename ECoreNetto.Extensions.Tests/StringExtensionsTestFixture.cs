@@ -44,6 +44,14 @@ namespace ECoreNetto.Extensions.Tests
         }
 
         [Test]
+        public void Verify_that_SplitToLines_validates_arguments()
+        {
+            Assert.Throws<ArgumentException>(() => StringExtensions.SplitToLines(null, 1));
+            Assert.Throws<ArgumentException>(() => "".SplitToLines(1));
+            Assert.Throws<ArgumentException>(() => "test".SplitToLines(0));
+        }
+
+        [Test]
         public void Verify_that_CapitalizeFirstLetter_returns_expected_result()
         {
             Assert.Throws<ArgumentException>(() => StringExtensions.CapitalizeFirstLetter(null));
