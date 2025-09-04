@@ -44,6 +44,16 @@ namespace ECoreNetto.Extensions
         /// </returns>
         public static IEnumerable<string> SplitToLines(this string input, int maximumLineLength)
         {
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                throw new ArgumentException("string can't be empty!");
+            }
+
+            if (maximumLineLength <= 0)
+            {
+                throw new ArgumentException("maximumLineLength must be greater than zero");
+            }
+
             input = input.Replace("\r\n", " ").Trim();
 
             var words = input.Split(' ');
