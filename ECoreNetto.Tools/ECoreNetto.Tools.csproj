@@ -9,7 +9,7 @@
         <PackAsTool>true</PackAsTool>
         <PackageId>ECoreNetto.Tools</PackageId>
         <ToolCommandName>ecoretools</ToolCommandName>
-        <Version>7.0.2</Version>
+        <Version>7.0.3</Version>
         <ImplicitUsings>disable</ImplicitUsings>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageIcon>ecorenetto-Icon.png</PackageIcon>
@@ -20,8 +20,11 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <GenerateSBOM>true</GenerateSBOM>
         <PackageReleaseNotes>
-            [Update] to ECoreNetto.Reporting version 7.0.2
-            [Update] to Microsoft.Extensions.Hosting version 9.0.8
+            [Update] to ECoreNetto.Reporting version 7.0.3
+            [Update] to Microsoft.Extensions.Hosting version 9.0.9
+            [Update] to Microsoft.Extensions.Http version 9.0.9
+            [Update] to Spectre.Console version 0.51.1
+            [Update] Microsoft.Sbom.Targets to version 4.1.2
         </PackageReleaseNotes>
     </PropertyGroup>
 
@@ -49,15 +52,15 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.8" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.9" />
         <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
         <PackageReference Include="System.CommandLine.Hosting" Version="0.4.0-alpha.22272.1" />
-        <PackageReference Include="Spectre.Console" Version="0.50.0" />
-        <PackageReference Include="Microsoft.Sbom.Targets" Version="4.1.1" PrivateAssets="all" />
+        <PackageReference Include="Spectre.Console" Version="0.51.1" />
+        <PackageReference Include="Microsoft.Sbom.Targets" Version="4.1.2" PrivateAssets="all" />
     </ItemGroup>
 
     <ItemGroup Label="Transitive Dependency overrides">
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.8" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.9" />
     </ItemGroup>
 
     <ItemGroup>

@@ -6,7 +6,7 @@
         <Company>Starion Group S.A.</Company>
         <Copyright>Copyright © Starion Group S.A.</Copyright>
         <Title>ECoreNetto.Reporting</Title>
-        <Version>7.0.2</Version>
+        <Version>7.0.3</Version>
         <Description>Ecore Reporting use in combination with the ECoreNetto library generate reports</Description>
         <PackageId>ECoreNetto.Reporting</PackageId>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -27,11 +27,9 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <GenerateSBOM>true</GenerateSBOM>
         <PackageReleaseNotes>
-            [Update] ECoreNetto.HandleBars version 7.0.2
-            [Update] System.IO.Packaging version 9.0.8
-            [Update] ClosedXML version 0.105.0
-            [Add] SBOM to nugets
-            [Update] how symbols and sources are made available
+            [Update] ECoreNetto.HandleBars version 7.0.3
+            [Update] System.IO.Packaging version 9.0.9
+            [Update] Microsoft.Sbom.Targets to version 4.1.2
         </PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
@@ -56,12 +54,12 @@
 
     <ItemGroup>
         <PackageReference Include="ClosedXML" Version="0.105.0" />
-        <PackageReference Include="Microsoft.Sbom.Targets" Version="4.1.1" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.Sbom.Targets" Version="4.1.2" PrivateAssets="all" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
     </ItemGroup>
 
     <ItemGroup Label="Transitive Dependency overrides">
-        <PackageReference Include="System.IO.Packaging" Version="9.0.8" />
+        <PackageReference Include="System.IO.Packaging" Version="9.0.9" />
     </ItemGroup>
 
     <ItemGroup>
