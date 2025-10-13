@@ -139,6 +139,6 @@ jobs:
         with:
           draft: true
           prerelease: ${{ env.PRERELEASE }}
-          name: "ReqIFSharp ${{ env.VERSION }}"
+          name: "EcoreNetto ${{ env.VERSION }}"
           tag_name: ${{ env.VERSION }}
           body_path: RELEASE_NOTES.md
