@@ -6,7 +6,7 @@
         <Company>Starion Group S.A.</Company>
         <Copyright>Copyright © Starion Group S.A.</Copyright>
         <Title>ECoreNetto.Reporting</Title>
-        <Version>7.0.3</Version>
+        <Version>7.0.4</Version>
         <Description>Ecore Reporting use in combination with the ECoreNetto library generate reports</Description>
         <PackageId>ECoreNetto.Reporting</PackageId>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -27,9 +27,8 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <GenerateSBOM>true</GenerateSBOM>
         <PackageReleaseNotes>
-            [Update] ECoreNetto.HandleBars version 7.0.3
-            [Update] System.IO.Packaging version 9.0.9
-            [Update] Microsoft.Sbom.Targets to version 4.1.2
+            [Update] ECoreNetto.HandleBars version 7.0.4
+            [Update] System.IO.Packaging version 9.0.10
         </PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
@@ -59,7 +58,7 @@
     </ItemGroup>
 
     <ItemGroup Label="Transitive Dependency overrides">
-        <PackageReference Include="System.IO.Packaging" Version="9.0.9" />
+        <PackageReference Include="System.IO.Packaging" Version="9.0.10" />
     </ItemGroup>
 
     <ItemGroup>

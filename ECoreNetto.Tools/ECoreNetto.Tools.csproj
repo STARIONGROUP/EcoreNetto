@@ -20,7 +20,7 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <GenerateSBOM>true</GenerateSBOM>
         <PackageReleaseNotes>
-            [Update] to Spectre.Console version 0.52.0
+            [Update] ECoreNetto.Reporting version 7.0.4
         </PackageReleaseNotes>
     </PropertyGroup>
 
@@ -48,7 +48,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.10" />
         <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
         <PackageReference Include="System.CommandLine.Hosting" Version="0.4.0-alpha.22272.1" />
         <PackageReference Include="Spectre.Console" Version="0.52.0" />
@@ -56,7 +56,7 @@
     </ItemGroup>
 
     <ItemGroup Label="Transitive Dependency overrides">
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.10" />
     </ItemGroup>
 
     <ItemGroup>

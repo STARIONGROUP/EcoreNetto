@@ -7,7 +7,7 @@
         <LangVersion>10.0</LangVersion>
         <Company>Starion Group S.A.</Company>
         <Title>EcoreNetto</Title>
-        <Version>7.0.3</Version>
+        <Version>7.0.4</Version>
         <Description>ECoreNetto is a dotnet core library that is used to deserialize an Ecore meta-model for the purpose of code generation. Ecore is a meta-model used to represent models in the Eclipse Modelling Framework. EMF is a powerful framework and code generation facility for building Java applications based on simple model definitions. The intention of ECoreNetto is not to be a port of EMF, it aims at bridging the gap to the .NET world to facilitate code generation of C# class libraries based on an Ecore model using the .NET code available tooling and libraries.</Description>
         <PackageId>ECoreNetto</PackageId>
         <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
@@ -30,8 +30,7 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <GenerateSBOM>true</GenerateSBOM>
         <PackageReleaseNotes>
-            [Update] Microsoft.Extensions.Logging.Abstractions to version 9.0.9
-            [Update] Microsoft.Sbom.Targets to version 4.1.2
+            [Update] Microsoft.Extensions.Logging.Abstractions to version 9.0.10
         </PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
@@ -42,7 +41,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.10" />
         <PackageReference Include="Microsoft.Sbom.Targets" Version="4.1.2" PrivateAssets="all" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
     </ItemGroup>
