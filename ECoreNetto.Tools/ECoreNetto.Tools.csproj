@@ -20,7 +20,7 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <GenerateSBOM>true</GenerateSBOM>
         <PackageReleaseNotes>
-            [Update] ECoreNetto.Reporting version 7.0.4
+            [Update] ECoreNetto.Reporting version 7.0.5
         </PackageReleaseNotes>
     </PropertyGroup>
 

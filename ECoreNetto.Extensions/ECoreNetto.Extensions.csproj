@@ -6,7 +6,7 @@
         <Company>Starion Group S.A.</Company>
         <Copyright>Copyright © Starion Group S.A.</Copyright>
         <Title>ECoreNetto.Extensions</Title>
-        <Version>7.0.4</Version>
+        <Version>7.0.5</Version>
         <Description>Extension methods for the ECoreNetto library that are typically used to support code generation</Description>
         <PackageId>ECoreNetto.Extensions</PackageId>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -27,7 +27,7 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <GenerateSBOM>true</GenerateSBOM>
         <PackageReleaseNotes>
-            [Update] to ECoreNetto version 7.0.4
+            [Update] to ECoreNetto version 7.0.5
         </PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
