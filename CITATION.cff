@@ -3,8 +3,8 @@ message: "If you use this software, please cite it as below."
 
 title: "EcoreNetto"
 abstract: "ECoreNetto is a suite of dotnet core libraries that is used to deserialize an Ecore meta-model for the purpose of code generation. Ecore is a meta-model used to represent models in the Eclipse Modelling Framework. EMF is a powerful framework and code generation facility for building Java applications based on simple model definitions. The intention of ECoreNetto is not to be a port of EMF, it aims at bridging the gap to the .NET world to facilitate code generation of C# class libraries based on an Ecore model using the .NET code available tooling and libraries."
-version: "7.0.5"
-date-released: "2025-10-18"
+version: "7.0.6"
+date-released: "2025-11-24"
 url: "https://github.com/STARIONGROUP/ECoreNetto"
 
 authors:
@@ -30,6 +30,6 @@ preferred-citation:
     - name: "Starion Group S.A."
       affiliation: "Starion Group S.A."
       given-names: "MBSE Competence Area Developers"
-  version: "7.0.5"
+  version: "7.0.6"
   url: "https://github.com/STARIONGROUP/ECoreNetto"
-  date-released: "2025-10-18"
+  date-released: "2025-11-24"
