@@ -21,19 +21,20 @@
 namespace ECoreNetto.Tools.Commands
 {
     using System;
-    using System.CommandLine.Invocation;
+    using System.CommandLine;
     using System.Diagnostics;
     using System.IO;
     using System.Threading;
+    using System.Threading.Tasks;
 
     using ECoreNetto.Reporting.Generators;
     using ECoreNetto.Tools.Resources;
+    using ECoreNetto.Tools.Services;
 
     using Spectre.Console;
-    using System.Threading.Tasks;
 
     /// <summary>
-    /// Abstract super class from which all Report <see cref="ICommandHandler"/>s need to derive
+    /// Abstract super class from which all Report <see cref="ReportHandler"/>s need to derive
     /// </summary>
     public abstract class ReportHandler
     {
@@ -45,9 +46,13 @@ namespace ECoreNetto.Tools.Commands
         /// <param name="reportGenerator">
         /// The <see cref="IReportGenerator"/> used to generate an ECore report
         /// </param>
-        protected ReportHandler(IReportGenerator reportGenerator)
+        /// <param name="versionChecker">
+        /// The <see cref="IVersionChecker"/> used to check the github version
+        /// </param>
+        protected ReportHandler(IReportGenerator reportGenerator, IVersionChecker versionChecker)
         {
             this.ReportGenerator = reportGenerator ?? throw new ArgumentNullException(nameof(reportGenerator));
+            this.VersionChecker = versionChecker;
         }
 
         /// <summary>
@@ -56,62 +61,65 @@ namespace ECoreNetto.Tools.Commands
         public IReportGenerator ReportGenerator { get; private set; }
 
         /// <summary>
-        /// Gets or sets the value indicating whether the logo should be shown or not
+        /// The <see cref="IVersionChecker"/> used to check the github version
         /// </summary>
-        public bool NoLogo { get; set; }
+        public IVersionChecker VersionChecker { get; private set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="FileInfo"/> where the ecore model is located that is to be read
+        /// The value indicating whether the logo should be shown or not
         /// </summary>
-        public FileInfo InputModel { get; set; }
+        private bool noLogo;
 
         /// <summary>
-        /// Gets or sets the <see cref="FileInfo"/> where the inspection report is to be generated
+        /// The <see cref="FileInfo"/> where the ecore model is located that is to be read
         /// </summary>
-        public FileInfo OutputReport { get; set; }
+        private FileInfo inputModel;
 
         /// <summary>
-        /// Gets or sets the value indicating whether the generated report needs to be automatically be
+        /// The <see cref="FileInfo"/> where the inspection report is to be generated
+        /// </summary>
+        private FileInfo outputReport;
+
+        /// <summary>
+        /// The value indicating whether the generated report needs to be automatically be
         /// opened once generated.
         /// </summary>
-        public bool AutoOpenReport { get; set; }
+        private bool autoOpenReport;
 
         /// <summary>
-        /// Invokes the <see cref="ICommandHandler"/>
+        /// Asynchronously invokes the <see cref="ReportHandler"/>
         /// </summary>
-        /// <param name="context">
-        /// The <see cref="InvocationContext"/> 
+        /// <param name="parseResult">
+        /// The <see cref="ParseResult"/> that carries the parsed command line arguments
+        /// </param>
+        /// <param name="cancellationToken">
+        /// The <see cref="CancellationToken"/> used to cancel the operation
         /// </param>
         /// <returns>
         /// 0 when successful, another if not
         /// </returns>
-        public int Invoke(InvocationContext context)
+        public async Task<int> InvokeAsync(ParseResult parseResult, CancellationToken cancellationToken)
         {
-            throw new NotSupportedException("Please use InvokeAsync");
-        }
+            if (cancellationToken.IsCancellationRequested)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+            }
 
-        /// <summary>
-        /// Asynchronously invokes the <see cref="ICommandHandler"/>
-        /// </summary>
-        /// <param name="context">
-        /// The <see cref="InvocationContext"/> 
-        /// </param>
-        /// <returns>
-        /// 0 when successful, another if not
-        /// </returns>
-        public async Task<int> InvokeAsync(InvocationContext context)
-        {
+            await this.VersionChecker.ExecuteAsync(cancellationToken);
+
+            this.ProcessParseResult(parseResult);
+
             if (!this.InputValidation())
             {
                 return -1;
             }
 
-            var isValidExtension = this.ReportGenerator.IsValidReportExtension(this.OutputReport);
+            var isValidExtension = this.ReportGenerator.IsValidReportExtension(this.outputReport);
             if (!isValidExtension.Item1)
             {
                 AnsiConsole.WriteLine("");
                 AnsiConsole.MarkupLine($"[red] {isValidExtension.Item2} [/]");
-                AnsiConsole.MarkupLine($"[purple]{this.InputModel.FullName}[/]");
+                AnsiConsole.MarkupLine($"[purple]{this.inputModel.FullName}[/]");
                 AnsiConsole.WriteLine("");
                 return -1;
             }
@@ -129,10 +137,10 @@ namespace ECoreNetto.Tools.Commands
 
                         Thread.Sleep(SleepTime);
 
-                        this.ReportGenerator.GenerateReport(this.InputModel, this.OutputReport);
+                        this.ReportGenerator.GenerateReport(this.inputModel, this.outputReport);
 
                         AnsiConsole.MarkupLine(
-                            $"[grey]LOG:[/] Ecore {this.ReportGenerator.QueryReportType()} report generated at [bold]{this.OutputReport.FullName}[/]");
+                            $"[grey]LOG:[/] Ecore {this.ReportGenerator.QueryReportType()} report generated at [bold]{this.outputReport.FullName}[/]");
                         Thread.Sleep(SleepTime);
 
                         this.ExecuteAutoOpen(ctx);
@@ -171,6 +179,20 @@ namespace ECoreNetto.Tools.Commands
         }
 
         /// <summary>
+        /// Process the <see cref="ParseResult"/> and set to the associated properties
+        /// </summary>
+        /// <param name="parseResult">
+        /// The instance of <see cref="ParseResult"/> that contains the parsed commandline arguments
+        /// </param>
+        private void ProcessParseResult(ParseResult parseResult)
+        {
+            this.noLogo = parseResult.GetValue<bool>("--no-logo");
+            this.inputModel = parseResult.GetValue<FileInfo>("--input-model");
+            this.autoOpenReport = parseResult.GetValue<bool>("--auto-open-report");
+            this.outputReport = parseResult.GetValue<FileInfo>("--output-report");
+        }
+
+        /// <summary>
         /// validates the options
         /// </summary>
         /// <returns>
@@ -178,16 +200,16 @@ namespace ECoreNetto.Tools.Commands
         /// </returns>
         protected bool InputValidation()
         {
-            if (!this.NoLogo)
+            if (!this.noLogo)
             {
                 AnsiConsole.Markup($"[blue]{ResourceLoader.QueryLogo()}[/]");
             }
 
-            if (!this.InputModel.Exists)
+            if (!this.inputModel.Exists)
             {
                 AnsiConsole.WriteLine("");
                 AnsiConsole.MarkupLine($"[red]The specified input ecore model does not exist[/]");
-                AnsiConsole.MarkupLine($"[purple]{this.InputModel.FullName}[/]");
+                AnsiConsole.MarkupLine($"[purple]{this.inputModel.FullName}[/]");
                 AnsiConsole.WriteLine("");
                 return false;
             }
@@ -203,14 +225,14 @@ namespace ECoreNetto.Tools.Commands
         /// </param>
         protected void ExecuteAutoOpen(StatusContext ctx)
         {
-            if (this.AutoOpenReport)
+            if (this.autoOpenReport)
             {
                 ctx.Status($"Opening generated report");
                 Thread.Sleep(SleepTime);
 
                 try
                 {
-                    Process.Start(new ProcessStartInfo(this.OutputReport.FullName)
+                    Process.Start(new ProcessStartInfo(this.outputReport.FullName)
                         { UseShellExecute = true });
                     ctx.Status($"Generated report opened");
                 }
