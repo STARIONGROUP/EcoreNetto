@@ -21,11 +21,11 @@
 namespace ECoreNetto.Tools.Commands
 {
     using System.CommandLine;
-    using System.CommandLine.Invocation;
     using System.IO;
 
     using ECoreNetto.Reporting.Generators;
-    
+    using ECoreNetto.Tools.Services;
+
     /// <summary>
     /// The <see cref="ModelInspectionCommand"/> that inspects an ECore model and generates
     /// a text report
@@ -37,19 +37,22 @@ namespace ECoreNetto.Tools.Commands
         /// </summary>
         public ModelInspectionCommand() : base("inspect", "Inspects an ECore model and generates a text report")
         {
-            var reportFileOption = new Option<FileInfo>(
-                name: "--output-report",
-                description: "The path to the text report file. Supported extensions is '.txt'",
-                getDefaultValue: () => new FileInfo("inspection-report.txt"));
-            reportFileOption.AddAlias("-o");
-            reportFileOption.IsRequired = true;
-            this.AddOption(reportFileOption);
+            var reportFileOption = new Option<FileInfo>(name: "--output-report")
+            {
+                Description = "The path to the text report file. Supported extensions is '.txt'",
+                DefaultValueFactory = parseResult => new FileInfo("inspection-report.txt"),
+                Required = true
+            };
+
+            reportFileOption.Aliases.Add("-o");
+
+            this.Add(reportFileOption);
         }
 
         /// <summary>
         /// The Command Handler of the <see cref="XlReportCommand"/>
         /// </summary>
-        public new class Handler : ReportHandler, ICommandHandler
+        public  class Handler : ReportHandler
         {
             /// <summary>
             /// Initializes a nwe instance of the <see cref="Handler"/> class.
@@ -58,7 +61,11 @@ namespace ECoreNetto.Tools.Commands
             /// The (injected) <see cref="IModelInspector"/> that is used to generate the
             /// inspection report
             /// </param>
-            public Handler(IModelInspector modelInspector) : base(modelInspector)
+            /// <param name="versionChecker">
+            /// The <see cref="IVersionChecker"/> used to check the github version
+            /// </param>
+            public Handler(IModelInspector modelInspector, IVersionChecker versionChecker)
+                : base(modelInspector, versionChecker)
             {
             }
         }

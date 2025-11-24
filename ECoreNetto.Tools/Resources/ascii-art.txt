@@ -8,5 +8,6 @@
                                                                                     
           copyright 2024 Starion Group S.A. https://www.stariongroup.eu
           email: info@stariongroup.eu
+          Website: https://ecorenetto.org
 
           ECORE TOOLS version: EcoreToolsVersion

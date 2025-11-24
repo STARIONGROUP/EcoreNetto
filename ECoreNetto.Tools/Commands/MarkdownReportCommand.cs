@@ -21,11 +21,11 @@
 namespace ECoreNetto.Tools.Commands
 {
     using System.CommandLine;
-    using System.CommandLine.Invocation;
     using System.IO;
 
     using ECoreNetto.Reporting.Generators;
-    
+    using ECoreNetto.Tools.Services;
+
     /// <summary>
     /// The <see cref="MarkdownReportCommand"/> that generates a Markdown report
     /// </summary>
@@ -36,19 +36,22 @@ namespace ECoreNetto.Tools.Commands
         /// </summary>
         public MarkdownReportCommand() : base("md-report", "Generates a Markdown report of the ECore model")
         {
-            var reportFileOption = new Option<FileInfo>(
-                name: "--output-report",
-                description: "The path to the markdown report file. Supported extensions are '.md'",
-                getDefaultValue: () => new FileInfo("md-report.md"));
-            reportFileOption.AddAlias("-o");
-            reportFileOption.IsRequired = true;
-            this.AddOption(reportFileOption);
+            var reportFileOption = new Option<FileInfo>(name: "--output-report")
+            {
+                Description = "The path to the markdown report file. Supported extensions are '.md'",
+                DefaultValueFactory = parseResult => new FileInfo("md-report.md"),
+                Required = true,
+            };
+
+            reportFileOption.Aliases.Add("-o");
+            
+            this.Add(reportFileOption);
         }
 
         /// <summary>
         /// The Command Handler of the <see cref="MarkdownReportCommand"/>
         /// </summary>
-        public new class Handler : ReportHandler, ICommandHandler
+        public class Handler : ReportHandler
         {
             /// <summary>
             /// Initializes a nwe instance of the <see cref="Handler"/> class.
@@ -57,7 +60,11 @@ namespace ECoreNetto.Tools.Commands
             /// The (injected) <see cref="IMarkdownReportGenerator"/> that is used to generate the
             /// excel report
             /// </param>
-            public Handler(IMarkdownReportGenerator markdownReportGenerator) : base(markdownReportGenerator)
+            /// <param name="versionChecker">
+            /// The <see cref="IVersionChecker"/> used to check the github version
+            /// </param>
+            public Handler(IMarkdownReportGenerator markdownReportGenerator, IVersionChecker versionChecker) 
+                : base(markdownReportGenerator, versionChecker)
             {
             }
         }

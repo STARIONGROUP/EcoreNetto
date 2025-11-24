@@ -21,10 +21,10 @@
 namespace ECoreNetto.Tools.Commands
 {
     using System.CommandLine;
-    using System.CommandLine.Invocation;
     using System.IO;
 
     using ECoreNetto.Reporting.Generators;
+    using ECoreNetto.Tools.Services;
 
     /// <summary>
     /// The <see cref="HtmlReportCommand"/> that generates an HTML report
@@ -36,19 +36,22 @@ namespace ECoreNetto.Tools.Commands
         /// </summary>
         public HtmlReportCommand() : base("html-report", "Generates a html report of the ECore model")
         {
-            var reportFileOption = new Option<FileInfo>(
-                name: "--output-report",
-                description: "The path to the html report file. Supported extensions are '.html'",
-                getDefaultValue: () => new FileInfo("html-report.html"));
-            reportFileOption.AddAlias("-o");
-            reportFileOption.IsRequired = true;
-            this.AddOption(reportFileOption);
+            var reportFileOption = new Option<FileInfo>(name: "--output-report")
+            {
+                Description = "The path to the html report file. Supported extensions are '.html'",
+                DefaultValueFactory = parseResult => new FileInfo("html-report.html"),
+                Required = true
+            };
+
+            reportFileOption.Aliases.Add("-o");
+
+            this.Add(reportFileOption);
         }
 
         /// <summary>
         /// The Command Handler of the <see cref="XlReportCommand"/>
         /// </summary>
-        public new class Handler : ReportHandler, ICommandHandler
+        public class Handler : ReportHandler
         {
             /// <summary>
             /// Initializes a nwe instance of the <see cref="Handler"/> class.
@@ -57,7 +60,11 @@ namespace ECoreNetto.Tools.Commands
             /// The (injected) <see cref="IHtmlReportGenerator"/> that is used to generate the
             /// excel report
             /// </param>
-            public Handler(IHtmlReportGenerator htmlReportGenerator) : base(htmlReportGenerator)
+            /// <param name="versionChecker">
+            /// The <see cref="IVersionChecker"/> used to check the github version
+            /// </param>
+            public Handler(IHtmlReportGenerator htmlReportGenerator, IVersionChecker versionChecker)
+                : base(htmlReportGenerator, versionChecker)
             {
             }
         }

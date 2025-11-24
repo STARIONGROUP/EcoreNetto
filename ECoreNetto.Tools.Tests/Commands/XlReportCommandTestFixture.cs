@@ -1,5 +1,5 @@
 ﻿// -------------------------------------------------------------------------------------------------
-// <copyright file="ReportCommandTestFixture.cs" company="Starion Group S.A">
+// <copyright file="XlReportCommandTestFixture.cs" company="Starion Group S.A">
 // 
 //   Copyright 2017-2025 Starion Group S.A.
 // 
@@ -21,37 +21,50 @@
 namespace ECoreNetto.Tools.Tests.Commands
 {
     using System;
-    using System.CommandLine.Invocation;
+    using System.CommandLine;
     using System.IO;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using ECoreNetto.Reporting.Generators;
     using ECoreNetto.Tools.Commands;
-    
-    using Moq;
+    using ECoreNetto.Tools.Services;
 
+    using Moq;
     using NUnit.Framework;
-    
+
     /// <summary>
     /// Suite of tests for the <see cref="XlReportCommand"/> class.
     /// </summary>
     [TestFixture]
-    public class ReportCommandTestFixture
+    public class XlReportCommandTestFixture
     {
+        private RootCommand rootCommand;
+
         private Mock<IXlReportGenerator> reportGenerator;
 
+        private Mock<IVersionChecker> versionChecker;
+
         private XlReportCommand.Handler handler;
+
+        private CancellationTokenSource cts;
 
         [SetUp]
         public void SetUp()
         {
+            this.cts = new CancellationTokenSource();
+
+            var xlReportCommand = new XlReportCommand();
+            this.rootCommand = new RootCommand();
+            this.rootCommand.Add(xlReportCommand);
+
             this.reportGenerator = new Mock<IXlReportGenerator>();
+            this.versionChecker = new Mock<IVersionChecker>();
 
             this.reportGenerator.Setup(x => x.IsValidReportExtension(It.IsAny<FileInfo>()))
                 .Returns(new Tuple<bool, string>(true, "valid extension"));
 
-            this.handler = new XlReportCommand.Handler(
-                this.reportGenerator.Object);
+            this.handler = new XlReportCommand.Handler(this.reportGenerator.Object, this.versionChecker.Object);
         }
 
         [Test]
@@ -66,14 +79,21 @@ namespace ECoreNetto.Tools.Tests.Commands
         [Test]
         public async Task Verify_that_InvokeAsync_returns_0()
         {
-            var invocationContext = new InvocationContext(null!);
+            var args = new[]
+            {
+                "excel-report",
+                "--no-logo",
+                "--input-model", Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "recipe.ecore"),
+                "--output-report", Path.Combine(TestContext.CurrentContext.TestDirectory, "tabular-report.xlsx")
+            };
 
-            this.handler.InputModel = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "recipe.ecore"));
-            this.handler.OutputReport = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "tabular-report.xlsx"));
+            var parseResult = this.rootCommand.Parse(args);
 
-            var result = await this.handler.InvokeAsync(invocationContext);
+            var result = await this.handler.InvokeAsync(parseResult, this.cts.Token);
 
             this.reportGenerator.Verify(x => x.GenerateReport(It.IsAny<FileInfo>(), It.IsAny<FileInfo>()), Times.Once);
+
+            this.versionChecker.Verify(x => x.ExecuteAsync(It.IsAny<CancellationToken>()), Times.Once);
 
             Assert.That(result, Is.EqualTo(0), "InvokeAsync should return 0 upon success.");
         }
@@ -81,12 +101,17 @@ namespace ECoreNetto.Tools.Tests.Commands
         [Test]
         public async Task Verify_that_when_the_input_ecore_model_does_not_exists_returns_not_0()
         {
-            var invocationContext = new InvocationContext(null!);
+            var args = new[]
+            {
+                "excel-report",
+                "--no-logo",
+                "--input-model", Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "non-existent.ecore"),
+                "--output-report", Path.Combine(TestContext.CurrentContext.TestDirectory, "tabular-report.xlsx")
+            };
 
-            this.handler.InputModel = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "non-existent.ecore"));
-            this.handler.OutputReport = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "tabular-report.xlsx"));
+            var parseResult = this.rootCommand.Parse(args);
 
-            var result = await this.handler.InvokeAsync(invocationContext);
+            var result = await this.handler.InvokeAsync(parseResult, this.cts.Token);
 
             Assert.That(result, Is.EqualTo(-1), "InvokeAsync should return -1 upon failure.");
         }
@@ -94,14 +119,19 @@ namespace ECoreNetto.Tools.Tests.Commands
         [Test]
         public async Task Verify_that_when_the_output_extensions_is_not_supported_returns_not_0()
         {
-            var invocationContext = new InvocationContext(null!);
+            var args = new[]
+            {
+                "excel-report",
+                "--no-logo",
+                "--input-model", Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "recipe.ecore"),
+            };
 
             this.reportGenerator.Setup(x => x.IsValidReportExtension(It.IsAny<FileInfo>()))
                 .Returns(new Tuple<bool, string>(false, "invalid extension"));
 
-            this.handler.InputModel = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "recipe.ecore"));
-            
-            var result = await this.handler.InvokeAsync(invocationContext);
+            var parseResult = this.rootCommand.Parse(args);
+
+            var result = await this.handler.InvokeAsync(parseResult, this.cts.Token);
 
             Assert.That(result, Is.EqualTo(-1), "InvokeAsync should return -1 upon failure.");
         }

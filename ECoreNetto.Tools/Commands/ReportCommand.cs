@@ -23,6 +23,8 @@ namespace ECoreNetto.Tools.Commands
     using System.CommandLine;
     using System.IO;
 
+    using Serilog.Events;
+
     /// <summary>
     /// Abstract super class from which all report commands shall inherit
     /// </summary>
@@ -35,27 +37,42 @@ namespace ECoreNetto.Tools.Commands
         /// <param name="description">The description of the command, shown in help.</param>
         protected ReportCommand(string name, string description = null) : base(name, description)
         {
-            var noLogoOption = new Option<bool>(
-                name: "--no-logo",
-                description: "Suppress the logo",
-                getDefaultValue: () => false);
-            this.AddOption(noLogoOption);
+            var noLogoOption = new Option<bool>(name: "--no-logo")
+            {
+                Description = "Suppress the logo",
+                DefaultValueFactory = parseResult => false,
+            };
 
-            var inputModelFileOption = new Option<FileInfo>(
-                name: "--input-model",
-                description: "The path to the ecore file",
-                getDefaultValue: () => new FileInfo("model.ecore"));
-            inputModelFileOption.AddAlias("-i");
-            inputModelFileOption.IsRequired = true;
-            this.AddOption(inputModelFileOption);
+            this.Add(noLogoOption);
 
-            var autoOpenReportOption = new Option<bool>(
-                name: "--auto-open-report",
-                description: "Open the generated report with its default application",
-                getDefaultValue: () => false);
-            autoOpenReportOption.AddAlias("-a");
-            autoOpenReportOption.IsRequired = false;
-            this.AddOption(autoOpenReportOption);
+            var logLevelOption = new Option<LogEventLevel>("--log-level")
+            {
+                Description = "Sets the logging level (Trace, Debug, Information, Warning, Error, Critical)",
+                Required = false,
+                DefaultValueFactory = parseResult => LogEventLevel.Information
+            };
+
+            this.Options.Add(logLevelOption);
+
+            var inputModelFileOption = new Option<FileInfo>(name: "--input-model")
+            {
+                Description = "The path to the ecore file",
+                DefaultValueFactory = parseResult => new FileInfo("model.ecore"),
+                Required = true
+            };
+
+            inputModelFileOption.Aliases.Add("-i");
+            this.Add(inputModelFileOption);
+
+            var autoOpenReportOption = new Option<bool>(name: "--auto-open-report")
+            {
+                Description = "Open the generated report with its default application",
+                DefaultValueFactory = parseResult => false,
+                Required = false
+            };
+
+            autoOpenReportOption.Aliases.Add("-a");
+            this.Add(autoOpenReportOption);
         }
     }
 }
