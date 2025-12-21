@@ -9,7 +9,7 @@
         <PackAsTool>true</PackAsTool>
         <PackageId>ECoreNetto.Tools</PackageId>
         <ToolCommandName>ecoretools</ToolCommandName>
-        <Version>7.0.6</Version>
+        <Version>7.0.7</Version>
         <ImplicitUsings>disable</ImplicitUsings>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageIcon>ecorenetto-Icon.png</PackageIcon>
@@ -20,12 +20,10 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <GenerateSBOM>true</GenerateSBOM>
         <PackageReleaseNotes>
-            [Update] ECoreNetto.Reporting to version 7.0.6
-            [Update] Microsoft.Extensions.Http to vesion 10.0.0
-            [Update] Microsoft.Extensions.Hosting to vesion 10.0.0
-            [Update] Serilog.Extensions.Logging to vesion 10.0.0
-            [Update] Spectre.Console to version 0.54.0
-            [Update] System.CommandLine to version 2.0.0; fixes #24
+            [Update] ECoreNetto.Reporting to version 7.0.7
+            [Update] Microsoft.Extensions.Http to vesion 10.0.1
+            [Update] Microsoft.Extensions.Hosting to vesion 10.0.1
+            [Update] System.CommandLine to version 2.0.1
         </PackageReleaseNotes>
     </PropertyGroup>
 
