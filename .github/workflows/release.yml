@@ -127,20 +127,18 @@ jobs:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         run: dotnet nuget push ReleaseBuilds/*.nupkg -k "$NUGET_API_KEY" -s https://api.nuget.org/v3/index.json --skip-duplicate
 
-      - name: Publish EcoreNetto.Tools (win-x64 single-file, self-contained)
+      - name: Publish ECoreNetto.Tools (win-x64 single-file, self-contained)
         run: |
-          dotnet publish -c Release EcoreNetto.Tools/EcoreNetto.Tools.csproj \
-            -r win-x64 --self-contained true -p:PublishSingleFile=true \
-            -o ReleaseBuilds
+          dotnet publish -c Release ECoreNetto.Tools/ECoreNetto.Tools.csproj -r win-x64 --self-contained true -p:PublishSingleFile=true -o ReleaseBuilds
 
       - name: Append binary SHA256 to release notes
         run: |
           set -euo pipefail
-          BIN="ReleaseBuilds/EcoreNetto.Tools.exe"
+          BIN="ReleaseBuilds/ECoreNetto.Tools.exe"
           if [ -f "$BIN" ]; then
             HASH=$(sha256sum "$BIN" | awk '{print $1}')
             echo "" >> RELEASE_NOTES.md
-            echo "\`EcoreNetto.Tools.exe\` - SHA256: $HASH" >> RELEASE_NOTES.md
+            echo "\`ECoreNetto.Tools.exe\` - SHA256: $HASH" >> RELEASE_NOTES.md
             echo "Computed SHA256: $HASH"
           else
             echo "Binary $BIN not found." >&2
@@ -159,6 +157,6 @@ jobs:
         with:
           draft: true
           prerelease: ${{ env.PRERELEASE }}
-          name: "EcoreNetto ${{ env.VERSION }}"
+          name: "ECoreNetto ${{ env.VERSION }}"
           tag_name: ${{ env.VERSION }}
           body_path: RELEASE_NOTES.md
