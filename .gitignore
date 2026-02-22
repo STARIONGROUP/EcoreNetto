@@ -73,3 +73,6 @@ src/ECoreNetto/project.lock.json
 test/ECoreNetto.Tests/project.lock.json
 
 /.arcconfig
+
+# Rider folder
+.idea

@@ -4,7 +4,7 @@
         <LangVersion>10.0</LangVersion>
         <Title>ECoreNetto.Tools</Title>
         <Description>A command line application that processes an Ecore file and generates various reports.</Description>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <OutputType>Exe</OutputType>
         <PackAsTool>true</PackAsTool>
         <PackageId>ECoreNetto.Tools</PackageId>
