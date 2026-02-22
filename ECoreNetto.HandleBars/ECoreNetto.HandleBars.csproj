@@ -6,7 +6,7 @@
         <Company>Starion Group S.A.</Company>
         <Copyright>Copyright © Starion Group S.A.</Copyright>
         <Title>ECoreNetto.HandleBars</Title>
-        <Version>7.0.7</Version>
+        <Version>7.0.8</Version>
         <Description>HandleBarHelpers for use in combination with the ECoreNetto library to support HandleBarHelpers based code generation</Description>
         <PackageId>ECoreNetto.HandleBars</PackageId>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -27,9 +27,8 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <GenerateSBOM>true</GenerateSBOM>
         <PackageReleaseNotes>
-            [Update] ECoreNetto.Extensions to version 7.0.7
-            [Update] Handlebars.Net.Helpers to version 2.5.4
-            [Update] Microsoft.Sbom.Targets to version 4.1.5
+            [Update] ECoreNetto.Extensions to version 7.0.8
+            [Update] Microsoft.SourceLink.GitHub to version 10.0.103
         </PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
