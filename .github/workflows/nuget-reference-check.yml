@@ -27,21 +27,86 @@ jobs:
 
     - name: Build
       run: dotnet build EcoreNetto.sln --no-restore /p:ContinuousIntegrationBuild=true
-
-    - name: Checking NuGet vulnerabilites
+      
+    - name: Check for outdated packages
+      id: outdated
       run: |
         set -e
-        dotnet list EcoreNetto.sln package --outdated --include-transitive
-
-        dotnet list EcoreNetto.sln package --deprecated --include-transitive
-
-        dotnet list EcoreNetto.sln package --vulnerable --include-transitive 2>&1 | tee vulnerabilities.log
-
-        echo "Analyze dotnet list package command log output..."
-        if grep -q -i "\bcritical\b\|\bhigh\b\|\bmoderate\b\|\blow\b" vulnerabilities.log; then
-            echo "Security Vulnerabilities found"
-            exit 1
+        dotnet list EcoreNetto.sln package --outdated --include-transitive > outdated.log
+        if [ -s outdated.log ]; then
+          echo "Outdated packages found"
+          echo "outdated=true" >> $GITHUB_OUTPUT
         else
-            echo "No Security Vulnerabilities found"
-            exit 0
+          echo "No outdated packages found"
+          echo "outdated=false" >> $GITHUB_OUTPUT
         fi
+
+    - name: Check for deprecated packages
+      id: deprecated
+      run: |
+        set -e
+        dotnet list EcoreNetto.sln package --deprecated --include-transitive > deprecated.log
+        if [ -s deprecated.log ]; then
+          echo "Deprecated packages found"
+          echo "deprecated=true" >> $GITHUB_OUTPUT
+        else
+          echo "No deprecated packages found"
+          echo "deprecated=false" >> $GITHUB_OUTPUT
+        fi
+        
+    - name: Check for vulnerable packages
+      id: vulnerable
+      run: |
+        set -e
+        dotnet list EcoreNetto.sln package --vulnerable --include-transitive > vulnerabilities.log
+        if grep -q -i "\bcritical\b\|\bhigh\b\|\bmoderate\b\|\blow\b" vulnerabilities.log; then
+          echo "Security Vulnerabilities found"
+          echo "vulnerable=true" >> $GITHUB_OUTPUT
+        else
+          echo "No Security Vulnerabilities found"
+          echo "vulnerable=false" >> $GITHUB_OUTPUT
+        fi        
+        
+    - name: Create GitHub Issue if issues found
+      if: steps.outdated.outputs.outdated == 'true' || steps.deprecated.outputs.deprecated == 'true' || steps.vulnerable.outputs.vulnerable == 'true'
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const fs = require('fs');
+          const issueTitle = 'NuGet Package Issues Detected';
+          const issueBody = `
+            ### NuGet Package Issues Detected in [EcoreNetto](${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY})
+
+            ${{ steps.outdated.outputs.outdated == 'true' && format('#### Outdated Packages\n```\n%s\n```', fs.readFileSync('outdated.log', 'utf8')) || '' }}
+            ${{ steps.deprecated.outputs.deprecated == 'true' && format('#### Deprecated Packages\n```\n%s\n```', fs.readFileSync('deprecated.log', 'utf8')) || '' }}
+            ${{ steps.vulnerable.outputs.vulnerable == 'true' && format('#### Vulnerable Packages\n```\n%s\n```', fs.readFileSync('vulnerabilities.log', 'utf8')) || '' }}
+
+            **Action Required:** Please review and update the affected packages.
+          `;
+
+          // Check for existing open issues with the same title
+          const { data: issues } = await github.rest.issues.listForRepo({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            state: 'open',
+          });
+
+          const existingIssue = issues.find(issue => issue.title === issueTitle);
+
+          if (existingIssue) {
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: existingIssue.number,
+              body: `New check results:\n${issueBody}`,
+            });
+          } else {
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: issueTitle,
+              body: issueBody,
+              labels: ['dependencies', 'maintenance'],
+            });
+          }
