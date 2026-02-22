@@ -72,5 +72,28 @@ namespace ECoreNetto.Tools.Tests.Generators
 
             Assert.That(() => this.htmlReportGenerator.GenerateReport(modelFileInfo, reportFileInfo), Throws.Nothing);
         }
+
+        [Test]
+        public void Verify_that_when_modelpath_is_null_exception_is_thrown()
+        {
+            FileInfo modelFileInfo = null;
+            
+            Assert.That(() => this.htmlReportGenerator.GenerateReport(modelFileInfo), Throws.ArgumentNullException);
+            
+            var reportFileInfo = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "html-report.ecore.html"));
+            
+            Assert.That(() => this.htmlReportGenerator.GenerateReport(modelFileInfo, reportFileInfo), Throws.ArgumentNullException);
+
+            modelFileInfo = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "recipe.ecore"));
+            reportFileInfo = null;
+            
+            Assert.That(() => this.htmlReportGenerator.GenerateReport(modelFileInfo, reportFileInfo), Throws.ArgumentNullException);
+        }
+
+        [Test]
+        public void Verify_That_when_outputpath_is_null_exception_is_thrown()
+        {
+            Assert.That(() => this.htmlReportGenerator.IsValidReportExtension(null), Throws.ArgumentNullException);
+        }
     }
 }
