@@ -177,5 +177,47 @@ namespace ECoreNetto.HandleBars.Tests
 
             Assert.That(result, Is.EqualTo("False"));
         }
+
+        [Test]
+        public void Verify_that_StructuralFeature_IsEnumerable_block_helper_writes_content_only_when_true()
+        {
+            var template = "{{#StructuralFeature.IsEnumerable this}}Enumerable{{/StructuralFeature.IsEnumerable}}";
+            var action = this.handlebarsContenxt.Compile(template);
+
+            var recipeClass = this.root.EClassifiers.OfType<EClass>().Single(x => x.Name == "Recipe");
+            var enumerableFeature = recipeClass.EStructuralFeatures.Single(x => x.Name == "ingredients");
+
+            var timeTriggerClass = this.root.EClassifiers.OfType<EClass>().Single(x => x.Name == "TimeTrigger");
+            var nonEnumerableFeature = timeTriggerClass.EStructuralFeatures.Single(x => x.Name == "minutes");
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(action(enumerableFeature), Is.EqualTo("Enumerable"));
+                Assert.That(action(nonEnumerableFeature), Is.EqualTo(string.Empty));
+            });
+        }
+
+        [Test]
+        public void Verify_that_StructuralFeature_QueryTypeName_returns_expected_result()
+        {
+            var template = "{{#with this}}{{StructuralFeature.QueryTypeName}}{{/with}}";
+            var action = this.handlebarsContenxt.Compile(template);
+
+            var recipeClass = this.root.EClassifiers.OfType<EClass>().Single(x => x.Name == "Recipe");
+            var eStructuralFeature = recipeClass.EStructuralFeatures.Single(x => x.Name == "name");
+
+            var result = action(eStructuralFeature);
+
+            Assert.That(result, Is.EqualTo("string"));
+        }
+
+        [Test]
+        public void Verify_that_StructuralFeature_QueryTypeName_throws_when_context_is_not_a_structural_feature()
+        {
+            var template = "{{StructuralFeature.QueryTypeName}}";
+            var action = this.handlebarsContenxt.Compile(template);
+
+            Assert.That(() => action(new object()), Throws.TypeOf<ArgumentException>());
+        }
     }
 }
