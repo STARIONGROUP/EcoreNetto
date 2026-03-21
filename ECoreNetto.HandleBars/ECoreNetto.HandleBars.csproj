@@ -36,7 +36,7 @@
     <ItemGroup>
         <PackageReference Include="Handlebars.Net.Helpers" Version="2.5.4" />
         <PackageReference Include="Microsoft.Sbom.Targets" Version="4.1.5" PrivateAssets="all" />
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.103" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.201" PrivateAssets="All" />
     </ItemGroup>
 
     <ItemGroup>
