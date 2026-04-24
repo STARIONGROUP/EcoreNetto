@@ -52,13 +52,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.5" />
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.5" />
+        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="11.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.7" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.7" />
         <PackageReference Include="Serilog.Extensions.Logging" Version="10.0.0" />
         <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
-        <PackageReference Include="System.CommandLine" Version="2.0.5" />
-        <PackageReference Include="Spectre.Console" Version="0.54.0" />
+        <PackageReference Include="System.CommandLine" Version="2.0.7" />
+        <PackageReference Include="Spectre.Console" Version="0.55.2" />
         <PackageReference Include="Microsoft.Sbom.Targets" Version="4.1.5" PrivateAssets="all" />
     </ItemGroup>
 
