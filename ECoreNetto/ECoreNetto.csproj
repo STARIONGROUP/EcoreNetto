@@ -1,52 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>10.0</LangVersion>
-        <Company>Starion Group S.A.</Company>
         <Title>EcoreNetto</Title>
         <Version>7.0.9</Version>
         <Description>ECoreNetto is a dotnet core library that is used to deserialize an Ecore meta-model for the purpose of code generation. Ecore is a meta-model used to represent models in the Eclipse Modelling Framework. EMF is a powerful framework and code generation facility for building Java applications based on simple model definitions. The intention of ECoreNetto is not to be a port of EMF, it aims at bridging the gap to the .NET world to facilitate code generation of C# class libraries based on an Ecore model using the .NET code available tooling and libraries.</Description>
         <PackageId>ECoreNetto</PackageId>
         <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-        <Copyright>Copyright © Starion Group S.A.</Copyright>
-        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-        <PackageProjectUrl>https://ecorenetto.org</PackageProjectUrl>
-        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <IncludeSymbols>true</IncludeSymbols>
-        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        <PublishRepositoryUrl>true</PublishRepositoryUrl>
-        <EmbedUntrackedSources>true</EmbedUntrackedSources>
-        <RepositoryUrl>https://github.com/STARIONGROUP/EcoreNetto</RepositoryUrl>
-        <RepositoryType>Git</RepositoryType>
-        <PackageIcon>ecorenetto-Icon.png</PackageIcon>
         <AssemblyTitle>EcoreNetto</AssemblyTitle>
-        <NeutralLanguage>en-US</NeutralLanguage>
-        <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
-        <Authors>Sam Gerene</Authors>
         <PackageTags>Ecore modeltopia</PackageTags>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <GenerateSBOM>true</GenerateSBOM>
         <PackageReleaseNotes>
             [Update] Microsoft.Extensions.Logging.Abstractions to version 10.0.7
             [Update] Microsoft.SourceLink.GitHub to version 10.0.203
         </PackageReleaseNotes>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="..\ecorenetto-Icon.png" Pack="true" PackagePath="" />
-        <None Include="..\README.md" Pack="true" PackagePath="\" />
-        <None Include="..\LICENSE" Pack="true" PackagePath="\" />
-        <None Include="..\NOTICE" Pack="true" PackagePath="\" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.8" />
-        <PackageReference Include="Microsoft.Sbom.Targets" Version="4.1.5" PrivateAssets="all" />
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.300" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     </ItemGroup>
 
     <ItemGroup>

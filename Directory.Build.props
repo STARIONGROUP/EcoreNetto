@@ -19,4 +19,55 @@
         <IsPackable>false</IsPackable>
     </PropertyGroup>
 
+    <!--
+      Shared metadata for all projects (see issue #46). Harmless on test
+      projects (they are not packable).
+    -->
+    <PropertyGroup>
+        <Company>Starion Group S.A.</Company>
+        <Copyright>Copyright © Starion Group S.A.</Copyright>
+        <Authors>Sam Gerene</Authors>
+        <PackageProjectUrl>https://ecorenetto.org</PackageProjectUrl>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/STARIONGROUP/EcoreNetto</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
+    </PropertyGroup>
+
+    <!--
+      Shared packaging configuration for the publishable (non-test) projects:
+      the four libraries and ECoreNetto.Tools.
+    -->
+    <PropertyGroup Condition="!$(MSBuildProjectName.EndsWith('.Tests'))">
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <PackageIcon>ecorenetto-Icon.png</PackageIcon>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <GenerateSBOM>true</GenerateSBOM>
+    </PropertyGroup>
+
+    <ItemGroup Condition="!$(MSBuildProjectName.EndsWith('.Tests'))">
+        <PackageReference Include="Microsoft.Sbom.Targets" PrivateAssets="all" />
+        <None Include="$(MSBuildThisFileDirectory)ecorenetto-Icon.png" Pack="true" PackagePath="" />
+        <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="\" />
+        <None Include="$(MSBuildThisFileDirectory)LICENSE" Pack="true" PackagePath="\" />
+        <None Include="$(MSBuildThisFileDirectory)NOTICE" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <!--
+      SourceLink and symbol settings for the four libraries only. ECoreNetto.Tools
+      (an executable / dotnet tool) intentionally does not ship SourceLink/symbols.
+    -->
+    <PropertyGroup Condition="!$(MSBuildProjectName.EndsWith('.Tests')) AND '$(MSBuildProjectName)' != 'ECoreNetto.Tools'">
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    </PropertyGroup>
+
+    <ItemGroup Condition="!$(MSBuildProjectName.EndsWith('.Tests')) AND '$(MSBuildProjectName)' != 'ECoreNetto.Tools'">
+        <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
+    </ItemGroup>
+
 </Project>
