@@ -4,8 +4,16 @@ on:
   push:
   pull_request:
     types: [opened, synchronize, reopened]
-    
+
+permissions:
+  contents: read
+  checks: write          # dorny/test-reporter check run + annotations
+  pull-requests: write   # sticky coverage comment
+
 jobs:
+  # SonarCloud analysis. Kept as a single instance on a single OS: running
+  # SonarScanner across an OS matrix would double-submit analysis to SonarCloud.
+  # The job id/name "build" is preserved so existing branch-protection checks keep working.
   build:
     name: Build
     runs-on: ubuntu-latest
@@ -28,7 +36,7 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore EcoreNetto.sln
-        
+
       - name: Sonarqube Begin
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -42,9 +50,98 @@ jobs:
         run: dotnet build --no-restore --no-incremental /p:ContinuousIntegrationBuild=true
 
       - name: Test with the dotnet CLI
-        run: dotnet-coverage collect "dotnet test EcoreNetto.sln --no-restore --no-build --verbosity normal" -f xml -o "coverage.xml" 
+        run: dotnet-coverage collect "dotnet test EcoreNetto.sln --no-restore --no-build --verbosity normal" -f xml -o "coverage.xml"
 
       - name: Sonarqube end
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: dotnet sonarscanner end /d:sonar.token="$SONAR_TOKEN"
+
+  # Cross-platform build & test that surfaces results/coverage on the PR.
+  # Needs no secrets, so it also produces signal on fork PRs (where SONAR_TOKEN is absent).
+  build-test:
+    name: Build & Test (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6.0.2
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v5.1.0
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore EcoreNetto.sln
+
+      - name: Build
+        run: dotnet build EcoreNetto.sln --no-restore
+
+      # Cobertura (the default XPlat Code Coverage format) is what the coverage
+      # summary action below consumes, so the opencover coverlet.runsettings is
+      # intentionally not passed here.
+      - name: Test
+        run: >
+          dotnet test EcoreNetto.sln --no-build
+          --logger "trx;LogFileName=test-results.trx"
+          --collect:"XPlat Code Coverage"
+          --results-directory ${{ github.workspace }}/TestResults
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.os }}
+          path: TestResults/**
+
+      - name: Publish test report
+        if: always()
+        uses: dorny/test-reporter@d3cb5605561a46347256b466ef836b85076ad522 # v2.5.0
+        with:
+          name: Tests (${{ matrix.os }})
+          path: TestResults/**/*.trx
+          reporter: dotnet-trx
+          fail-on-error: false
+
+      # Coverage comment: only once (ubuntu leg) and only on pull requests.
+      - name: Code coverage summary
+        if: matrix.os == 'ubuntu-latest' && github.event_name == 'pull_request'
+        uses: irongut/CodeCoverageSummary@51cc3a756ddcd398d447c044c02cb6aa83fdae95 # v1.3.0
+        with:
+          filename: TestResults/**/coverage.cobertura.xml
+          format: markdown
+          output: both
+
+      - name: Append coverage to job summary
+        if: matrix.os == 'ubuntu-latest' && github.event_name == 'pull_request'
+        run: cat code-coverage-results.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Post coverage comment on PR
+        if: matrix.os == 'ubuntu-latest' && github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@efaaab3fd41a9c3de579aba759d2552635e590fd # v2.8.0
+        with:
+          header: code-coverage
+          recreate: true
+          path: code-coverage-results.md
+
+  # Validate the publishable single-file tool binary that release.yml ships.
+  # Keep the publish command in sync with .github/workflows/release.yml.
+  validate-tool:
+    name: Validate ECoreNetto.Tools binary
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6.0.2
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v5.1.0
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Publish ECoreNetto.Tools (win-x64 single-file, self-contained)
+        run: dotnet publish ECoreNetto.Tools/ECoreNetto.Tools.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o ReleaseBuilds
+
+      - name: Smoke-run the published binary
+        run: ./ReleaseBuilds/ECoreNetto.Tools.exe --help
