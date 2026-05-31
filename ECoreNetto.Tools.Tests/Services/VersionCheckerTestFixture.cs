@@ -93,6 +93,72 @@ namespace ECoreNetto.Tools.Tests.Services
             await Assert.ThatAsync(() => checker.ExecuteAsync(cts.Token), Throws.TypeOf<OperationCanceledException>());
         }
 
+        [Test]
+        public void Verify_that_default_url_and_timeout_are_used_when_not_configured()
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(this.versionChecker.ReleasesUrl, Is.EqualTo(VersionChecker.DefaultReleasesUrl));
+                Assert.That(this.versionChecker.Timeout, Is.EqualTo(TimeSpan.FromSeconds(2)));
+            });
+        }
+
+        [Test]
+        public void Verify_that_url_and_timeout_are_configurable()
+        {
+            var checker = new VersionChecker(this.httpClientFactory, this.loggerFactory,
+                "https://example.test/releases/latest", TimeSpan.FromSeconds(5));
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(checker.ReleasesUrl, Is.EqualTo("https://example.test/releases/latest"));
+                Assert.That(checker.Timeout, Is.EqualTo(TimeSpan.FromSeconds(5)));
+            });
+        }
+
+        [Test]
+        public async Task Verify_that_QueryLatestReleaseAsync_uses_the_configured_url()
+        {
+            var recordingHandler = new RecordingHandler();
+            var factory = new StubHttpClientFactory(new HttpClient(recordingHandler));
+
+            var checker = new VersionChecker(factory, this.loggerFactory, "https://example.test/releases/latest");
+
+            await checker.QueryLatestReleaseAsync(new CancellationTokenSource().Token);
+
+            Assert.That(recordingHandler.LastRequestUri?.ToString(), Is.EqualTo("https://example.test/releases/latest"));
+        }
+
+        [Test]
+        public async Task Verify_that_ExecuteAsync_handles_a_malformed_tag_name_gracefully()
+        {
+            var factory = new StubHttpClientFactory(new HttpClient(new TagNameHandler("not-a-version")));
+
+            var checker = new VersionChecker(factory, this.loggerFactory);
+
+            await Assert.ThatAsync(() => checker.ExecuteAsync(new CancellationTokenSource().Token), Throws.Nothing);
+        }
+
+        [Test]
+        public async Task Verify_that_ExecuteAsync_handles_an_empty_tag_name()
+        {
+            var factory = new StubHttpClientFactory(new HttpClient(new TagNameHandler("")));
+
+            var checker = new VersionChecker(factory, this.loggerFactory);
+
+            await Assert.ThatAsync(() => checker.ExecuteAsync(new CancellationTokenSource().Token), Throws.Nothing);
+        }
+
+        [Test]
+        public async Task Verify_that_ExecuteAsync_handles_a_v_prefixed_tag_name()
+        {
+            var factory = new StubHttpClientFactory(new HttpClient(new TagNameHandler("v9.9.9")));
+
+            var checker = new VersionChecker(factory, this.loggerFactory);
+
+            await Assert.ThatAsync(() => checker.ExecuteAsync(new CancellationTokenSource().Token), Throws.Nothing);
+        }
+
         /// <summary>
         /// Very simple IHttpClientFactory used just for tests.
         /// It always returns the HttpClient passed in the constructor.
@@ -151,6 +217,67 @@ namespace ECoreNetto.Tools.Tests.Services
             protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
             {
                 throw new TaskCanceledException();
+            }
+        }
+
+        /// <summary>
+        /// An <see cref="IHttpClientFactory"/> that always returns the provided <see cref="HttpClient"/>.
+        /// </summary>
+        private sealed class StubHttpClientFactory : IHttpClientFactory
+        {
+            private readonly HttpClient client;
+
+            public StubHttpClientFactory(HttpClient client)
+            {
+                this.client = client;
+            }
+
+            public HttpClient CreateClient(string name)
+            {
+                return this.client;
+            }
+        }
+
+        /// <summary>
+        /// A handler that records the requested <see cref="Uri"/> and returns a successful release payload.
+        /// </summary>
+        private sealed class RecordingHandler : HttpMessageHandler
+        {
+            public Uri? LastRequestUri { get; private set; }
+
+            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            {
+                this.LastRequestUri = request.RequestUri;
+
+                const string json = "{\"tag_name\":\"1.2.3\",\"body\":\"notes\",\"html_url\":\"https://example.com\"}";
+
+                return Task.FromResult(new HttpResponseMessage(System.Net.HttpStatusCode.OK)
+                {
+                    Content = new StringContent(json)
+                });
+            }
+        }
+
+        /// <summary>
+        /// A handler that returns a release payload with a configurable tag name.
+        /// </summary>
+        private sealed class TagNameHandler : HttpMessageHandler
+        {
+            private readonly string tagName;
+
+            public TagNameHandler(string tagName)
+            {
+                this.tagName = tagName;
+            }
+
+            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            {
+                var json = $"{{\"tag_name\":\"{this.tagName}\",\"body\":\"notes\",\"html_url\":\"https://example.com\"}}";
+
+                return Task.FromResult(new HttpResponseMessage(System.Net.HttpStatusCode.OK)
+                {
+                    Content = new StringContent(json)
+                });
             }
         }
     }

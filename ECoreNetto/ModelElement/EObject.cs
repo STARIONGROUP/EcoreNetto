@@ -378,6 +378,12 @@ namespace ECoreNetto
         }
 
         /// <summary>
+        /// The names of the reference attributes whose values may contain implicit references
+        /// that need to be rewritten to point at the current top package.
+        /// </summary>
+        private static readonly string[] ReferenceAttributes = { "eType", "eSuperTypes", "eOpposite" };
+
+        /// <summary>
         /// Process the attribute value and rewrite if required.
         /// </summary>
         /// <param name="attributeName">
@@ -391,9 +397,7 @@ namespace ECoreNetto
         /// </returns>
         private string ProcessAttributeValue(string attributeName, string attributeValue)
         {
-            var referenceAttributes = new[] { "eType", "eSuperTypes", "eOpposite" };
-
-            if (!referenceAttributes.Contains(attributeName))
+            if (!ReferenceAttributes.Contains(attributeName))
             {
                 // nothing to do
                 return attributeValue;

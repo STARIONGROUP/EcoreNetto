@@ -21,6 +21,7 @@
 namespace ECoreNetto.Tools.Services
 {
     using System;
+    using System.Buffers;
     using System.Net.Http;
     using System.Reflection;
     using System.Text.Json;
@@ -48,6 +49,17 @@ namespace ECoreNetto.Tools.Services
         private readonly IHttpClientFactory httpClientFactory;
 
         /// <summary>
+        /// The default GitHub API URL used to query the latest release
+        /// </summary>
+        public const string DefaultReleasesUrl = "https://api.github.com/repos/STARIONGROUP/EcoreNetto/releases/latest";
+
+        /// <summary>
+        /// The cached <see cref="SearchValues{T}"/> of the SemVer pre-release / build-metadata separators
+        /// used when trimming a tag name before version parsing.
+        /// </summary>
+        private static readonly SearchValues<char> SemVerSuffixSeparators = SearchValues.Create("-+");
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="VersionChecker"/>
         /// </summary>
         /// <param name="httpClientFactory">
@@ -56,11 +68,29 @@ namespace ECoreNetto.Tools.Services
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        public VersionChecker(IHttpClientFactory httpClientFactory, ILoggerFactory? loggerFactory = null)
+        /// <param name="releasesUrl">
+        /// The GitHub API URL used to query the latest release. When null, <see cref="DefaultReleasesUrl"/> is used.
+        /// </param>
+        /// <param name="timeout">
+        /// The timeout applied to the HTTP request. When null, a default of 2 seconds is used.
+        /// </param>
+        public VersionChecker(IHttpClientFactory httpClientFactory, ILoggerFactory? loggerFactory = null, string? releasesUrl = null, TimeSpan? timeout = null)
         {
             this.httpClientFactory = httpClientFactory;
             this.logger = loggerFactory == null ? NullLogger<VersionChecker>.Instance : loggerFactory.CreateLogger<VersionChecker>();
+            this.ReleasesUrl = releasesUrl ?? DefaultReleasesUrl;
+            this.Timeout = timeout ?? TimeSpan.FromSeconds(2);
         }
+
+        /// <summary>
+        /// Gets the GitHub API URL used to query the latest release
+        /// </summary>
+        public string ReleasesUrl { get; }
+
+        /// <summary>
+        /// Gets the timeout applied to the HTTP request
+        /// </summary>
+        public TimeSpan Timeout { get; }
 
         /// <summary>
         /// Checks for the lastest release
@@ -82,7 +112,12 @@ namespace ECoreNetto.Tools.Services
                 if (payload != null)
                 {
                     var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
-                    var publishedVersion = new Version(payload.TagName);
+
+                    if (!TryParseVersion(payload.TagName, out var publishedVersion))
+                    {
+                        this.logger.LogWarning("Unable to parse the published version '{TagName}' returned by the GitHub API", payload.TagName);
+                        return;
+                    }
 
                     if (currentVersion < publishedVersion)
                     {
@@ -120,15 +155,13 @@ namespace ECoreNetto.Tools.Services
         public async Task<GitHubRelease?> QueryLatestReleaseAsync(CancellationToken cancellationToken)
         {
             var httpClient = this.httpClientFactory.CreateClient();
-            httpClient.Timeout = TimeSpan.FromSeconds(2);
-
-            const string requestUrl = "https://api.github.com/repos/STARIONGROUP/EcoreNetto/releases/latest";
+            httpClient.Timeout = this.Timeout;
 
             try
             {
                 httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("ECoreNetto.Tools");
 
-                var response = await httpClient.GetAsync(requestUrl, cancellationToken);
+                var response = await httpClient.GetAsync(this.ReleasesUrl, cancellationToken);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -140,14 +173,47 @@ namespace ECoreNetto.Tools.Services
             }
             catch (TaskCanceledException taskCanceledException)
             {
-                this.logger.LogWarning(taskCanceledException, "Contacting the GitGub API at {Url} timed out", requestUrl);
+                this.logger.LogWarning(taskCanceledException, "Contacting the GitHub API at {Url} timed out", this.ReleasesUrl);
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex, "");
+                this.logger.LogError(ex, "An error occurred while querying the latest release from the GitHub API at {Url}", this.ReleasesUrl);
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Attempts to parse the version from a GitHub release tag name, tolerating a leading
+        /// 'v'/'V' prefix and any SemVer pre-release or build-metadata suffix (e.g. '-beta', '+build').
+        /// </summary>
+        /// <param name="tagName">
+        /// The raw tag name returned by the GitHub API
+        /// </param>
+        /// <param name="version">
+        /// The parsed <see cref="Version"/> when parsing succeeds; otherwise null.
+        /// </param>
+        /// <returns>
+        /// true when the tag name could be parsed into a <see cref="Version"/>, false otherwise.
+        /// </returns>
+        private static bool TryParseVersion(string? tagName, out Version? version)
+        {
+            version = null;
+
+            if (string.IsNullOrWhiteSpace(tagName))
+            {
+                return false;
+            }
+
+            var candidate = tagName!.Trim().TrimStart('v', 'V');
+
+            var suffixIndex = candidate.AsSpan().IndexOfAny(SemVerSuffixSeparators);
+            if (suffixIndex >= 0)
+            {
+                candidate = candidate.Substring(0, suffixIndex);
+            }
+
+            return Version.TryParse(candidate, out version);
         }
     }
 }
