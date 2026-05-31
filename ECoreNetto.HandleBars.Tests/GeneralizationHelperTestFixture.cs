@@ -80,5 +80,19 @@ namespace ECoreNetto.HandleBars.Tests
 
             Assert.That(result, Is.EqualTo(": Relation, IContainmentRelation"));
         }
+
+        [Test]
+        public void Verify_that_GeneralizationClasses_returns_interface_for_class_without_supertypes()
+        {
+            var template = "{{ #Generalization.Classes this }}";
+
+            var action = this.handlebarsContenxt.Compile(template);
+
+            var eClass = this.root.EClassifiers.Single(x => x.Name == "Relation");
+
+            var result = action(eClass);
+
+            Assert.That(result, Is.EqualTo(": IRelation"));
+        }
     }
 }

@@ -177,5 +177,48 @@ namespace ECoreNetto.HandleBars.Tests
 
             Assert.That(result, Is.EqualTo("False"));
         }
+
+        [Test]
+        public void Verify_that_StructuralFeature_NameEqualsEnclosingType_renders_when_names_match()
+        {
+            var template = "{{#StructuralFeature.NameEqualsEnclosingType feature eClass}}MATCH{{/StructuralFeature.NameEqualsEnclosingType}}";
+
+            var action = this.handlebarsContenxt.Compile(template);
+
+            var eClass = this.root.EClassifiers.OfType<EClass>().Single(x => x.Name == "Amount");
+            var eStructuralFeature = eClass.EStructuralFeatures.Single(x => x.Name == "amount");
+
+            var result = action(new { feature = eStructuralFeature, eClass });
+
+            Assert.That(result, Is.EqualTo("MATCH"));
+        }
+
+        [Test]
+        public void Verify_that_StructuralFeature_NameEqualsEnclosingType_does_not_render_when_names_differ()
+        {
+            var template = "{{#StructuralFeature.NameEqualsEnclosingType feature eClass}}MATCH{{/StructuralFeature.NameEqualsEnclosingType}}";
+
+            var action = this.handlebarsContenxt.Compile(template);
+
+            var eClass = this.root.EClassifiers.OfType<EClass>().Single(x => x.Name == "Amount");
+            var eStructuralFeature = eClass.EStructuralFeatures.Single(x => x.Name == "unit");
+
+            var result = action(new { feature = eStructuralFeature, eClass });
+
+            Assert.That(result, Is.Empty);
+        }
+
+        [Test]
+        public void Verify_that_StructuralFeature_NameEqualsEnclosingType_throws_when_not_exactly_two_arguments()
+        {
+            var template = "{{#StructuralFeature.NameEqualsEnclosingType feature}}MATCH{{/StructuralFeature.NameEqualsEnclosingType}}";
+
+            var action = this.handlebarsContenxt.Compile(template);
+
+            var eClass = this.root.EClassifiers.OfType<EClass>().Single(x => x.Name == "Amount");
+            var eStructuralFeature = eClass.EStructuralFeatures.Single(x => x.Name == "amount");
+
+            Assert.Throws<HandlebarsException>(() => action(new { feature = eStructuralFeature }));
+        }
     }
 }

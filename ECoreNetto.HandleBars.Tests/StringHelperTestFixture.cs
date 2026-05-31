@@ -86,5 +86,25 @@ namespace ECoreNetto.HandleBars.Tests
 
             Assert.Throws<HandlebarsException>(() => action("uppercase"));
         }
+
+        [Test]
+        public void Verify_that_CapitalizeFirstLetter_throws_exception_when_argument_is_not_a_string()
+        {
+            var template = "{{ #String.CapitalizeFirstLetter this }}";
+
+            var action = this.handlebarsContenxt.Compile(template);
+
+            Assert.Throws<HandlebarsException>(() => action(42));
+        }
+
+        [Test]
+        public void Verify_that_LowerCaseFirstLetter_throws_exception_when_argument_is_not_a_string()
+        {
+            var template = "{{ #String.LowerCaseFirstLetter this }}";
+
+            var action = this.handlebarsContenxt.Compile(template);
+
+            Assert.Throws<HandlebarsException>(() => action(42));
+        }
     }
 }
