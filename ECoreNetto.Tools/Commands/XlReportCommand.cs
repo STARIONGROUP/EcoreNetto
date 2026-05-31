@@ -55,7 +55,7 @@ namespace ECoreNetto.Tools.Commands
         public class Handler : ReportHandler
         {
             /// <summary>
-            /// Initializes a nwe instance of the <see cref="Handler"/> class.
+            /// Initializes a new instance of the <see cref="Handler"/> class.
             /// </summary>
             /// <param name="xlReportGenerator">
             /// The (injected) <see cref="IXlReportGenerator"/> that is used to generate the

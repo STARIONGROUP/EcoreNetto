@@ -32,7 +32,7 @@ namespace ECoreNetto.Tools.Commands
     public class MarkdownReportCommand : ReportCommand
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="XlReportCommand"/>
+        /// Initializes a new instance of the <see cref="MarkdownReportCommand"/>
         /// </summary>
         public MarkdownReportCommand() : base("md-report", "Generates a Markdown report of the ECore model")
         {
@@ -54,11 +54,11 @@ namespace ECoreNetto.Tools.Commands
         public class Handler : ReportHandler
         {
             /// <summary>
-            /// Initializes a nwe instance of the <see cref="Handler"/> class.
+            /// Initializes a new instance of the <see cref="Handler"/> class.
             /// </summary>
             /// <param name="markdownReportGenerator">
             /// The (injected) <see cref="IMarkdownReportGenerator"/> that is used to generate the
-            /// excel report
+            /// markdown report
             /// </param>
             /// <param name="versionChecker">
             /// The <see cref="IVersionChecker"/> used to check the github version
