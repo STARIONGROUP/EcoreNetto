@@ -32,13 +32,13 @@ namespace ECoreNetto.Tools.Tests.Services
     [TestFixture]
     public class VersionCheckerTestFixture
     {
-        private VersionChecker versionChecker;
+        private VersionChecker versionChecker = null!;
 
         private ILoggerFactory? loggerFactory;
 
-        private TestHttpClientFactory httpClientFactory;
+        private TestHttpClientFactory httpClientFactory = null!;
 
-        private TestTimeOutHttpClientFactory timeOutHttpClientFactory;
+        private TestTimeOutHttpClientFactory timeOutHttpClientFactory = null!;
 
         [OneTimeSetUp]
         public void OneTimeSetUp()

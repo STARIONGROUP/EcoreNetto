@@ -78,6 +78,6 @@ namespace ECoreNetto.Reporting.Payload
         /// <summary>
         /// Gets the version of the reporting library
         /// </summary>
-        public string Version => Assembly.GetExecutingAssembly().GetName().Version?.ToString();
+        public string? Version => Assembly.GetExecutingAssembly().GetName().Version?.ToString();
     }
 }

@@ -42,7 +42,7 @@ namespace ECoreNetto
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        public EEnumLiteral(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource, loggerFactory)
+        public EEnumLiteral(Resource.Resource resource, ILoggerFactory? loggerFactory = null) : base(resource, loggerFactory)
         {
             this.logger = loggerFactory == null ? NullLogger<EEnumLiteral>.Instance : loggerFactory.CreateLogger<EEnumLiteral>();
         }
@@ -50,7 +50,7 @@ namespace ECoreNetto
         /// <summary>
         /// Gets the containing <see cref="EEnum"/>
         /// </summary>
-        public EEnum EEnum => (EEnum)this.EContainer;
+        public EEnum EEnum => (EEnum)this.EContainer!;
 
         /// <summary>
         /// Gets or sets int value of an enumerator. 

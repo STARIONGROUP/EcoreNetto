@@ -44,7 +44,7 @@ namespace ECoreNetto.Reporting.Generators
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        public HtmlReportGenerator(ILoggerFactory loggerFactory = null) : base(loggerFactory)
+        public HtmlReportGenerator(ILoggerFactory? loggerFactory = null) : base(loggerFactory)
         {
             this.logger = loggerFactory == null ? NullLogger<HtmlReportGenerator>.Instance : loggerFactory.CreateLogger<HtmlReportGenerator>();
         }

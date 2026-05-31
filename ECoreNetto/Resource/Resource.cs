@@ -48,7 +48,7 @@ namespace ECoreNetto.Resource
         /// <summary>
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </summary>
-        private readonly ILoggerFactory loggerFactory;
+        private readonly ILoggerFactory? loggerFactory;
 
         /// <summary>
         /// The <see cref="ILogger"/> used to log
@@ -81,7 +81,7 @@ namespace ECoreNetto.Resource
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        public Resource(ILoggerFactory loggerFactory = null)
+        public Resource(ILoggerFactory? loggerFactory = null)
         {
             this.loggerFactory = loggerFactory;
 
@@ -160,12 +160,12 @@ namespace ECoreNetto.Resource
         /// Gets the containing resource set. A resource is contained by a resource set if it appears in the resources, i.e., the contents, of that resource set.
         /// This reference can only be modified by altering the contents of the resource set directly. 
         /// </summary>
-        public ResourceSet ResourceSet { get; internal set; }
+        public ResourceSet? ResourceSet { get; internal set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Uri"/> of this resource. The URI is normally expected to be absolute and hierarchical; document-relative references will not be serialized and will not be resolved, if this is not the case.
         /// </summary>
-        public Uri URI { get; set; }
+        public Uri URI { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the cached value of the time stamp when this resource was last loaded or saved, or NULL_TIME_STAMP if the resource is not 
@@ -267,7 +267,7 @@ namespace ECoreNetto.Resource
 
             this.logger.LogTrace("EObject not found in current resource, loading other resources: {0}", resourceUri);
 
-            var resource = this.ResourceSet.Resources.SingleOrDefault(x => x.URI == resourceUri);
+            var resource = this.ResourceSet!.Resources.SingleOrDefault(x => x.URI == resourceUri);
             if (resource == null)
             {
                 resource = this.ResourceSet.CreateResource(resourceUri);
@@ -286,7 +286,7 @@ namespace ECoreNetto.Resource
         /// <param name="options">
         /// The save options.
         /// </param>
-        public void Save(Dictionary<object, object> options)
+        public void Save(Dictionary<object, object>? options)
         {
             this.logger.LogWarning("Saving an Ecore model to file is not yet supported");
 
@@ -305,7 +305,7 @@ namespace ECoreNetto.Resource
         /// <returns>
         /// The top-level <see cref="EPackage"/> contained by the resource.
         /// </returns>
-        public EPackage Load(Dictionary<object, object> options)
+        public EPackage Load(Dictionary<object, object>? options)
         {
             var sw = Stopwatch.StartNew();
 

@@ -36,13 +36,13 @@ namespace ECoreNetto
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        public EFactory(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource, loggerFactory)
+        public EFactory(Resource.Resource resource, ILoggerFactory? loggerFactory = null) : base(resource, loggerFactory)
         {
         }
 
         /// <summary>
         /// Gets the <see cref="EPackage"/>
         /// </summary>
-        public EPackage EPackage { get; private set; }
+        public EPackage? EPackage { get; private set; }
     }
 }

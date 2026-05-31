@@ -48,7 +48,7 @@ namespace ECoreNetto.HandleBars
                     throw new HandlebarsException("{{#StructuralFeature.QueryIsEnumerable}} helper must have exactly one argument");
                 }
 
-                var eStructuralFeature = arguments.Single() as EStructuralFeature;
+                var eStructuralFeature = (EStructuralFeature)arguments.Single()!;
 
                 return eStructuralFeature.QueryIsEnumerable();
             });
@@ -60,7 +60,7 @@ namespace ECoreNetto.HandleBars
                     throw new HandlebarsException("{{#StructuralFeature.IsEnumerable}} helper must have exactly one argument");
                 }
 
-                var eStructuralFeature = arguments.Single() as EStructuralFeature;
+                var eStructuralFeature = (EStructuralFeature)arguments.Single()!;
 
                 var isEnumerable = eStructuralFeature.QueryIsEnumerable();
 
@@ -77,7 +77,7 @@ namespace ECoreNetto.HandleBars
                     throw new HandlebarsException("{{#StructuralFeature.QueryIsAttribute}} helper must have exactly one argument");
                 }
 
-                var eStructuralFeature = arguments.Single() as EStructuralFeature;
+                var eStructuralFeature = (EStructuralFeature)arguments.Single()!;
 
                 return eStructuralFeature.QueryIsAttribute();
             });
@@ -89,7 +89,7 @@ namespace ECoreNetto.HandleBars
                     throw new HandlebarsException("{{#StructuralFeature.IsAttribute}} helper must have exactly one argument");
                 }
 
-                var eStructuralFeature = arguments.Single() as EStructuralFeature;
+                var eStructuralFeature = (EStructuralFeature)arguments.Single()!;
 
                 var isAttribute = eStructuralFeature.QueryIsAttribute();
 
@@ -106,7 +106,7 @@ namespace ECoreNetto.HandleBars
                     throw new HandlebarsException("{{#StructuralFeature.QueryIsReference}} helper must have exactly one argument");
                 }
 
-                var eStructuralFeature = arguments.Single() as EStructuralFeature;
+                var eStructuralFeature = (EStructuralFeature)arguments.Single()!;
 
                 return eStructuralFeature.QueryIsReference();
             });
@@ -118,7 +118,7 @@ namespace ECoreNetto.HandleBars
                     throw new HandlebarsException("{{#StructuralFeature.IsReference}} helper must have exactly one argument");
                 }
 
-                var eStructuralFeature = arguments.Single() as EStructuralFeature;
+                var eStructuralFeature = (EStructuralFeature)arguments.Single()!;
 
                 var isReference = eStructuralFeature.QueryIsReference();
 
@@ -135,8 +135,8 @@ namespace ECoreNetto.HandleBars
                     throw new HandlebarsException("{{#StructuralFeature.QueryStructuralFeatureNameEqualsEnclosingType}} helper must have exactly two arguments");
                 }
 
-                var eStructuralFeature = arguments[0] as EStructuralFeature;
-                var eClass = arguments[1] as EClass;
+                var eStructuralFeature = (EStructuralFeature)arguments[0]!;
+                var eClass = (EClass)arguments[1]!;
 
                 return eStructuralFeature.QueryStructuralFeatureNameEqualsEnclosingType(eClass);
             });
@@ -148,8 +148,8 @@ namespace ECoreNetto.HandleBars
                     throw new HandlebarsException("{{#StructuralFeature.NameEqualsEnclosingType}} helper must have exactly two arguments");
                 }
 
-                var eStructuralFeature = arguments[0] as EStructuralFeature;
-                var eClass = arguments[1] as EClass;
+                var eStructuralFeature = (EStructuralFeature)arguments[0]!;
+                var eClass = (EClass)arguments[1]!;
 
                 var nameEqualsEnclosingType = eStructuralFeature.QueryStructuralFeatureNameEqualsEnclosingType(eClass);
 
@@ -166,7 +166,7 @@ namespace ECoreNetto.HandleBars
                     throw new HandlebarsException("{{#StructuralFeature.QueryIsEnum}} helper must have exactly one argument");
                 }
 
-                var eStructuralFeature = arguments.Single() as EStructuralFeature;
+                var eStructuralFeature = (EStructuralFeature)arguments.Single()!;
 
                 return eStructuralFeature.QueryIsEnum();
             });
@@ -178,7 +178,7 @@ namespace ECoreNetto.HandleBars
                     throw new HandlebarsException("{{#StructuralFeature.IsEnum}} helper must have exactly one argument");
                 }
 
-                var eStructuralFeature = arguments.Single() as EStructuralFeature;
+                var eStructuralFeature = (EStructuralFeature)arguments.Single()!;
 
                 var isEnum = eStructuralFeature.QueryIsEnum();
 
@@ -195,7 +195,7 @@ namespace ECoreNetto.HandleBars
                     throw new HandlebarsException("{{#StructuralFeature.QueryHasDefaultValue}} helper must have exactly one argument");
                 }
 
-                var eStructuralFeature = arguments.Single() as EStructuralFeature;
+                var eStructuralFeature = (EStructuralFeature)arguments.Single()!;
 
                 return eStructuralFeature.QueryHasDefaultValue();
             });
@@ -207,7 +207,7 @@ namespace ECoreNetto.HandleBars
                     throw new HandlebarsException("{{#StructuralFeature.QueryIsContainment}} helper must have exactly one argument");
                 }
 
-                var eStructuralFeature = arguments.Single() as EStructuralFeature;
+                var eStructuralFeature = (EStructuralFeature)arguments.Single()!;
 
                 return eStructuralFeature.QueryIsContainment();
             });

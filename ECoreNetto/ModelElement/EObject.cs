@@ -43,7 +43,7 @@ namespace ECoreNetto
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        protected EObject(Resource.Resource resource, ILoggerFactory loggerFactory = null)
+        protected EObject(Resource.Resource resource, ILoggerFactory? loggerFactory = null)
         {
             this.EResource = resource;
             this.Attributes = new Dictionary<string, string>();
@@ -61,12 +61,12 @@ namespace ECoreNetto
         /// <summary>
         /// Gets or sets the current top package name used during .
         /// </summary>
-        internal static string TopPackageName { get; set; }
+        internal static string? TopPackageName { get; set; }
 
         /// <summary>
         /// Gets the identifier for this <see cref="EModelElement"/>
         /// </summary>
-        public virtual string Identifier { get; set; }
+        public virtual string Identifier { get; set; } = null!;
 
         /// <summary>
         /// Gets the collection of xml-attributes of this object that are present
@@ -100,7 +100,7 @@ namespace ECoreNetto
         /// <returns>
         /// The containing <see cref="EObject"/>, or null.
         /// </returns>
-        public EObject EContainer { get; internal set; }
+        public EObject? EContainer { get; internal set; }
 
         /// <summary>
         /// Returns the particular <see cref="EStructuralFeature"/> of the container that actually holds the object, or null, if there is no container. 

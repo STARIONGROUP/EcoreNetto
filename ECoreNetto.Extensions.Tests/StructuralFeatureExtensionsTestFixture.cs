@@ -35,9 +35,9 @@ namespace ECoreNetto.Extensions.Tests
     [TestFixture]
     public class StructuralFeatureExtensionsTestFixture
     {
-        private EPackage rootPackage;
+        private EPackage rootPackage = null!;
 
-        private ILoggerFactory loggerFactory;
+        private ILoggerFactory loggerFactory = null!;
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
@@ -153,7 +153,7 @@ namespace ECoreNetto.Extensions.Tests
 
             var capacityClass = capacityStructuralFeature.QueryClass();
 
-            Assert.That(capacityClass.Name, Is.EqualTo("Amount"));
+            Assert.That(capacityClass!.Name, Is.EqualTo("Amount"));
 
             var timeTriggerClass = this.rootPackage.EClassifiers.OfType<EClass>().Single(x => x.Name == "TimeTrigger");
 

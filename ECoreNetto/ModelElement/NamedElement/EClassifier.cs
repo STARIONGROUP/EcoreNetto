@@ -44,7 +44,7 @@ namespace ECoreNetto
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        protected EClassifier(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource, loggerFactory)
+        protected EClassifier(Resource.Resource resource, ILoggerFactory? loggerFactory = null) : base(resource, loggerFactory)
         {
             this.logger = loggerFactory == null ? NullLogger<EClassifier>.Instance : loggerFactory.CreateLogger<EClassifier>();
         }
@@ -52,12 +52,12 @@ namespace ECoreNetto
         /// <summary>
         /// Gets the instance class name.
         /// </summary>
-        public string InstanceClassName { get; private set; }
+        public string? InstanceClassName { get; private set; }
 
         /// <summary>
         /// Gets the containing <see cref="EPackage"/>
         /// </summary>
-        public EPackage EPackage => (EPackage)this.EContainer;
+        public EPackage EPackage => (EPackage)this.EContainer!;
 
         /// <summary>
         /// Gets the hierarchy of  containing <see cref="EPackage"/>

@@ -35,9 +35,9 @@ namespace ECoreNetto.Extensions.Tests
     [TestFixture]
     public class PackageExtensionsTestFixture
     {
-        private EPackage rootPackage;
+        private EPackage rootPackage = null!;
 
-        private ILoggerFactory loggerFactory;
+        private ILoggerFactory loggerFactory = null!;
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
@@ -80,9 +80,9 @@ namespace ECoreNetto.Extensions.Tests
         [Test]
         public void Verify_that_when_root_is_null_result_is_empty()
         {
-            EPackage package = null;
+            EPackage? package = null;
 
-            var packages = PackageExtensions.QueryPackages(package);
+            var packages = PackageExtensions.QueryPackages(package!);
 
             Assert.That(packages, Is.Empty);
         }

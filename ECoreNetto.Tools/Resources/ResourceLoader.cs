@@ -55,7 +55,7 @@ namespace ECoreNetto.Tools.Resources
         /// <returns>
         /// a string representation of the version of the application
         /// </returns>
-        public static string QueryVersion()
+        public static string? QueryVersion()
         {
             var assembly = Assembly.GetExecutingAssembly();
             return assembly.GetName().Version?.ToString();

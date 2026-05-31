@@ -1,0 +1,11 @@
+<Project>
+
+    <!--
+      Solution-wide build properties. Currently scoped to enabling nullable
+      reference types consistently across all projects (see issue #49).
+    -->
+    <PropertyGroup>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+</Project>

@@ -39,15 +39,15 @@ namespace ECoreNetto.Tools.Tests.Commands
     [TestFixture]
     public class XlReportCommandTestFixture
     {
-        private RootCommand rootCommand;
+        private RootCommand rootCommand = null!;
 
-        private Mock<IXlReportGenerator> reportGenerator;
+        private Mock<IXlReportGenerator> reportGenerator = null!;
 
-        private Mock<IVersionChecker> versionChecker;
+        private Mock<IVersionChecker> versionChecker = null!;
 
-        private XlReportCommand.Handler handler;
+        private XlReportCommand.Handler handler = null!;
 
-        private CancellationTokenSource cts;
+        private CancellationTokenSource cts = null!;
 
         [SetUp]
         public void SetUp()

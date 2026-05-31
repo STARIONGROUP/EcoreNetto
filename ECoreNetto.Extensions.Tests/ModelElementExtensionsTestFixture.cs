@@ -36,8 +36,8 @@ namespace ECoreNetto.Extensions.Tests
     [TestFixture]
     public class ModelElementExtensionsTestFixture
     {
-        private EPackage rootPackage;
-        private ILoggerFactory loggerFactory; 
+        private EPackage rootPackage = null!;
+        private ILoggerFactory loggerFactory = null!;
         
         [OneTimeSetUp]
         public void OneTimeSetUp()
@@ -85,25 +85,25 @@ namespace ECoreNetto.Extensions.Tests
         [Test]
         public void Verify_that_QueryDocumentation_throws_Exception_when_argument_null()
         {
-            EModelElement eModelElement = null;
+            EModelElement? eModelElement = null;
 
-            Assert.That(() => ModelElementExtensions.QueryDocumentation(eModelElement), Throws.ArgumentNullException);
+            Assert.That(() => ModelElementExtensions.QueryDocumentation(eModelElement!), Throws.ArgumentNullException);
         }
 
         [Test]
         public void Verify_that_QueryRawDocumentation_throws_Exception_when_argument_null()
         {
-            EModelElement eModelElement = null;
+            EModelElement? eModelElement = null;
 
-            Assert.That(() => ModelElementExtensions.QueryRawDocumentation(eModelElement), Throws.ArgumentNullException);
+            Assert.That(() => ModelElementExtensions.QueryRawDocumentation(eModelElement!), Throws.ArgumentNullException);
         }
 
         [Test]
         public void Verify_that_RemoveUnwantedHtmlTags_throws_Exception_when_argument_null()
         {
-            string html = null;
+            string? html = null;
 
-            Assert.That(() => ModelElementExtensions.RemoveUnwantedHtmlTags(html, new List<string>()), Throws.ArgumentException);
+            Assert.That(() => ModelElementExtensions.RemoveUnwantedHtmlTags(html!, new List<string>()), Throws.ArgumentException);
         }
 
         [Test]

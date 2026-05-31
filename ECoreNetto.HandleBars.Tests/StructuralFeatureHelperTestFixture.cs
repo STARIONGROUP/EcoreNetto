@@ -36,9 +36,9 @@ namespace ECoreNetto.HandleBars.Tests
     [TestFixture]
     public class StructuralFeatureHelperTestFixture
     {
-        private IHandlebars handlebarsContenxt;
+        private IHandlebars handlebarsContenxt = null!;
 
-        private EPackage root;
+        private EPackage root = null!;
 
         [SetUp]
         public void Setup()

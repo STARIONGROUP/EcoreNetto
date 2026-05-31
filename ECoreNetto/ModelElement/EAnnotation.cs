@@ -46,7 +46,7 @@ namespace ECoreNetto
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        public EAnnotation(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource, loggerFactory)
+        public EAnnotation(Resource.Resource resource, ILoggerFactory? loggerFactory = null) : base(resource, loggerFactory)
         {
             this.logger = loggerFactory == null ? NullLogger<EAnnotation>.Instance : loggerFactory.CreateLogger<EAnnotation>();
 
@@ -56,7 +56,7 @@ namespace ECoreNetto
         /// <summary>
         /// Gets the source of this <see cref="EAnnotation"/>
         /// </summary>
-        public string Source { get; private set; }
+        public string? Source { get; private set; }
 
         /// <summary>
         /// Gets the 
@@ -66,7 +66,7 @@ namespace ECoreNetto
         /// <summary>
         /// Gets the <see cref="EModelElement"/> that is annotated by the current <see cref="EAnnotation"/>
         /// </summary>
-        public EModelElement EModelElement => (EModelElement)this.EContainer;
+        public EModelElement EModelElement => (EModelElement)this.EContainer!;
 
         /// <summary>
         /// Set the properties of this <see cref="EModelElement"/>

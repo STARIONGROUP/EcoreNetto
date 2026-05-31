@@ -31,18 +31,18 @@ namespace ECoreNetto.Tools.Services
         /// Gets or sets the url of the release page
         /// </summary>
         [JsonPropertyName("html_url")]
-        public string HtmlUrl { get; set; }
+        public string HtmlUrl { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the name of the tag
         /// </summary>
         [JsonPropertyName("tag_name")]
-        public string TagName{ get; set; }
+        public string TagName { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the description of the release
         /// </summary>
         [JsonPropertyName("body")]
-        public string Body { get; set; }
+        public string Body { get; set; } = null!;
     }
 }

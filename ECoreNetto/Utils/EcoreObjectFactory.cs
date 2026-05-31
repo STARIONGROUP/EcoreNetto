@@ -39,7 +39,7 @@ namespace ECoreNetto.Utils
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        public EcoreObjectFactory(Resource resource, ILoggerFactory loggerFactory = null)
+        public EcoreObjectFactory(Resource resource, ILoggerFactory? loggerFactory = null)
         {
             var logger = loggerFactory == null ? NullLogger<EcoreObjectFactory>.Instance : loggerFactory.CreateLogger<EcoreObjectFactory>();
 

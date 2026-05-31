@@ -46,7 +46,7 @@ namespace ECoreNetto
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        public EAttribute(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource, loggerFactory)
+        public EAttribute(Resource.Resource resource, ILoggerFactory? loggerFactory = null) : base(resource, loggerFactory)
         {
             this.logger = loggerFactory == null ? NullLogger<EAttribute>.Instance : loggerFactory.CreateLogger<EAttribute>();
         }

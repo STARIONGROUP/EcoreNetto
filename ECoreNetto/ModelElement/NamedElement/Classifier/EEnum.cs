@@ -34,7 +34,7 @@ namespace ECoreNetto
         /// <summary>
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </summary>
-        private readonly ILoggerFactory loggerFactory;
+        private readonly ILoggerFactory? loggerFactory;
 
         /// <summary>
         /// The <see cref="ILogger"/> used to log
@@ -50,7 +50,7 @@ namespace ECoreNetto
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        public EEnum(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource, loggerFactory)
+        public EEnum(Resource.Resource resource, ILoggerFactory? loggerFactory = null) : base(resource, loggerFactory)
         {
             this.loggerFactory = loggerFactory;
 

@@ -36,8 +36,8 @@ namespace ECoreNetto.Extensions.Tests
     [TestFixture]
     public class ClassExtensionsTestFixture
     {
-        private EPackage rootPackage;
-        private ILoggerFactory loggerFactory;
+        private EPackage rootPackage = null!;
+        private ILoggerFactory loggerFactory = null!;
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
@@ -85,9 +85,9 @@ namespace ECoreNetto.Extensions.Tests
         [Test]
         public void Verify_that_QuerySpecializations_throws_exception_when_argument_is_null()
         {
-            EClass @class = null;
+            EClass? @class = null;
 
-            Assert.That(() =>ClassExtensions.QuerySpecializations(@class, new List<EClass>()), Throws.ArgumentNullException);
+            Assert.That(() =>ClassExtensions.QuerySpecializations(@class!, new List<EClass>()), Throws.ArgumentNullException);
 
         }
 
@@ -106,9 +106,9 @@ namespace ECoreNetto.Extensions.Tests
         [Test]
         public void Verify_that_QueryTypeHierarchy_throws_exception_when_argument_is_null()
         {
-            EClass @class = null;
+            EClass? @class = null;
 
-            Assert.That(() => ClassExtensions.QueryTypeHierarchy(@class), Throws.ArgumentNullException);
+            Assert.That(() => ClassExtensions.QueryTypeHierarchy(@class!), Throws.ArgumentNullException);
 
         }
     }

@@ -52,7 +52,7 @@ namespace ECoreNetto.Reporting.Generators
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        public XlReportGenerator(ILoggerFactory loggerFactory = null) : base(loggerFactory)
+        public XlReportGenerator(ILoggerFactory? loggerFactory = null) : base(loggerFactory)
         {
             this.logger = loggerFactory == null ? NullLogger<XlReportGenerator>.Instance : loggerFactory.CreateLogger<XlReportGenerator>();
         }
@@ -196,7 +196,7 @@ namespace ECoreNetto.Reporting.Generators
                         var structuralFeatureDataRow = dataTable.NewRow();
                         structuralFeatureDataRow["Class"] = eClass.Name;
                         structuralFeatureDataRow["Feature"] = structuralFeature.Name;
-                        structuralFeatureDataRow["EType"] = structuralFeature.EType.Name;
+                        structuralFeatureDataRow["EType"] = structuralFeature.EType!.Name;
                         structuralFeatureDataRow["Multiplicity"] = $"{structuralFeature.LowerBound}:{structuralFeature.UpperBound}";
                         structuralFeatureDataRow["IsContainment"] = structuralFeature.QueryIsContainment();
                         structuralFeatureDataRow["Documentation"] = structuralFeature.QueryRawDocumentation();

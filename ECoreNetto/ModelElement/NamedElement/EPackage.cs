@@ -36,7 +36,7 @@ namespace ECoreNetto
         /// <summary>
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </summary>
-        private readonly ILoggerFactory loggerFactory;
+        private readonly ILoggerFactory? loggerFactory;
 
         /// <summary>
         /// The <see cref="ILogger"/> used to log
@@ -72,7 +72,7 @@ namespace ECoreNetto
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        public EPackage(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource, loggerFactory)
+        public EPackage(Resource.Resource resource, ILoggerFactory? loggerFactory = null) : base(resource, loggerFactory)
         {
             this.loggerFactory = loggerFactory;
 
@@ -85,17 +85,17 @@ namespace ECoreNetto
         /// <summary>
         /// Gets the URI
         /// </summary>
-        public string NsUri { get; private set; }
+        public string? NsUri { get; private set; }
 
         /// <summary>
         /// Gets the prefix
         /// </summary>
-        public string NsPrefix { get; private set; }
+        public string? NsPrefix { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="EFactoryInstance"/>
         /// </summary>
-        public EFactory EFactoryInstance { get; private set; }
+        public EFactory? EFactoryInstance { get; private set; }
 
         /// <summary>
         /// Gets the collection of sub <see cref="EPackage"/>
@@ -113,7 +113,7 @@ namespace ECoreNetto
         /// <remarks>
         /// This may be null if this is the top <see cref="EPackage"/>
         /// </remarks>
-        public EPackage ESuperPackage => (EPackage)this.EContainer;
+        public EPackage ESuperPackage => (EPackage)this.EContainer!;
 
         /// <summary>
         /// Read the attributes of the current node

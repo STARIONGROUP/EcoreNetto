@@ -39,15 +39,15 @@ namespace ECoreNetto.Tools.Tests.Commands
     [TestFixture]
     public class MarkdownReportCommandTestFixture
     {
-        private RootCommand rootCommand;
+        private RootCommand rootCommand = null!;
 
-        private Mock<IMarkdownReportGenerator> markdownReportGenerator;
+        private Mock<IMarkdownReportGenerator> markdownReportGenerator = null!;
 
-        private Mock<IVersionChecker> versionChecker;
+        private Mock<IVersionChecker> versionChecker = null!;
 
-        private MarkdownReportCommand.Handler handler;
+        private MarkdownReportCommand.Handler handler = null!;
 
-        private CancellationTokenSource cts;
+        private CancellationTokenSource cts = null!;
 
         [SetUp]
         public void SetUp()

@@ -36,14 +36,14 @@ namespace ECoreNetto.Tests.Resource
         /// <summary>
         /// the path to the file that is the resource
         /// </summary>
-        private string filePath;
+        private string filePath = null!;
 
         /// <summary>
         /// the class that is being tested
         /// </summary>
-        private ResourceSet resourceSet;
+        private ResourceSet resourceSet = null!;
 
-        private ILoggerFactory loggerFactory;
+        private ILoggerFactory loggerFactory = null!;
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
@@ -71,7 +71,7 @@ namespace ECoreNetto.Tests.Resource
         [Test]
         public void Verify_that_when_uri_is_null_exception_is_thrown()
         {
-            Assert.That(() => this.resourceSet.CreateResource(null), Throws.ArgumentNullException);
+            Assert.That(() => this.resourceSet.CreateResource(null!), Throws.ArgumentNullException);
         }
 
         [Test]
@@ -127,7 +127,7 @@ namespace ECoreNetto.Tests.Resource
         [Test]
         public void VerifyThat_when_resource_is_called_with_null_uri_exception_is_thrown()
         {
-            Assert.That(() => this.resourceSet.Resource(null, false), Throws.ArgumentNullException);
+            Assert.That(() => this.resourceSet.Resource(null!, false), Throws.ArgumentNullException);
         }
     }
 }

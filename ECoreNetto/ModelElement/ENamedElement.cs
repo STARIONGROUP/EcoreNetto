@@ -33,7 +33,7 @@ namespace ECoreNetto
         /// <summary>
         /// Backing field for <see cref="Identifier"/>
         /// </summary>
-        private string identifier;
+        private string? identifier;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ENamedElement"/> class
@@ -44,14 +44,14 @@ namespace ECoreNetto
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        protected ENamedElement(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource)
+        protected ENamedElement(Resource.Resource resource, ILoggerFactory? loggerFactory = null) : base(resource)
         {
         }
 
         /// <summary>
         /// Gets the name of this <see cref="ENamedElement"/>
         /// </summary>
-        public string Name { get; internal set; }
+        public string Name { get; internal set; } = null!;
 
         /// <summary>
         /// Gets the identifier for this <see cref="ENamedElement"/>
@@ -65,7 +65,7 @@ namespace ECoreNetto
                     this.identifier = this.BuildIdentifier();
                 }
 
-                return this.identifier;
+                return this.identifier!;
             }
         }
 

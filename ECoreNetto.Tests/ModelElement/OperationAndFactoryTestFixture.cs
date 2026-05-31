@@ -64,7 +64,7 @@ namespace ECoreNetto.Tests.ModelElement
             var resource = new Resource();
             var operation = new TestableEOperation(resource);
 
-            Assert.That(() => operation.ExposeDeserializeChildNode(null), Throws.ArgumentNullException);
+            Assert.That(() => operation.ExposeDeserializeChildNode(null!), Throws.ArgumentNullException);
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace ECoreNetto.Tests.ModelElement
             var xmlDocument = new XmlDocument();
             xmlDocument.LoadXml("<eParameters name=\"parameterOne\" />");
 
-            operation.ExposeDeserializeChildNode(xmlDocument.DocumentElement);
+            operation.ExposeDeserializeChildNode(xmlDocument.DocumentElement!);
 
             Assert.Multiple(() =>
             {

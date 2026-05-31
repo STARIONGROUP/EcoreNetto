@@ -99,7 +99,7 @@ namespace ECoreNetto.Utils
         /// </param>
         private static void RemoveFromContainer(EAnnotation annotation)
         {
-            var container = (EModelElement)annotation.EContainer;
+            var container = (EModelElement)annotation.EContainer!;
             container.EAnnotations.Remove(annotation);
         }
 
@@ -111,7 +111,7 @@ namespace ECoreNetto.Utils
         /// </param>
         private static void RemoveFromContainer(EPackage package)
         {
-            var container = (EPackage)package.EContainer;
+            var container = (EPackage)package.EContainer!;
             container.ESubPackages.Remove(package);
         }
 
@@ -123,7 +123,7 @@ namespace ECoreNetto.Utils
         /// </param>
         private static void RemoveFromContainer(EClassifier classifier)
         {
-            var container = (EPackage)classifier.EContainer;
+            var container = (EPackage)classifier.EContainer!;
             container.EClassifiers.Remove(classifier);
         }
 
@@ -135,7 +135,7 @@ namespace ECoreNetto.Utils
         /// </param>
         private static void RemoveFromContainer(EParameter parameter)
         {
-            var container = (EOperation)parameter.EContainer;
+            var container = (EOperation)parameter.EContainer!;
             container.EParameters.Remove(parameter);
         }
 
@@ -147,7 +147,7 @@ namespace ECoreNetto.Utils
         /// </param>
         private static void RemoveFromContainer(EOperation operation)
         {
-            var container = (EClass)operation.EContainer;
+            var container = (EClass)operation.EContainer!;
             container.EOperations.Remove(operation);
         }
 
@@ -159,7 +159,7 @@ namespace ECoreNetto.Utils
         /// </param>
         private static void RemoveFromContainer(EStructuralFeature structuralFeature)
         {
-            var container = (EClass)structuralFeature.EContainer;
+            var container = (EClass)structuralFeature.EContainer!;
             container.EStructuralFeatures.Remove(structuralFeature);
         }
 
@@ -171,7 +171,7 @@ namespace ECoreNetto.Utils
         /// </param>
         private static void RemoveFromContainer(EEnumLiteral enumLiteral)
         {
-            var container = (EEnum)enumLiteral.EContainer;
+            var container = (EEnum)enumLiteral.EContainer!;
             container.ELiterals.Remove(enumLiteral);
         }
     }

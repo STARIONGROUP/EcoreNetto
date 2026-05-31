@@ -35,7 +35,7 @@ namespace ECoreNetto.Tools.Commands
         /// </summary>
         /// <param name="name">The name of the command.</param>
         /// <param name="description">The description of the command, shown in help.</param>
-        protected ReportCommand(string name, string description = null) : base(name, description)
+        protected ReportCommand(string name, string? description = null) : base(name, description)
         {
             var noLogoOption = new Option<bool>(name: "--no-logo")
             {

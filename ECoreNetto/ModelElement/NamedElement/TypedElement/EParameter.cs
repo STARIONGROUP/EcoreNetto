@@ -36,14 +36,14 @@ namespace ECoreNetto
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        public EParameter(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource, loggerFactory)
+        public EParameter(Resource.Resource resource, ILoggerFactory? loggerFactory = null) : base(resource, loggerFactory)
         {
         }
 
         /// <summary>
         /// Gets the containing <see cref="EOperation"/>
         /// </summary>
-        public EOperation EOperation => (EOperation)this.EContainer;
+        public EOperation EOperation => (EOperation)this.EContainer!;
 
         /// <summary>
         /// Build the EModelElement.Identifier property

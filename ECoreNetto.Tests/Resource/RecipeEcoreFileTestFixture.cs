@@ -37,12 +37,12 @@ namespace ECoreNetto.Tests.Resource
     [TestFixture]
     public class RecipeEcoreFileTestFixture
     {
-        private string filePath;
-        private Uri uri;
-        private Resource resource;
-        private ResourceSet resourceSet;
+        private string filePath = null!;
+        private Uri uri = null!;
+        private Resource resource = null!;
+        private ResourceSet resourceSet = null!;
 
-        private ILoggerFactory loggerFactory;
+        private ILoggerFactory loggerFactory = null!;
         
         [OneTimeSetUp]
         public void OneTimeSetUp()
@@ -72,11 +72,11 @@ namespace ECoreNetto.Tests.Resource
             this.resourceSet = new ResourceSet(this.loggerFactory);
             this.resource = this.resourceSet.CreateResource(this.uri);
 
-            EPackage rootPackage = null;
+            EPackage? rootPackage = null;
 
             Assert.DoesNotThrow(() => rootPackage = this.resource.Load(null));
 
-            var eEnum = rootPackage.EClassifiers.OfType<EEnum>().Single(x => x.Name == "Unit");
+            var eEnum = rootPackage!.EClassifiers.OfType<EEnum>().Single(x => x.Name == "Unit");
 
             var decagram = eEnum.ELiterals.Single(x => x.Name == "DECAGRAM");
             Assert.That(decagram.Value, Is.EqualTo(0));
