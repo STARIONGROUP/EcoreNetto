@@ -88,7 +88,7 @@ namespace ECoreNetto.Tools
                     var loggerConfig = new LoggerConfiguration()
                         .Enrich.FromLogContext()
                         .MinimumLevel.ControlledBy(LoggingLevelSwitch)
-                        .WriteTo.File("uml4net.logs",
+                        .WriteTo.File("ecorenetto.logs",
                             rollingInterval: RollingInterval.Day,
                             outputTemplate: template);
 
