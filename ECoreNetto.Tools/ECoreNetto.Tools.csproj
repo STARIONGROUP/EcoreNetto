@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup Label="Package">
         <LangVersion>14.0</LangVersion>
@@ -11,14 +11,8 @@
         <ToolCommandName>ecoretools</ToolCommandName>
         <Version>8.0.1</Version>
         <ImplicitUsings>disable</ImplicitUsings>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageIcon>ecorenetto-Icon.png</PackageIcon>
         <ApplicationIcon>icon.ico</ApplicationIcon>
-        <NeutralLanguage>en-US</NeutralLanguage>
-        <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
         <PackageTags>Ecore HandleBars Reporting modeltopia</PackageTags>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <GenerateSBOM>true</GenerateSBOM>
         <PackageReleaseNotes>
             [Update] ECoreNetto.Reporting to version 7.0.9
             [Update] Autofac.Extensions.DependencyInjection to version 11.0.0
@@ -27,19 +21,6 @@
             [Update] System.CommandLine to version 2.0.7
             [Update] Spectre.Console to version 0.54.0
         </PackageReleaseNotes>
-    </PropertyGroup>
-
-    <PropertyGroup Label="Copyright">
-        <Company>Starion Group S.A.</Company>
-        <Copyright>Copyright © Starion Group S.A.</Copyright>
-        <Authors>Sam Gerené</Authors>
-        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
-    </PropertyGroup>
-
-    <PropertyGroup Label="Repository">
-        <RepositoryUrl>https://github.com/STARIONGROUP/EcoreNetto</RepositoryUrl>
-        <RepositoryType>Git</RepositoryType>
     </PropertyGroup>
 
     <ItemGroup>
@@ -53,21 +34,16 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="11.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.8" />
-        <PackageReference Include="Serilog.Extensions.Logging" Version="10.0.0" />
-        <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
-        <PackageReference Include="System.CommandLine" Version="2.0.8" />
-        <PackageReference Include="Spectre.Console" Version="0.55.2" />
-        <PackageReference Include="Microsoft.Sbom.Targets" Version="4.1.5" PrivateAssets="all" />
+        <PackageReference Include="Autofac.Extensions.DependencyInjection" />
+        <PackageReference Include="Microsoft.Extensions.Http" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" />
+        <PackageReference Include="Serilog.Extensions.Logging" />
+        <PackageReference Include="Serilog.Sinks.File" />
+        <PackageReference Include="System.CommandLine" />
+        <PackageReference Include="Spectre.Console" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="..\ecorenetto-Icon.png" Pack="true" PackagePath="" />
-        <None Include="..\README.md" Pack="true" PackagePath="\" />
-        <None Include="..\LICENSE" Pack="true" PackagePath="\" />
-        <None Include="..\NOTICE" Pack="true" PackagePath="\" />
         <Content Include="icon.ico" />
     </ItemGroup>
 

@@ -3,34 +3,16 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>10.0</LangVersion>
-        <Company>Starion Group S.A.</Company>
-        <Copyright>Copyright © Starion Group S.A.</Copyright>
         <Title>ECoreNetto.Extensions</Title>
         <Version>7.0.9</Version>
         <Description>Extension methods for the ECoreNetto library that are typically used to support code generation</Description>
         <PackageId>ECoreNetto.Extensions</PackageId>
-        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-        <PackageProjectUrl>https://ecorenetto.org</PackageProjectUrl>
-        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <IncludeSymbols>true</IncludeSymbols>
-        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        <PublishRepositoryUrl>true</PublishRepositoryUrl>
-        <EmbedUntrackedSources>true</EmbedUntrackedSources>
-        <RepositoryUrl>https://github.com/STARIONGROUP/EcoreNetto</RepositoryUrl>
-        <RepositoryType>Git</RepositoryType>
-        <PackageIcon>ecorenetto-Icon.png</PackageIcon>
         <AssemblyTitle>EcoreNetto.Extensions</AssemblyTitle>
-        <NeutralLanguage>en-US</NeutralLanguage>
-        <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
-        <Authors>Sam Gerene</Authors>
         <PackageTags>Ecore modeltopia</PackageTags>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <GenerateSBOM>true</GenerateSBOM>
         <PackageReleaseNotes>
             [Update] to ECoreNetto version 7.0.9
             [Update] Microsoft.SourceLink.GitHub to version 10.0.203
         </PackageReleaseNotes>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -38,16 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
-        <PackageReference Include="Microsoft.Sbom.Targets" Version="4.1.5" PrivateAssets="all" />
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.300" PrivateAssets="All" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Include="..\ecorenetto-Icon.png" Pack="true" PackagePath="" />
-        <None Include="..\README.md" Pack="true" PackagePath="\" />
-        <None Include="..\LICENSE" Pack="true" PackagePath="\" />
-        <None Include="..\NOTICE" Pack="true" PackagePath="\" />
+        <PackageReference Include="HtmlAgilityPack" />
     </ItemGroup>
 
     <ItemGroup>
