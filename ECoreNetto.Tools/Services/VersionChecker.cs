@@ -21,6 +21,7 @@
 namespace ECoreNetto.Tools.Services
 {
     using System;
+    using System.Buffers;
     using System.Net.Http;
     using System.Reflection;
     using System.Text.Json;
@@ -51,6 +52,12 @@ namespace ECoreNetto.Tools.Services
         /// The default GitHub API URL used to query the latest release
         /// </summary>
         public const string DefaultReleasesUrl = "https://api.github.com/repos/STARIONGROUP/EcoreNetto/releases/latest";
+
+        /// <summary>
+        /// The cached <see cref="SearchValues{T}"/> of the SemVer pre-release / build-metadata separators
+        /// used when trimming a tag name before version parsing.
+        /// </summary>
+        private static readonly SearchValues<char> SemVerSuffixSeparators = SearchValues.Create("-+");
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VersionChecker"/>
@@ -200,7 +207,7 @@ namespace ECoreNetto.Tools.Services
 
             var candidate = tagName!.Trim().TrimStart('v', 'V');
 
-            var suffixIndex = candidate.IndexOfAny(new[] { '-', '+' });
+            var suffixIndex = candidate.AsSpan().IndexOfAny(SemVerSuffixSeparators);
             if (suffixIndex >= 0)
             {
                 candidate = candidate.Substring(0, suffixIndex);
