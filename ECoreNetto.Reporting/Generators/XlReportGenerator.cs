@@ -142,8 +142,8 @@ namespace ECoreNetto.Reporting.Generators
             infoWorksheet.Cell(4, 1).Value = "Root Package - ns prefix";
             infoWorksheet.Cell(4, 2).Value = rootPackage.NsPrefix;
 
-            infoWorksheet.Cell(4, 1).Value = "Root Package - ns uri";
-            infoWorksheet.Cell(4, 2).Value = rootPackage.NsUri;
+            infoWorksheet.Cell(5, 1).Value = "Root Package - ns uri";
+            infoWorksheet.Cell(5, 2).Value = rootPackage.NsUri;
 
             this.FormatSheet(infoWorksheet);
         }
