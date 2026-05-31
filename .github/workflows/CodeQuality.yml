@@ -107,11 +107,23 @@ jobs:
           fail-on-error: false
 
       # Coverage comment: only once (ubuntu leg) and only on pull requests.
+      # The per-project test runs each emit their own coverage.cobertura.xml that also
+      # includes the shared production assemblies. Merge them into a single, de-duplicated
+      # report first so each assembly's coverage is the union across all suites (otherwise a
+      # shared assembly is counted once per file and its reported coverage is diluted).
+      - name: Merge coverage reports
+        if: matrix.os == 'ubuntu-latest' && github.event_name == 'pull_request'
+        uses: danielpalme/ReportGenerator-GitHub-Action@ee3806a36b8b2eb9594cb3e5fae045af7e5ead10 # v5.5.6
+        with:
+          reports: TestResults/**/coverage.cobertura.xml
+          targetdir: CoverageReport
+          reporttypes: Cobertura
+
       - name: Code coverage summary
         if: matrix.os == 'ubuntu-latest' && github.event_name == 'pull_request'
         uses: irongut/CodeCoverageSummary@51cc3a756ddcd398d447c044c02cb6aa83fdae95 # v1.3.0
         with:
-          filename: TestResults/**/coverage.cobertura.xml
+          filename: CoverageReport/Cobertura.xml
           format: markdown
           output: both
 

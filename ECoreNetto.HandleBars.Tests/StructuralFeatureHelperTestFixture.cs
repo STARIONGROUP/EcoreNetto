@@ -220,5 +220,125 @@ namespace ECoreNetto.HandleBars.Tests
 
             Assert.Throws<HandlebarsException>(() => action(new { feature = eStructuralFeature }));
         }
+
+        [Test]
+        public void Verify_that_StructuralFeature_IsEnumerable_block_renders_only_for_enumerable_feature()
+        {
+            var template = "{{#StructuralFeature.IsEnumerable this}}ENUMERABLE{{/StructuralFeature.IsEnumerable}}";
+            var action = this.handlebarsContenxt.Compile(template);
+
+            var ingredients = this.root.EClassifiers.OfType<EClass>().Single(x => x.Name == "Recipe")
+                .EStructuralFeatures.Single(x => x.Name == "ingredients");
+            Assert.That(action(ingredients), Is.EqualTo("ENUMERABLE"));
+
+            var minutes = this.root.EClassifiers.OfType<EClass>().Single(x => x.Name == "TimeTrigger")
+                .EStructuralFeatures.Single(x => x.Name == "minutes");
+            Assert.That(action(minutes), Is.Empty);
+        }
+
+        [Test]
+        public void Verify_that_StructuralFeature_IsAttribute_block_renders_only_for_attribute()
+        {
+            var template = "{{#StructuralFeature.IsAttribute this}}ATTRIBUTE{{/StructuralFeature.IsAttribute}}";
+            var action = this.handlebarsContenxt.Compile(template);
+
+            var minutes = this.root.EClassifiers.OfType<EClass>().Single(x => x.Name == "TimeTrigger")
+                .EStructuralFeatures.Single(x => x.Name == "minutes");
+            Assert.That(action(minutes), Is.EqualTo("ATTRIBUTE"));
+
+            var ingredients = this.root.EClassifiers.OfType<EClass>().Single(x => x.Name == "Recipe")
+                .EStructuralFeatures.Single(x => x.Name == "ingredients");
+            Assert.That(action(ingredients), Is.Empty);
+        }
+
+        [Test]
+        public void Verify_that_StructuralFeature_IsReference_block_renders_only_for_reference()
+        {
+            var template = "{{#StructuralFeature.IsReference this}}REFERENCE{{/StructuralFeature.IsReference}}";
+            var action = this.handlebarsContenxt.Compile(template);
+
+            var ingredients = this.root.EClassifiers.OfType<EClass>().Single(x => x.Name == "Recipe")
+                .EStructuralFeatures.Single(x => x.Name == "ingredients");
+            Assert.That(action(ingredients), Is.EqualTo("REFERENCE"));
+
+            var minutes = this.root.EClassifiers.OfType<EClass>().Single(x => x.Name == "TimeTrigger")
+                .EStructuralFeatures.Single(x => x.Name == "minutes");
+            Assert.That(action(minutes), Is.Empty);
+        }
+
+        [Test]
+        public void Verify_that_StructuralFeature_IsEnum_block_renders_only_for_enum_attribute()
+        {
+            var template = "{{#StructuralFeature.IsEnum this}}ENUM{{/StructuralFeature.IsEnum}}";
+            var action = this.handlebarsContenxt.Compile(template);
+
+            var unit = this.root.EClassifiers.OfType<EClass>().Single(x => x.Name == "Amount")
+                .EStructuralFeatures.Single(x => x.Name == "unit");
+            Assert.That(action(unit), Is.EqualTo("ENUM"));
+
+            var ingredients = this.root.EClassifiers.OfType<EClass>().Single(x => x.Name == "Recipe")
+                .EStructuralFeatures.Single(x => x.Name == "ingredients");
+            Assert.That(action(ingredients), Is.Empty);
+        }
+
+        [Test]
+        public void Verify_that_StructuralFeature_QueryStructuralFeatureNameEqualsEnclosingType_returns_expected_result()
+        {
+            var template = "{{ #StructuralFeature.QueryStructuralFeatureNameEqualsEnclosingType feature eClass }}";
+            var action = this.handlebarsContenxt.Compile(template);
+
+            var eClass = this.root.EClassifiers.OfType<EClass>().Single(x => x.Name == "Amount");
+
+            var amount = eClass.EStructuralFeatures.Single(x => x.Name == "amount");
+            Assert.That(action(new { feature = amount, eClass }), Is.EqualTo("True"));
+
+            var unit = eClass.EStructuralFeatures.Single(x => x.Name == "unit");
+            Assert.That(action(new { feature = unit, eClass }), Is.EqualTo("False"));
+        }
+
+        [Test]
+        public void Verify_that_StructuralFeature_QueryTypeName_returns_expected_result()
+        {
+            var template = "{{ #StructuralFeature.QueryTypeName this }}";
+            var action = this.handlebarsContenxt.Compile(template);
+
+            var ingredients = this.root.EClassifiers.OfType<EClass>().Single(x => x.Name == "Recipe")
+                .EStructuralFeatures.Single(x => x.Name == "ingredients");
+
+            Assert.That(action(ingredients), Is.EqualTo("Ingredient"));
+        }
+
+        [Test]
+        public void Verify_that_StructuralFeature_QueryTypeName_throws_when_context_is_not_a_structural_feature()
+        {
+            var template = "{{ #StructuralFeature.QueryTypeName this }}";
+            var action = this.handlebarsContenxt.Compile(template);
+
+            Assert.That(() => action("not-a-structural-feature"), Throws.ArgumentException);
+        }
+
+        [TestCase("StructuralFeature.QueryIsEnumerable", false)]
+        [TestCase("StructuralFeature.QueryIsAttribute", false)]
+        [TestCase("StructuralFeature.QueryIsReference", false)]
+        [TestCase("StructuralFeature.QueryIsEnum", false)]
+        [TestCase("StructuralFeature.QueryHasDefaultValue", false)]
+        [TestCase("StructuralFeature.QueryIsContainment", false)]
+        [TestCase("StructuralFeature.IsEnumerable", true)]
+        [TestCase("StructuralFeature.IsAttribute", true)]
+        [TestCase("StructuralFeature.IsReference", true)]
+        [TestCase("StructuralFeature.IsEnum", true)]
+        public void Verify_that_single_argument_helpers_throw_when_not_exactly_one_argument(string helper, bool isBlock)
+        {
+            var template = isBlock
+                ? "{{#" + helper + " this that}}X{{/" + helper + "}}"
+                : "{{ #" + helper + " this that }}";
+
+            var action = this.handlebarsContenxt.Compile(template);
+
+            var ingredients = this.root.EClassifiers.OfType<EClass>().Single(x => x.Name == "Recipe")
+                .EStructuralFeatures.Single(x => x.Name == "ingredients");
+
+            Assert.Throws<HandlebarsException>(() => action(ingredients));
+        }
     }
 }

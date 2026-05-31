@@ -94,5 +94,39 @@ namespace ECoreNetto.HandleBars.Tests
 
             Assert.That(result, Is.EqualTo(": IRelation"));
         }
+
+        [Test]
+        public void Verify_that_GeneralizationInterfaces_returns_empty_for_class_without_supertypes()
+        {
+            var template = "{{ #Generalization.Interfaces this }}";
+
+            var action = this.handlebarsContenxt.Compile(template);
+
+            var eClass = this.root.EClassifiers.Single(x => x.Name == "Relation");
+
+            var result = action(eClass);
+
+            Assert.That(result, Is.Empty);
+        }
+
+        [Test]
+        public void Verify_that_GeneralizationInterfaces_throws_when_context_is_not_an_EClass()
+        {
+            var template = "{{ #Generalization.Interfaces this }}";
+
+            var action = this.handlebarsContenxt.Compile(template);
+
+            Assert.That(() => action("not-an-eclass"), Throws.ArgumentException);
+        }
+
+        [Test]
+        public void Verify_that_GeneralizationClasses_throws_when_context_is_not_an_EClass()
+        {
+            var template = "{{ #Generalization.Classes this }}";
+
+            var action = this.handlebarsContenxt.Compile(template);
+
+            Assert.That(() => action("not-an-eclass"), Throws.ArgumentException);
+        }
     }
 }
