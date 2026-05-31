@@ -143,13 +143,13 @@ namespace ECoreNetto.HandleBars
 
             handlebars.RegisterHelper("StructuralFeature.NameEqualsEnclosingType", (output, options, context, arguments) =>
             {
-                if (arguments.Length != 1)
+                if (arguments.Length != 2)
                 {
                     throw new HandlebarsException("{{#StructuralFeature.NameEqualsEnclosingType}} helper must have exactly two arguments");
                 }
 
-                var eStructuralFeature = arguments.Single() as EStructuralFeature;
-                var eClass = arguments.Last() as EClass;
+                var eStructuralFeature = arguments[0] as EStructuralFeature;
+                var eClass = arguments[1] as EClass;
 
                 var nameEqualsEnclosingType = eStructuralFeature.QueryStructuralFeatureNameEqualsEnclosingType(eClass);
 

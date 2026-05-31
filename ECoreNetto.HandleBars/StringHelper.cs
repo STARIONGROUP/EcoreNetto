@@ -44,7 +44,10 @@ namespace ECoreNetto.HandleBars
                     throw new HandlebarsException("{{#String.CapitalizeFirstLetter}} helper must have exactly one argument");
                 }
 
-                var value = parameters[0] as string;
+                if (!(parameters[0] is string value))
+                {
+                    throw new HandlebarsException("{{#String.CapitalizeFirstLetter}} helper requires a single string argument");
+                }
 
                 writer.WriteSafeString(value.CapitalizeFirstLetter());
             });
@@ -56,7 +59,10 @@ namespace ECoreNetto.HandleBars
                     throw new HandlebarsException("{{#String.LowerCaseFirstLetter}} helper must have exactly one argument");
                 }
 
-                var value = parameters[0] as string;
+                if (!(parameters[0] is string value))
+                {
+                    throw new HandlebarsException("{{#String.LowerCaseFirstLetter}} helper requires a single string argument");
+                }
 
                 writer.WriteSafeString(value.LowerCaseFirstLetter());
             });

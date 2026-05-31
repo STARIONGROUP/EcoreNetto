@@ -44,6 +44,28 @@ namespace ECoreNetto.Extensions
         /// </returns>
         public static IEnumerable<string> SplitToLines(this string input, int maximumLineLength)
         {
+            if (string.IsNullOrEmpty(input))
+            {
+                throw new ArgumentException("The input string may not be null or empty", nameof(input));
+            }
+
+            return SplitToLinesIterator(input, maximumLineLength);
+        }
+
+        /// <summary>
+        /// splits a string into multiple lines
+        /// </summary>
+        /// <param name="input">
+        /// the subject input string
+        /// </param>
+        /// <param name="maximumLineLength">
+        /// the maximum length of a line
+        /// </param>
+        /// <returns>
+        /// an <see cref="IEnumerable{String}"/>
+        /// </returns>
+        private static IEnumerable<string> SplitToLinesIterator(string input, int maximumLineLength)
+        {
             input = input.Replace("\r\n", " ").Trim();
 
             var words = input.Split(' ');
