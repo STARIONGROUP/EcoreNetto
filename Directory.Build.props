@@ -1,11 +1,22 @@
 <Project>
 
     <!--
-      Solution-wide build properties. Currently scoped to enabling nullable
-      reference types consistently across all projects (see issue #49).
+      Solution-wide build properties. Enables nullable reference types
+      consistently across all projects (see issue #49).
     -->
     <PropertyGroup>
         <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <!--
+      Shared defaults for all test projects, standardized centrally so the five
+      *.Tests projects stay consistent (see issue #50). Keyed on the '.Tests'
+      project-name suffix; production projects are unaffected.
+    -->
+    <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
+        <TargetFramework>net10.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <IsPackable>false</IsPackable>
     </PropertyGroup>
 
 </Project>
