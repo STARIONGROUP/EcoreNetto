@@ -58,5 +58,15 @@ namespace ECoreNetto.HandleBars.Tests
 
             Assert.That(falseResult, Is.EqualTo("false"));
         }
+
+        [Test]
+        public void Verify_that_ToLowerCase_throws_when_not_exactly_one_argument()
+        {
+            var template = "{{ #Boolean.ToLowerCase this that }}";
+
+            var action = this.handlebarsContenxt.Compile(template);
+
+            Assert.Throws<HandlebarsException>(() => action(true));
+        }
     }
 }
