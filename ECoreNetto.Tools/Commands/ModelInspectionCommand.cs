@@ -50,12 +50,12 @@ namespace ECoreNetto.Tools.Commands
         }
 
         /// <summary>
-        /// The Command Handler of the <see cref="XlReportCommand"/>
+        /// The Command Handler of the <see cref="ModelInspectionCommand"/>
         /// </summary>
         public  class Handler : ReportHandler
         {
             /// <summary>
-            /// Initializes a nwe instance of the <see cref="Handler"/> class.
+            /// Initializes a new instance of the <see cref="Handler"/> class.
             /// </summary>
             /// <param name="modelInspector">
             /// The (injected) <see cref="IModelInspector"/> that is used to generate the

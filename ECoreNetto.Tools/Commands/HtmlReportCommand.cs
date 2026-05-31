@@ -32,7 +32,7 @@ namespace ECoreNetto.Tools.Commands
     public class HtmlReportCommand : ReportCommand
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="XlReportCommand"/>
+        /// Initializes a new instance of the <see cref="HtmlReportCommand"/>
         /// </summary>
         public HtmlReportCommand() : base("html-report", "Generates a html report of the ECore model")
         {
@@ -49,16 +49,16 @@ namespace ECoreNetto.Tools.Commands
         }
 
         /// <summary>
-        /// The Command Handler of the <see cref="XlReportCommand"/>
+        /// The Command Handler of the <see cref="HtmlReportCommand"/>
         /// </summary>
         public class Handler : ReportHandler
         {
             /// <summary>
-            /// Initializes a nwe instance of the <see cref="Handler"/> class.
+            /// Initializes a new instance of the <see cref="Handler"/> class.
             /// </summary>
             /// <param name="htmlReportGenerator">
             /// The (injected) <see cref="IHtmlReportGenerator"/> that is used to generate the
-            /// excel report
+            /// html report
             /// </param>
             /// <param name="versionChecker">
             /// The <see cref="IVersionChecker"/> used to check the github version

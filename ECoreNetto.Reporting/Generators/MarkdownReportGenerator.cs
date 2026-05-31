@@ -39,7 +39,7 @@ namespace ECoreNetto.Reporting.Generators
         private readonly ILogger<MarkdownReportGenerator> logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HtmlReportGenerator"/> class.
+        /// Initializes a new instance of the <see cref="MarkdownReportGenerator"/> class.
         /// </summary>
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
@@ -67,7 +67,7 @@ namespace ECoreNetto.Reporting.Generators
         /// /// the path to the Ecore model of which the report is to be generated.
         /// </param>
         /// <returns>
-        /// the content of an HTML report in a string
+        /// the content of a Markdown report in a string
         /// </returns>
         public string GenerateReport(FileInfo modelPath)
         {
@@ -86,11 +86,11 @@ namespace ECoreNetto.Reporting.Generators
 
             var payload = CreateHandlebarsPayload(rootPackage);
 
-            var generatedHtml = template(payload);
+            var generatedMarkdown = template(payload);
 
             this.logger.LogInformation("Generated Markdown report in {ElapsedTime} [ms]", sw.ElapsedMilliseconds);
 
-            return generatedHtml;
+            return generatedMarkdown;
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace ECoreNetto.Reporting.Generators
 
             var sw = Stopwatch.StartNew();
 
-            var generatedHtml = this.GenerateReport(modelPath) ;
+            var generatedMarkdown = this.GenerateReport(modelPath) ;
 
             if (outputPath.Exists)
             {
@@ -124,7 +124,7 @@ namespace ECoreNetto.Reporting.Generators
             }
 
             using var writer = outputPath.CreateText();
-            writer.Write(generatedHtml);
+            writer.Write(generatedMarkdown);
 
             this.logger.LogInformation("Generated Markdown report in {ElapsedTime} [ms]", sw.ElapsedMilliseconds);
         }
