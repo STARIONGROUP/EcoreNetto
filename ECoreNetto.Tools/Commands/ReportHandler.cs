@@ -38,7 +38,12 @@ namespace ECoreNetto.Tools.Commands
     /// </summary>
     public abstract class ReportHandler
     {
-        private const int SleepTime = 1500;
+        /// <summary>
+        /// Gets or sets the delay between Spectre status updates. This keeps the themed status
+        /// messages briefly visible on the console during a real run. Tests set this to
+        /// <see cref="TimeSpan.Zero"/> so the generation path runs without artificial latency.
+        /// </summary>
+        public TimeSpan StatusDelay { get; internal set; } = TimeSpan.FromMilliseconds(1500);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReportHandler"/>
@@ -129,27 +134,24 @@ namespace ECoreNetto.Tools.Commands
                 await AnsiConsole.Status()
                     .AutoRefresh(true)
                     .SpinnerStyle(Style.Parse("green bold"))
-                    .Start($"Preparing Warp Engines for {this.ReportGenerator.QueryReportType()} reporting...", ctx =>
+                    .StartAsync($"Preparing Warp Engines for {this.ReportGenerator.QueryReportType()} reporting...", async ctx =>
                     {
-                        Thread.Sleep(SleepTime);
+                        await Task.Delay(this.StatusDelay, cancellationToken);
 
                         ctx.Status($"Generating Ecore Model report at Warp 11, Captain..., SLOW DOWN!");
 
-                        Thread.Sleep(SleepTime);
+                        await Task.Delay(this.StatusDelay, cancellationToken);
 
                         this.ReportGenerator.GenerateReport(this.inputModel, this.outputReport);
 
                         AnsiConsole.MarkupLine(
                             $"[grey]LOG:[/] Ecore {this.ReportGenerator.QueryReportType()} report generated at [bold]{this.outputReport.FullName}[/]");
-                        Thread.Sleep(SleepTime);
+                        await Task.Delay(this.StatusDelay, cancellationToken);
 
-                        this.ExecuteAutoOpen(ctx);
+                        await this.ExecuteAutoOpenAsync(ctx, cancellationToken);
 
                         ctx.Status("[green]Dropping to impulse speed[/]");
-                        Thread.Sleep(SleepTime);
-
-                        return Task.FromResult(0);
-
+                        await Task.Delay(this.StatusDelay, cancellationToken);
                     });
             }
             catch (IOException ex)
@@ -223,12 +225,15 @@ namespace ECoreNetto.Tools.Commands
         /// <param name="ctx">
         /// Spectre Console <see cref="StatusContext"/>
         /// </param>
-        protected void ExecuteAutoOpen(StatusContext ctx)
+        /// <param name="cancellationToken">
+        /// The <see cref="CancellationToken"/> used to cancel the operation
+        /// </param>
+        protected async Task ExecuteAutoOpenAsync(StatusContext ctx, CancellationToken cancellationToken)
         {
             if (this.autoOpenReport)
             {
                 ctx.Status($"Opening generated report");
-                Thread.Sleep(SleepTime);
+                await Task.Delay(this.StatusDelay, cancellationToken);
 
                 try
                 {
@@ -239,7 +244,7 @@ namespace ECoreNetto.Tools.Commands
                 catch
                 {
                     ctx.Status($"Opening of generated report failed, please open manually");
-                    Thread.Sleep(SleepTime);
+                    await Task.Delay(this.StatusDelay, cancellationToken);
                 }
             }
         }

@@ -65,6 +65,9 @@ namespace ECoreNetto.Tools.Tests.Commands
                 .Returns(new Tuple<bool, string>(true, "valid extension"));
 
             this.handler = new MarkdownReportCommand.Handler(this.markdownReportGenerator.Object, this.versionChecker.Object);
+
+            // disable the artificial status delay so the generation path runs without latency
+            this.handler.StatusDelay = TimeSpan.Zero;
         }
 
         [Test]
