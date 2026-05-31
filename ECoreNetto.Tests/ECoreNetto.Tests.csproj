@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net10.0</TargetFramework>
         <Company>Starion Group S.A.</Company>
         <Authors>Sam Gerene, Naron Phou, Merlin Bieze</Authors>
         <AssemblyName>ECoreNetto.Tests</AssemblyName>
@@ -10,7 +9,6 @@
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/STARIONGROUP/EcoreNetto.git</RepositoryUrl>
         <RepositoryType>Git</RepositoryType>
-        <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
