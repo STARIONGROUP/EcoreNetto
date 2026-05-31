@@ -132,5 +132,16 @@ namespace ECoreNetto.Extensions.Tests
             var unchanged = ModelElementExtensions.RemoveUnwantedHtmlTags(html, new List<string>());
             Assert.That(unchanged, Is.EqualTo(html));
         }
+
+        [Test]
+        public void Verify_that_RemoveUnwantedHtmlTags_returns_input_when_there_are_no_element_or_text_nodes()
+        {
+            // a comment-only fragment yields no element/text nodes, so the input is returned unchanged
+            const string html = "<!-- just a comment -->";
+
+            var result = ModelElementExtensions.RemoveUnwantedHtmlTags(html, new List<string> { "p" });
+
+            Assert.That(result, Is.EqualTo(html));
+        }
     }
 }

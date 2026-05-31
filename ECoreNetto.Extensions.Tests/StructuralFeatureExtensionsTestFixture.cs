@@ -205,5 +205,51 @@ namespace ECoreNetto.Extensions.Tests
             var ingredientsFeature = recipeClass.EStructuralFeatures.Single(x => x.Name == "ingredients");
             Assert.That(ingredientsFeature.QueryIsNullable(), Is.False);
         }
+
+        [Test]
+        public void Verify_that_QueryStructuralFeatureNameEqualsEnclosingType_returns_expected_results()
+        {
+            var amountClass = this.rootPackage.EClassifiers.OfType<EClass>().Single(x => x.Name == "Amount");
+
+            var amountFeature = amountClass.EStructuralFeatures.Single(x => x.Name == "amount");
+            Assert.That(amountFeature.QueryStructuralFeatureNameEqualsEnclosingType(amountClass), Is.True);
+
+            var unitFeature = amountClass.EStructuralFeatures.Single(x => x.Name == "unit");
+            Assert.That(unitFeature.QueryStructuralFeatureNameEqualsEnclosingType(amountClass), Is.False);
+        }
+
+        [Test]
+        public void Verify_that_QueryStructuralFeatureNameEqualsEnclosingType_throws_when_class_is_null()
+        {
+            var amountClass = this.rootPackage.EClassifiers.OfType<EClass>().Single(x => x.Name == "Amount");
+            var amountFeature = amountClass.EStructuralFeatures.Single(x => x.Name == "amount");
+
+            EClass nullClass = null!;
+
+            Assert.That(() => amountFeature.QueryStructuralFeatureNameEqualsEnclosingType(nullClass),
+                Throws.ArgumentNullException);
+        }
+
+        [Test]
+        public void Verify_that_the_extension_methods_throw_when_the_structural_feature_is_null()
+        {
+            EStructuralFeature feature = null!;
+
+            var eClass = this.rootPackage.EClassifiers.OfType<EClass>().First();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(() => feature.QueryIsEnum(), Throws.ArgumentNullException);
+                Assert.That(() => feature.QueryClass(), Throws.ArgumentNullException);
+                Assert.That(() => feature.QueryIsEnumerable(), Throws.ArgumentNullException);
+                Assert.That(() => feature.QueryIsAttribute(), Throws.ArgumentNullException);
+                Assert.That(() => feature.QueryIsReference(), Throws.ArgumentNullException);
+                Assert.That(() => feature.QueryIsContainment(), Throws.ArgumentNullException);
+                Assert.That(() => feature.QueryHasDefaultValue(), Throws.ArgumentNullException);
+                Assert.That(() => feature.QueryTypeName(), Throws.ArgumentNullException);
+                Assert.That(() => feature.QueryIsNullable(), Throws.ArgumentNullException);
+                Assert.That(() => feature.QueryStructuralFeatureNameEqualsEnclosingType(eClass), Throws.ArgumentNullException);
+            });
+        }
     }
 }
