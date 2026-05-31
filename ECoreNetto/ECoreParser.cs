@@ -81,13 +81,19 @@ namespace ECoreNetto
 
             var sw = Stopwatch.StartNew();
 
-            var settings = new XmlReaderSettings();
+            // harden against XXE: prohibit DTD processing and disable external entity resolution
+            var settings = new XmlReaderSettings
+            {
+                DtdProcessing = DtdProcessing.Prohibit,
+                XmlResolver = null
+            };
+
             var fileInfo = new FileInfo(this.resource.URI.AbsolutePath.Replace("%20", " "));
             var fullPath = Path.GetFullPath(fileInfo.FullName);
 
             // now read the actual model file
             var xmlReader = XmlReader.Create(fullPath, settings);
-            var xmlDocument = new XmlDocument();
+            var xmlDocument = new XmlDocument { XmlResolver = null };
             xmlDocument.Load(xmlReader);
             var package = new EPackage(this.resource, this.loggerFactory);
             package.ReadXml(xmlDocument.DocumentElement);
