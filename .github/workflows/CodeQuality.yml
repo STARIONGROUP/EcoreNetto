@@ -99,7 +99,7 @@ jobs:
 
       - name: Publish test report
         if: always()
-        uses: dorny/test-reporter@v2
+        uses: dorny/test-reporter@d3cb5605561a46347256b466ef836b85076ad522 # v2.5.0
         with:
           name: Tests (${{ matrix.os }})
           path: TestResults/**/*.trx
@@ -109,7 +109,7 @@ jobs:
       # Coverage comment: only once (ubuntu leg) and only on pull requests.
       - name: Code coverage summary
         if: matrix.os == 'ubuntu-latest' && github.event_name == 'pull_request'
-        uses: irongut/CodeCoverageSummary@v1.3.0
+        uses: irongut/CodeCoverageSummary@51cc3a756ddcd398d447c044c02cb6aa83fdae95 # v1.3.0
         with:
           filename: TestResults/**/coverage.cobertura.xml
           format: markdown
@@ -121,7 +121,7 @@ jobs:
 
       - name: Post coverage comment on PR
         if: matrix.os == 'ubuntu-latest' && github.event_name == 'pull_request'
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@efaaab3fd41a9c3de579aba759d2552635e590fd # v2.8.0
         with:
           header: code-coverage
           recreate: true
