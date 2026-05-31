@@ -47,7 +47,7 @@ namespace ECoreNetto.Extensions.Tests
         public void Verify_that_SplitToLines_throws_for_null_or_empty_input()
         {
             // validation is eager: the exception is thrown on the call, not on enumeration
-            Assert.Throws<ArgumentException>(() => StringExtensions.SplitToLines(null, 10));
+            Assert.Throws<ArgumentException>(() => StringExtensions.SplitToLines(null!, 10));
 
             Assert.Throws<ArgumentException>(() => "".SplitToLines(10));
         }
@@ -55,7 +55,7 @@ namespace ECoreNetto.Extensions.Tests
         [Test]
         public void Verify_that_CapitalizeFirstLetter_returns_expected_result()
         {
-            Assert.Throws<ArgumentException>(() => StringExtensions.CapitalizeFirstLetter(null));
+            Assert.Throws<ArgumentException>(() => StringExtensions.CapitalizeFirstLetter(null!));
 
             Assert.Throws<ArgumentException>(() => "".CapitalizeFirstLetter());
             
@@ -65,7 +65,7 @@ namespace ECoreNetto.Extensions.Tests
         [Test]
         public void Verify_that_LowerCaseFirstLetter_returns_expected_result()
         {
-            Assert.Throws<ArgumentException>(() => StringExtensions.LowerCaseFirstLetter(null));
+            Assert.Throws<ArgumentException>(() => StringExtensions.LowerCaseFirstLetter(null!));
 
             Assert.Throws<ArgumentException>(() => "".LowerCaseFirstLetter());
 

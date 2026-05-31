@@ -57,7 +57,7 @@ namespace ECoreNetto.Reporting.Generators
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        public ModelInspector(ILoggerFactory loggerFactory = null) : base(loggerFactory)
+        public ModelInspector(ILoggerFactory? loggerFactory = null) : base(loggerFactory)
         {
             this.logger = loggerFactory == null ? NullLogger<ModelInspector>.Instance : loggerFactory.CreateLogger<ModelInspector>();
         }
@@ -215,7 +215,7 @@ namespace ECoreNetto.Reporting.Generators
                         }
                         else
                         {
-                            var valueType = $"{attribute.EType.Name}:{attribute.LowerBound}:{attribute.UpperBound}";
+                            var valueType = $"{attribute.EType!.Name}:{attribute.LowerBound}:{attribute.UpperBound}";
 
                             if (!this.valueTypes.Contains(valueType))
                             {
@@ -289,11 +289,11 @@ namespace ECoreNetto.Reporting.Generators
                     string referenceType;
                     if (reference.IsContainment)
                     {
-                        referenceType = $"{reference.Name}:{reference.EType.Name} [{reference.LowerBound}..{reference.UpperBound}] - CONTAINED REFERENCE TYPE";
+                        referenceType = $"{reference.Name}:{reference.EType!.Name} [{reference.LowerBound}..{reference.UpperBound}] - CONTAINED REFERENCE TYPE";
                     }
                     else
                     {
-                        referenceType = $"{reference.Name}:{reference.EType.Name} [{reference.LowerBound}..{reference.UpperBound}] - REFERENCE TYPE";
+                        referenceType = $"{reference.Name}:{reference.EType!.Name} [{reference.LowerBound}..{reference.UpperBound}] - REFERENCE TYPE";
                     }
                     
                     sb.AppendLine(referenceType);
@@ -303,12 +303,12 @@ namespace ECoreNetto.Reporting.Generators
                 {
                     if (structuralFeature.QueryIsEnum())
                     {
-                        var @enum = $"{attribute.Name}:{attribute.EType.Name} [{attribute.LowerBound}..{attribute.UpperBound}] - ENUM TYPE";
+                        var @enum = $"{attribute.Name}:{attribute.EType!.Name} [{attribute.LowerBound}..{attribute.UpperBound}] - ENUM TYPE";
                         sb.AppendLine(@enum);
                     }
                     else
                     {
-                        var valueType = $"{attribute.Name}:{attribute.EType.Name} [{attribute.LowerBound}..{attribute.UpperBound}] - VALUETYPE";
+                        var valueType = $"{attribute.Name}:{attribute.EType!.Name} [{attribute.LowerBound}..{attribute.UpperBound}] - VALUETYPE";
                         sb.AppendLine(valueType);
                     }
                 }
@@ -321,7 +321,7 @@ namespace ECoreNetto.Reporting.Generators
                 {
                     if (structuralFeature is EReference reference)
                     {
-                        var referenceType = $"{reference.Name}:{reference.EType.Name} [{reference.LowerBound}..{reference.UpperBound}] - REFERENCE TYPE";
+                        var referenceType = $"{reference.Name}:{reference.EType!.Name} [{reference.LowerBound}..{reference.UpperBound}] - REFERENCE TYPE";
                         sb.AppendLine(referenceType);
                     }
 
@@ -329,12 +329,12 @@ namespace ECoreNetto.Reporting.Generators
                     {
                         if (structuralFeature.QueryIsEnum())
                         {
-                            var @enum = $"{attribute.Name}:{attribute.EType.Name} [{attribute.LowerBound}..{attribute.UpperBound}] - ENUM TYPE";
+                            var @enum = $"{attribute.Name}:{attribute.EType!.Name} [{attribute.LowerBound}..{attribute.UpperBound}] - ENUM TYPE";
                             sb.AppendLine(@enum);
                         }
                         else
                         {
-                            var valueType = $"{attribute.Name}:{attribute.EType.Name} [{attribute.LowerBound}..{attribute.UpperBound}] - VALUETYPE";
+                            var valueType = $"{attribute.Name}:{attribute.EType!.Name} [{attribute.LowerBound}..{attribute.UpperBound}] - VALUETYPE";
                             sb.AppendLine(valueType);
                         }
                     }

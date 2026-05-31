@@ -44,7 +44,7 @@ namespace ECoreNetto
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        protected ETypedElement(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource, loggerFactory)
+        protected ETypedElement(Resource.Resource resource, ILoggerFactory? loggerFactory = null) : base(resource, loggerFactory)
         {
             this.logger = loggerFactory == null ? NullLogger<ETypedElement>.Instance : loggerFactory.CreateLogger<ETypedElement>();
 
@@ -90,7 +90,7 @@ namespace ECoreNetto
         /// <summary>
         /// Gets the type of this <see cref="ETypedElement"/>
         /// </summary>
-        public EClassifier EType { get; private set; }
+        public EClassifier? EType { get; private set; }
 
         /// <summary>
         /// Read the attributes of the current node

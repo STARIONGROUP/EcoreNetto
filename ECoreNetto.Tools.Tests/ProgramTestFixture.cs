@@ -29,7 +29,7 @@ namespace ECoreNetto.Tools.Tests
     [TestFixture]
     public class ProgramTestFixture
     {
-        private string inputModel;
+        private string inputModel = null!;
 
         [SetUp]
         public void Setup()

@@ -39,15 +39,15 @@ namespace ECoreNetto.Tools.Tests.Commands
     [TestFixture]
     public class ModelInspectionCommandTestFixture
     {
-        private RootCommand rootCommand;
+        private RootCommand rootCommand = null!;
 
-        private Mock<IModelInspector> modelInspector;
+        private Mock<IModelInspector> modelInspector = null!;
 
-        private Mock<IVersionChecker> versionChecker;
+        private Mock<IVersionChecker> versionChecker = null!;
 
-        private ModelInspectionCommand.Handler handler;
+        private ModelInspectionCommand.Handler handler = null!;
 
-        private CancellationTokenSource cts;
+        private CancellationTokenSource cts = null!;
 
         [SetUp]
         public void SetUp()

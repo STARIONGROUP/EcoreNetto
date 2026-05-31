@@ -42,7 +42,7 @@ namespace ECoreNetto
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        protected EStructuralFeature(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource, loggerFactory)
+        protected EStructuralFeature(Resource.Resource resource, ILoggerFactory? loggerFactory = null) : base(resource, loggerFactory)
         {
             this.logger = loggerFactory == null ? NullLogger<EStructuralFeature>.Instance : loggerFactory.CreateLogger<EStructuralFeature>();
 
@@ -117,12 +117,12 @@ namespace ECoreNetto
         /// <summary>
         /// Gets the default value literal.
         /// </summary>
-        public string DefaultValueLiteral { get; private set; }
+        public string? DefaultValueLiteral { get; private set; }
 
         /// <summary>
         /// Gets the containing <see cref="EClass"/>
         /// </summary>
-        public EClass EContainingClass => (EClass)this.EContainer;
+        public EClass EContainingClass => (EClass)this.EContainer!;
 
         /// <summary>
         /// Read the attributes of the current node

@@ -47,7 +47,7 @@ namespace ECoreNetto
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        public EReference(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource, loggerFactory)
+        public EReference(Resource.Resource resource, ILoggerFactory? loggerFactory = null) : base(resource, loggerFactory)
         {
             this.logger = loggerFactory == null ? NullLogger<EReference>.Instance : loggerFactory.CreateLogger<EReference>();
 
@@ -90,7 +90,7 @@ namespace ECoreNetto
         /// <summary>
         /// Gets the e opposite.
         /// </summary>
-        public EReference EOpposite { get; private set; }
+        public EReference? EOpposite { get; private set; }
 
         /// <summary>
         /// Read the attributes of the current node

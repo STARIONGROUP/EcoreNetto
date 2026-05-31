@@ -128,8 +128,8 @@ namespace ECoreNetto.Tools
                 ApplyLogLevel(parseResult);
 
                 using var scope = host.Services.CreateScope();
-                var generator = scope.ServiceProvider.GetService<IXlReportGenerator>();
-                var versionChecker = scope.ServiceProvider.GetService<IVersionChecker>();
+                var generator = scope.ServiceProvider.GetRequiredService<IXlReportGenerator>();
+                var versionChecker = scope.ServiceProvider.GetRequiredService<IVersionChecker>();
                 var handler = new XlReportCommand.Handler(generator, versionChecker);
                 return handler.InvokeAsync(parseResult, cancellationToken);
             });
@@ -142,8 +142,8 @@ namespace ECoreNetto.Tools
                 ApplyLogLevel(parseResult);
 
                 using var scope = host.Services.CreateScope();
-                var generator = scope.ServiceProvider.GetService<IModelInspector>();
-                var versionChecker = scope.ServiceProvider.GetService<IVersionChecker>();
+                var generator = scope.ServiceProvider.GetRequiredService<IModelInspector>();
+                var versionChecker = scope.ServiceProvider.GetRequiredService<IVersionChecker>();
                 var handler = new ModelInspectionCommand.Handler(generator, versionChecker);
                 return handler.InvokeAsync(parseResult, cancellationToken);
             });
@@ -155,8 +155,8 @@ namespace ECoreNetto.Tools
                 ApplyLogLevel(parseResult);
 
                 using var scope = host.Services.CreateScope();
-                var generator = scope.ServiceProvider.GetService<IHtmlReportGenerator>();
-                var versionChecker = scope.ServiceProvider.GetService<IVersionChecker>();
+                var generator = scope.ServiceProvider.GetRequiredService<IHtmlReportGenerator>();
+                var versionChecker = scope.ServiceProvider.GetRequiredService<IVersionChecker>();
                 var handler = new HtmlReportCommand.Handler(generator, versionChecker);
                 return handler.InvokeAsync(parseResult, cancellationToken);
             });
@@ -168,8 +168,8 @@ namespace ECoreNetto.Tools
                 ApplyLogLevel(parseResult);
 
                 using var scope = host.Services.CreateScope();
-                var generator = scope.ServiceProvider.GetService<IMarkdownReportGenerator>();
-                var versionChecker = scope.ServiceProvider.GetService<IVersionChecker>();
+                var generator = scope.ServiceProvider.GetRequiredService<IMarkdownReportGenerator>();
+                var versionChecker = scope.ServiceProvider.GetRequiredService<IVersionChecker>();
                 var handler = new MarkdownReportCommand.Handler(generator, versionChecker);
                 return handler.InvokeAsync(parseResult, cancellationToken);
             });

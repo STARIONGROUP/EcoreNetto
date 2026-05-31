@@ -56,7 +56,7 @@ namespace ECoreNetto.Tools.Services
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        public VersionChecker(IHttpClientFactory httpClientFactory, ILoggerFactory loggerFactory = null)
+        public VersionChecker(IHttpClientFactory httpClientFactory, ILoggerFactory? loggerFactory = null)
         {
             this.httpClientFactory = httpClientFactory;
             this.logger = loggerFactory == null ? NullLogger<VersionChecker>.Instance : loggerFactory.CreateLogger<VersionChecker>();
@@ -117,7 +117,7 @@ namespace ECoreNetto.Tools.Services
         /// an instance of <see cref="GitHubRelease"/> or null if not found or a connection
         /// error occured
         /// </returns>
-        public async Task<GitHubRelease> QueryLatestReleaseAsync(CancellationToken cancellationToken)
+        public async Task<GitHubRelease?> QueryLatestReleaseAsync(CancellationToken cancellationToken)
         {
             var httpClient = this.httpClientFactory.CreateClient();
             httpClient.Timeout = TimeSpan.FromSeconds(2);

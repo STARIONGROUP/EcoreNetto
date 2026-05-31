@@ -32,7 +32,7 @@ namespace ECoreNetto.HandleBars.Tests
     [TestFixture]
     public class StringHelperTestFixture
     {
-        private IHandlebars handlebarsContenxt;
+        private IHandlebars handlebarsContenxt = null!;
 
         [SetUp]
         public void SetUp()

@@ -34,11 +34,11 @@ namespace ECoreNetto.Tests.Resource
     [TestFixture]
     public class WizardEcoreFileTestFixture
     {
-        private string filePath;
-        private Uri uri;
-        private Resource resource;
-        private ResourceSet resourceSet;
-        private ILoggerFactory loggerFactory;
+        private string filePath = null!;
+        private Uri uri = null!;
+        private Resource resource = null!;
+        private ResourceSet resourceSet = null!;
+        private ILoggerFactory loggerFactory = null!;
 
         [OneTimeSetUp]
         public void OneTimeSetUp()

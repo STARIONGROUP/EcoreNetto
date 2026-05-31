@@ -34,7 +34,7 @@ namespace ECoreNetto.Tests.Utils
         /// <summary>
         /// The <see cref="Resource"/> used to instantiate the <see cref="EObject"/>s under test
         /// </summary>
-        private Resource resource;
+        private Resource resource = null!;
 
         [SetUp]
         public void SetUp()
@@ -45,9 +45,9 @@ namespace ECoreNetto.Tests.Utils
         [Test]
         public void Verify_that_RemoveFromContainer_throws_when_object_is_null()
         {
-            EObject @object = null;
+            EObject? @object = null;
 
-            Assert.That(() => @object.RemoveFromContainer(), Throws.ArgumentNullException);
+            Assert.That(() => @object!.RemoveFromContainer(), Throws.ArgumentNullException);
         }
 
         [Test]

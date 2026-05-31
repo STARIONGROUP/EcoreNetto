@@ -36,7 +36,7 @@ namespace ECoreNetto.Tools.Tests.Generators
     [TestFixture]
     public class HtmlReportGeneratorTestFixture
     {
-        private HtmlReportGenerator htmlReportGenerator;
+        private HtmlReportGenerator htmlReportGenerator = null!;
 
         private ILoggerFactory? loggerFactory;
 
@@ -76,24 +76,24 @@ namespace ECoreNetto.Tools.Tests.Generators
         [Test]
         public void Verify_that_when_modelpath_is_null_exception_is_thrown()
         {
-            FileInfo modelFileInfo = null;
-            
-            Assert.That(() => this.htmlReportGenerator.GenerateReport(modelFileInfo), Throws.ArgumentNullException);
-            
-            var reportFileInfo = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "html-report.ecore.html"));
-            
-            Assert.That(() => this.htmlReportGenerator.GenerateReport(modelFileInfo, reportFileInfo), Throws.ArgumentNullException);
+            FileInfo? modelFileInfo = null;
+
+            Assert.That(() => this.htmlReportGenerator.GenerateReport(modelFileInfo!), Throws.ArgumentNullException);
+
+            FileInfo? reportFileInfo = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "html-report.ecore.html"));
+
+            Assert.That(() => this.htmlReportGenerator.GenerateReport(modelFileInfo!, reportFileInfo!), Throws.ArgumentNullException);
 
             modelFileInfo = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "recipe.ecore"));
             reportFileInfo = null;
-            
-            Assert.That(() => this.htmlReportGenerator.GenerateReport(modelFileInfo, reportFileInfo), Throws.ArgumentNullException);
+
+            Assert.That(() => this.htmlReportGenerator.GenerateReport(modelFileInfo!, reportFileInfo!), Throws.ArgumentNullException);
         }
 
         [Test]
         public void Verify_That_when_outputpath_is_null_exception_is_thrown()
         {
-            Assert.That(() => this.htmlReportGenerator.IsValidReportExtension(null), Throws.ArgumentNullException);
+            Assert.That(() => this.htmlReportGenerator.IsValidReportExtension(null!), Throws.ArgumentNullException);
         }
     }
 }

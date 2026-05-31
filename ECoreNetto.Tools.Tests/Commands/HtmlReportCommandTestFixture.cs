@@ -39,15 +39,15 @@ namespace ECoreNetto.Tools.Tests.Commands
     [TestFixture]
     public class HtmlReportCommandTestFixture
     {
-        private RootCommand rootCommand;
+        private RootCommand rootCommand = null!;
 
-        private Mock<IHtmlReportGenerator> htmlReportGenerator;
+        private Mock<IHtmlReportGenerator> htmlReportGenerator = null!;
 
-        private Mock<IVersionChecker> versionChecker;
+        private Mock<IVersionChecker> versionChecker = null!;
 
-        private HtmlReportCommand.Handler handler;
+        private HtmlReportCommand.Handler handler = null!;
 
-        private CancellationTokenSource cts;
+        private CancellationTokenSource cts = null!;
 
         [SetUp]
         public void SetUp()

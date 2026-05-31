@@ -37,7 +37,7 @@ namespace ECoreNetto.Reporting.Generators
         /// <summary>
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </summary>
-        private readonly ILoggerFactory loggerFactory;
+        private readonly ILoggerFactory? loggerFactory;
 
         /// <summary>
         /// The <see cref="ILogger"/> used to log
@@ -50,7 +50,7 @@ namespace ECoreNetto.Reporting.Generators
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        protected ReportGenerator(ILoggerFactory loggerFactory = null)
+        protected ReportGenerator(ILoggerFactory? loggerFactory = null)
         {
             this.loggerFactory = loggerFactory;
 

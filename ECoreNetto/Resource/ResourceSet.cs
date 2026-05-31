@@ -42,7 +42,7 @@ namespace ECoreNetto.Resource
         /// <summary>
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </summary>
-        private readonly ILoggerFactory loggerFactory;
+        private readonly ILoggerFactory? loggerFactory;
 
         /// <summary>
         /// The <see cref="ILogger"/> used to log
@@ -55,7 +55,7 @@ namespace ECoreNetto.Resource
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        public ResourceSet(ILoggerFactory loggerFactory = null)
+        public ResourceSet(ILoggerFactory? loggerFactory = null)
         {
             this.loggerFactory = loggerFactory;
 
@@ -143,7 +143,7 @@ namespace ECoreNetto.Resource
         /// <returns>
         /// the resource resolved by the URI, or null if there isn't one, and it's not being demand loaded.
         /// </returns>
-        public Resource Resource(Uri uri, bool loadOnDemand)
+        public Resource? Resource(Uri uri, bool loadOnDemand)
         {
             if (uri == null)
             {

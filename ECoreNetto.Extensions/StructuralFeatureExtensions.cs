@@ -62,7 +62,7 @@ namespace ECoreNetto.Extensions
         /// An instance of <see cref="EClass"/> when the <see cref="EStructuralFeature"/> is
         /// an <see cref="EReference"/>, null in case it is not.
         /// </returns>
-        public static EClass QueryClass(this EStructuralFeature eStructuralFeature)
+        public static EClass? QueryClass(this EStructuralFeature eStructuralFeature)
         {
             if (eStructuralFeature == null)
             {
@@ -214,7 +214,7 @@ namespace ECoreNetto.Extensions
         /// <returns>
         /// the name of the type
         /// </returns>
-        public static string QueryTypeName(this EStructuralFeature eStructuralFeature)
+        public static string? QueryTypeName(this EStructuralFeature eStructuralFeature)
         {
             if (eStructuralFeature == null)
             {

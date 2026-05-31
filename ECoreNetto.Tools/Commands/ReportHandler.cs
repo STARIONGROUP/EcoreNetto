@@ -73,12 +73,12 @@ namespace ECoreNetto.Tools.Commands
         /// <summary>
         /// The <see cref="FileInfo"/> where the ecore model is located that is to be read
         /// </summary>
-        private FileInfo inputModel;
+        private FileInfo inputModel = null!;
 
         /// <summary>
         /// The <see cref="FileInfo"/> where the inspection report is to be generated
         /// </summary>
-        private FileInfo outputReport;
+        private FileInfo outputReport = null!;
 
         /// <summary>
         /// The value indicating whether the generated report needs to be automatically be
@@ -187,9 +187,9 @@ namespace ECoreNetto.Tools.Commands
         private void ProcessParseResult(ParseResult parseResult)
         {
             this.noLogo = parseResult.GetValue<bool>("--no-logo");
-            this.inputModel = parseResult.GetValue<FileInfo>("--input-model");
+            this.inputModel = parseResult.GetValue<FileInfo>("--input-model")!;
             this.autoOpenReport = parseResult.GetValue<bool>("--auto-open-report");
-            this.outputReport = parseResult.GetValue<FileInfo>("--output-report");
+            this.outputReport = parseResult.GetValue<FileInfo>("--output-report")!;
         }
 
         /// <summary>

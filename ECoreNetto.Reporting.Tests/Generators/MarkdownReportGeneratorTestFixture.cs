@@ -36,7 +36,7 @@ namespace ECoreNetto.Tools.Tests.Generators
     [TestFixture]
     public class MarkdownReportGeneratorTestFixture
     {
-        private MarkdownReportGenerator markdownReportGenerator;
+        private MarkdownReportGenerator markdownReportGenerator = null!;
 
         private ILoggerFactory? loggerFactory;
 

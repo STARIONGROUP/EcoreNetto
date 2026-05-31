@@ -34,10 +34,10 @@ namespace ECoreNetto.Tests.Resource
     [TestFixture]
     public class ResourceTestFixture
     {
-        private string filePath;
-        private Resource resource;
-        private ResourceSet resourceSet;
-        private ILoggerFactory loggerFactory;
+        private string filePath = null!;
+        private Resource resource = null!;
+        private ResourceSet resourceSet = null!;
+        private ILoggerFactory loggerFactory = null!;
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
@@ -78,7 +78,7 @@ namespace ECoreNetto.Tests.Resource
         {
             Assert.That(() => this.resource.GetEObject(""), Throws.ArgumentException);
 
-            Assert.That(() => this.resource.GetEObject(null), Throws.ArgumentException);
+            Assert.That(() => this.resource.GetEObject(null!), Throws.ArgumentException);
         }
 
         [Test]

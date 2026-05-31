@@ -34,12 +34,12 @@ namespace ECoreNetto.Tests.Utils
         /// <summary>
         /// The <see cref="Resource"/> passed to the factory under test
         /// </summary>
-        private Resource resource;
+        private Resource resource = null!;
 
         /// <summary>
         /// The class that is being tested
         /// </summary>
-        private EcoreObjectFactory factory;
+        private EcoreObjectFactory factory = null!;
 
         [SetUp]
         public void SetUp()

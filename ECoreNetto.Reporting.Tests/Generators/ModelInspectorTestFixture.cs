@@ -35,15 +35,15 @@ namespace ECoreNetto.Tools.Tests.Generators
     [TestFixture]
     public class ModelInspectorTestFixture
     {
-        private FileInfo modelFileInfo;
+        private FileInfo modelFileInfo = null!;
 
-        private FileInfo reportFileInfo;
+        private FileInfo reportFileInfo = null!;
 
-        private EPackage rootPackage;
+        private EPackage rootPackage = null!;
 
-        private ModelInspector modelInspector;
+        private ModelInspector modelInspector = null!;
 
-        private ILoggerFactory loggerFactory;
+        private ILoggerFactory loggerFactory = null!;
 
         [OneTimeSetUp]
         public void OneTimeSetUp()

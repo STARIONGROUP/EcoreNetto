@@ -35,7 +35,7 @@ namespace ECoreNetto
         /// <summary>
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </summary>
-        private readonly ILoggerFactory loggerFactory;
+        private readonly ILoggerFactory? loggerFactory;
 
         /// <summary>
         /// The <see cref="ILogger"/> used to log
@@ -51,7 +51,7 @@ namespace ECoreNetto
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        public EOperation(Resource.Resource resource, ILoggerFactory loggerFactory = null) : base(resource, loggerFactory)
+        public EOperation(Resource.Resource resource, ILoggerFactory? loggerFactory = null) : base(resource, loggerFactory)
         {
             this.loggerFactory = loggerFactory;
 
@@ -74,7 +74,7 @@ namespace ECoreNetto
         /// <summary>
         /// Gets the containing <see cref="EClass"/>
         /// </summary>
-        public EClass EContainingClass => (EClass)this.EContainer;
+        public EClass EContainingClass => (EClass)this.EContainer!;
 
         /// <summary>
         /// Returns whether this operation is an override of some other operation

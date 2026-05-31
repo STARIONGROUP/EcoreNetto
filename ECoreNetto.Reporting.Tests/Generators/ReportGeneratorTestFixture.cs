@@ -36,13 +36,13 @@ namespace ECoreNetto.Tools.Tests.Generators
     [TestFixture]
     public class XlReportGeneratorTestFixture
     {
-        private FileInfo modelFileInfo;
+        private FileInfo modelFileInfo = null!;
 
-        private FileInfo reportFileInfo;
+        private FileInfo reportFileInfo = null!;
 
-        private XlReportGenerator xlXlReportGenerator;
+        private XlReportGenerator xlXlReportGenerator = null!;
 
-        private ILoggerFactory loggerFactory;
+        private ILoggerFactory loggerFactory = null!;
 
         [OneTimeSetUp]
         public void OneTimeSetUp()

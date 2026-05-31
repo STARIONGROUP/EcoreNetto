@@ -49,7 +49,7 @@ namespace ECoreNetto.Reporting.Generators
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        protected HandleBarsReportGenerator(ILoggerFactory loggerFactory = null) : base (loggerFactory)
+        protected HandleBarsReportGenerator(ILoggerFactory? loggerFactory = null) : base (loggerFactory)
         {
             this.Templates = new Dictionary<string, HandlebarsTemplate<object, object>>();
 
