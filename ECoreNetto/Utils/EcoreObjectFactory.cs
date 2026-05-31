@@ -95,6 +95,8 @@ namespace ECoreNetto.Utils
             this.EReference = new EClass(resource, loggerFactory) { Name = "EReference" };
             this.EReference.ESuperTypes.Add(this.EStructuralFeature);
 
+            this.EStringToStringMapEntry = new EClass(resource, loggerFactory) { Name = "EStringToStringMapEntry" };
+
             this.EGenericType = new EClass(resource, loggerFactory) { Name = "EGenericType" };
 
             this.ETypeParameter = new EClass(resource, loggerFactory) { Name = "ETypeParameter" };

@@ -84,7 +84,8 @@ namespace ECoreNetto.Utils
 
             if (@object is EEnumLiteral enumLiteral)
             {
-                RemoveFromContainer(enumLiteral);                
+                RemoveFromContainer(enumLiteral);
+                return;
             }
 
             throw new ArgumentException($"The subclass is not supported {@object.GetType()}");
