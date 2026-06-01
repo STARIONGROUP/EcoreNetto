@@ -225,7 +225,7 @@ namespace ECoreNetto.Resource
         /// <returns>
         /// The resolved object for the given fragment, or null if it can't be resolved.
         /// </returns>
-        public EObject GetEObject(string uriFragment)
+        public EObject? GetEObject(string uriFragment)
         {
             this.logger.LogTrace("Getting EObject for resources {0}", uriFragment);
 
@@ -254,7 +254,11 @@ namespace ECoreNetto.Resource
             var uriFragments = uriFragment.Split('#');
             if (!uriFragments[0].Contains(".ecore"))
             {
-                throw new ArgumentException($"The resource {uriFragments[0]} is invalid.");
+                // the fragment does not point at another .ecore resource and was not found in
+                // this resource's cache or the known ECore types: it cannot be resolved.
+                this.logger.LogTrace("EObject using uri fragment '{0}' could not be resolved", uriFragment);
+
+                return null;
             }
 
             var index = this.URI.AbsolutePath.LastIndexOf('/');
@@ -274,11 +278,50 @@ namespace ECoreNetto.Resource
                 resource.Load(null);
             }
 
+            if (resource == this)
+            {
+                // the fragment points back at the current resource but was not found in its cache:
+                // it cannot be resolved. Returning here avoids unbounded self-recursion.
+                this.logger.LogTrace("EObject using uri fragment '{0}' could not be resolved", uriFragment);
+
+                return null;
+            }
+
             return resource.GetEObject(uriFragment);
         }
 
         /// <summary>
-        /// Saves the resource using the specified options. 
+        /// Resolves the given <paramref name="uriFragment"/> and returns it typed as <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The expected <see cref="EObject"/> subtype of the resolved object.
+        /// </typeparam>
+        /// <param name="uriFragment">
+        /// the fragment to resolve.
+        /// </param>
+        /// <returns>
+        /// The resolved object, typed as <typeparamref name="T"/>.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when the <paramref name="uriFragment"/> cannot be resolved, or resolves to an object
+        /// that is not a <typeparamref name="T"/>. The exception message names the offending fragment.
+        /// </exception>
+        public T GetEObject<T>(string uriFragment) where T : EObject
+        {
+            var eObject = this.GetEObject(uriFragment);
+
+            if (eObject is not T typedEObject)
+            {
+                throw new InvalidOperationException(
+                    $"The reference '{uriFragment}' could not be resolved to a '{typeof(T).Name}'; " +
+                    $"it resolved to '{(eObject == null ? "null (unresolved)" : eObject.GetType().Name)}'.");
+            }
+
+            return typedEObject;
+        }
+
+        /// <summary>
+        /// Saves the resource using the specified options.
         /// </summary>
         /// <remarks>
         /// Options are handled generically as feature-to-setting entries; the resource will ignore options it doesn't recognize.

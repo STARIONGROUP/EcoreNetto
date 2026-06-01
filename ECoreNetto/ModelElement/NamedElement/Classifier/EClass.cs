@@ -183,7 +183,7 @@ namespace ECoreNetto
                 var typeNames = output.Split(' ');
                 foreach (var typeName in typeNames)
                 {
-                    this.ESuperTypes.Add((EClass)this.EResource.GetEObject(typeName));
+                    this.ESuperTypes.Add(this.EResource.GetEObject<EClass>(typeName));
                 }
             }
         }
