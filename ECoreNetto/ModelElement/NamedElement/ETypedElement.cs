@@ -136,7 +136,7 @@ namespace ECoreNetto
                 var parts = output.Split(' ');
                 var typeName = parts[parts.Length - 1];
 
-                this.EType = (EClassifier)this.EResource.GetEObject(typeName);
+                this.EType = this.EResource.GetEObject<EClassifier>(typeName);
             }
         }
     }

@@ -119,7 +119,7 @@ namespace ECoreNetto
             if (this.Attributes.TryGetValue("eOpposite", out output))
             {
                 var typeName = output;
-                this.EOpposite = (EReference)this.EResource.GetEObject($"EStructuralFeature::{typeName}");
+                this.EOpposite = this.EResource.GetEObject<EReference>($"EStructuralFeature::{typeName}");
             }
         }
     }
