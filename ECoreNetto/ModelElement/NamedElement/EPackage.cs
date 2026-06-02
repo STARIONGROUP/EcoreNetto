@@ -183,7 +183,9 @@ namespace ECoreNetto
                     ecoreEnum.ReadXml(reader);
                     break;
                 default:
-                    throw new InvalidOperationException($"Type of classifier not recognized: {ecoreType}");
+                    var classifierError = $"Type of classifier not recognized: {ecoreType}";
+                    this.EResource.AddError(classifierError);
+                    throw new InvalidOperationException(classifierError);
             }
         }
 

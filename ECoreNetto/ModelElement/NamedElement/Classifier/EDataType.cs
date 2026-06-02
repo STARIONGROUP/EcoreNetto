@@ -70,7 +70,7 @@ namespace ECoreNetto
 
             if (this.Attributes.TryGetValue("serializable", out var output))
             {
-                this.Serializable = bool.Parse(output);
+                this.Serializable = this.ParseBoolean("serializable", output);
             }
         }
     }

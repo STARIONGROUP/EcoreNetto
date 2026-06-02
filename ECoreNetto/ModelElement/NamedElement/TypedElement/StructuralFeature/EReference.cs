@@ -103,17 +103,17 @@ namespace ECoreNetto
 
             if (this.Attributes.TryGetValue("container", out var output))
             {
-                this.IsContainer = bool.Parse(output);
+                this.IsContainer = this.ParseBoolean("container", output);
             }
 
             if (this.Attributes.TryGetValue("containment", out output))
             {
-                this.IsContainment = bool.Parse(output);
+                this.IsContainment = this.ParseBoolean("containment", output);
             }
 
             if (this.Attributes.TryGetValue("resolveProxies", out output))
             {
-                this.IsResolveProxies = bool.Parse(output);
+                this.IsResolveProxies = this.ParseBoolean("resolveProxies", output);
             }
 
             if (this.Attributes.TryGetValue("eOpposite", out output))

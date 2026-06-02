@@ -1,0 +1,145 @@
+// -------------------------------------------------------------------------------------------------
+// <copyright file="DiagnosticsTestFixture.cs" company="Starion Group S.A.">
+//
+//   Copyright 2017-2025 Starion Group S.A.
+//
+//   Licensed under the Apache License, Version 2.0 (the "License");
+//   you may not use this file except in compliance with the License.
+//   You may obtain a copy of the License at
+//
+//       http://www.apache.org/licenses/LICENSE-2.0
+//
+//   Unless required by applicable law or agreed to in writing, software
+//   distributed under the License is distributed on an "AS IS" BASIS,
+//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//   See the License for the specific language governing permissions and
+//   limitations under the License.
+//
+// </copyright>
+// ------------------------------------------------------------------------------------------------
+
+namespace ECoreNetto.Tests.Resource
+{
+    using System;
+    using System.IO;
+    using System.Linq;
+
+    using ECoreNetto.Resource;
+
+    using NUnit.Framework;
+
+    /// <summary>
+    /// Suite of tests that verify the <see cref="ECoreNetto.ECoreParser"/> records a <see cref="Diagnostic"/>
+    /// in <see cref="Resource.Errors"/> for malformed or unrecognized input before aborting the load (see issue #35).
+    /// </summary>
+    [TestFixture]
+    public class DiagnosticsTestFixture
+    {
+        private ResourceSet resourceSet = null!;
+
+        [SetUp]
+        public void SetUp()
+        {
+            this.resourceSet = new ResourceSet();
+        }
+
+        [Test]
+        public void Verify_that_a_malformed_boolean_attribute_is_recorded_as_an_error_and_aborts_the_load()
+        {
+            var model = Package("malformed-bool", "<eClassifiers xsi:type=\"ecore:EClass\" name=\"A\" abstract=\"notabool\"/>");
+            var resource = this.CreateResourceForContent("malformed-bool.ecore", model);
+
+            Assert.Throws<FormatException>(() => resource.Load(null));
+
+            var error = resource.Errors.SingleOrDefault();
+            Assert.That(error, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(error!.Message, Does.Contain("abstract"));
+                Assert.That(error.Message, Does.Contain("notabool"));
+                Assert.That(error.Location, Is.EqualTo(resource.URI.AbsoluteUri));
+            });
+        }
+
+        [Test]
+        public void Verify_that_a_malformed_integer_attribute_is_recorded_as_an_error_and_aborts_the_load()
+        {
+            var model = Package(
+                "malformed-int",
+                "<eClassifiers xsi:type=\"ecore:EEnum\" name=\"E\">\r\n" +
+                "    <eLiterals name=\"X\" value=\"notanint\"/>\r\n" +
+                "  </eClassifiers>");
+            var resource = this.CreateResourceForContent("malformed-int.ecore", model);
+
+            Assert.Throws<FormatException>(() => resource.Load(null));
+
+            var error = resource.Errors.SingleOrDefault();
+            Assert.That(error, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(error!.Message, Does.Contain("value"));
+                Assert.That(error.Message, Does.Contain("notanint"));
+            });
+        }
+
+        [Test]
+        public void Verify_that_an_unrecognized_classifier_type_is_recorded_as_an_error_and_aborts_the_load()
+        {
+            var model = Package("unknown-classifier", "<eClassifiers xsi:type=\"ecore:Bogus\" name=\"A\"/>");
+            var resource = this.CreateResourceForContent("unknown-classifier.ecore", model);
+
+            Assert.Throws<InvalidOperationException>(() => resource.Load(null));
+
+            var error = resource.Errors.SingleOrDefault();
+            Assert.That(error, Is.Not.Null);
+            Assert.That(error!.Message, Does.Contain("Bogus"));
+        }
+
+        [Test]
+        public void Verify_that_an_unrecognized_structural_feature_type_is_recorded_as_an_error_and_aborts_the_load()
+        {
+            var model = Package(
+                "unknown-feature",
+                "<eClassifiers xsi:type=\"ecore:EClass\" name=\"A\">\r\n" +
+                "    <eStructuralFeatures xsi:type=\"ecore:Bogus\" name=\"f\"/>\r\n" +
+                "  </eClassifiers>");
+            var resource = this.CreateResourceForContent("unknown-feature.ecore", model);
+
+            Assert.Throws<InvalidOperationException>(() => resource.Load(null));
+
+            var error = resource.Errors.SingleOrDefault();
+            Assert.That(error, Is.Not.Null);
+            Assert.That(error!.Message, Does.Contain("Bogus"));
+        }
+
+        /// <summary>
+        /// Wraps the supplied classifier markup in a minimal Ecore package whose name matches
+        /// <paramref name="packageName"/>.
+        /// </summary>
+        private static string Package(string packageName, string body)
+        {
+            return
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" +
+                "<ecore:EPackage xmi:version=\"2.0\" xmlns:xmi=\"http://www.omg.org/XMI\" " +
+                "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+                "xmlns:ecore=\"http://www.eclipse.org/emf/2002/Ecore\" " +
+                $"name=\"{packageName}\" nsURI=\"{packageName}\" nsPrefix=\"{packageName}\">\r\n" +
+                $"  {body}\r\n" +
+                "</ecore:EPackage>";
+        }
+
+        /// <summary>
+        /// Writes the provided <paramref name="content"/> to a file in the test directory and
+        /// creates a <see cref="Resource"/> for it.
+        /// </summary>
+        private Resource CreateResourceForContent(string fileName, string content)
+        {
+            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, fileName);
+            File.WriteAllText(path, content);
+
+            var uri = new Uri(Path.GetFullPath(path));
+
+            return this.resourceSet.CreateResource(uri);
+        }
+    }
+}

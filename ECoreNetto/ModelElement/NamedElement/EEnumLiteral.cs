@@ -68,7 +68,7 @@ namespace ECoreNetto
 
             if (this.Attributes.TryGetValue("value", out var output))
             {
-                this.Value = int.Parse(output);
+                this.Value = this.ParseInt32("value", output);
             }
         }
 
