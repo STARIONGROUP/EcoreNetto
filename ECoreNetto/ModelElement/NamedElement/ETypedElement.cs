@@ -103,32 +103,32 @@ namespace ECoreNetto
 
             if (this.Attributes.TryGetValue("ordered", out var output))
             {
-                this.Ordered = bool.Parse(output);
+                this.Ordered = this.ParseBoolean("ordered", output);
             }
 
             if (this.Attributes.TryGetValue("unique", out output))
             {
-                this.Unique = bool.Parse(output);
+                this.Unique = this.ParseBoolean("unique", output);
             }
 
             if (this.Attributes.TryGetValue("many", out output))
             {
-                this.Many = bool.Parse(output);
+                this.Many = this.ParseBoolean("many", output);
             }
 
             if (this.Attributes.TryGetValue("required", out output))
             {
-                this.Required = bool.Parse(output);
+                this.Required = this.ParseBoolean("required", output);
             }
 
             if (this.Attributes.TryGetValue("lowerBound", out output))
             {
-                this.LowerBound = int.Parse(output);
+                this.LowerBound = this.ParseInt32("lowerBound", output);
             }
 
             if (this.Attributes.TryGetValue("upperBound", out output))
             {
-                this.UpperBound = int.Parse(output);
+                this.UpperBound = this.ParseInt32("upperBound", output);
             }
 
             if (this.Attributes.TryGetValue("eType", out output))

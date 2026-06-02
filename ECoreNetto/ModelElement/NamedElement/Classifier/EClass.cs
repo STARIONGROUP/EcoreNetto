@@ -170,12 +170,12 @@ namespace ECoreNetto
 
             if (this.Attributes.TryGetValue(EcoreAbstractKeyword, out var output))
             {
-                this.Abstract = bool.Parse(output);
+                this.Abstract = this.ParseBoolean(EcoreAbstractKeyword, output);
             }
 
             if (this.Attributes.TryGetValue(EcoreInterfaceKeyword, out output))
             {
-                this.Interface = bool.Parse(output);
+                this.Interface = this.ParseBoolean(EcoreInterfaceKeyword, output);
             }
 
             if (this.Attributes.TryGetValue(EcoreSuperTypeKeyword, out output))
@@ -219,7 +219,9 @@ namespace ECoreNetto
                         ecoreAttribute.ReadXml(reader);
                         break;
                     default:
-                        throw new InvalidOperationException($"Type of structural feature not recognized: {ecoreType}");
+                        var featureError = $"Type of structural feature not recognized: {ecoreType}";
+                        this.EResource.AddError(featureError);
+                        throw new InvalidOperationException(featureError);
                 }
             }
 

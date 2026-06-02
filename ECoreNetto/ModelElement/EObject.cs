@@ -356,7 +356,65 @@ namespace ECoreNetto
                 this.Attributes.Add(readerAttribute.Name, attributeValue);
             }
         }
-        
+
+        /// <summary>
+        /// Parses the value of a boolean attribute, recording an error <see cref="Resource.Diagnostic"/> and
+        /// throwing when the value is malformed.
+        /// </summary>
+        /// <param name="attributeName">
+        /// The name of the attribute being parsed; used in the diagnostic message.
+        /// </param>
+        /// <param name="rawValue">
+        /// The raw attribute value to parse.
+        /// </param>
+        /// <returns>
+        /// The parsed <see cref="bool"/> value.
+        /// </returns>
+        /// <exception cref="FormatException">
+        /// Thrown when <paramref name="rawValue"/> is not a valid boolean. The issue is recorded in
+        /// <see cref="Resource.Resource.Errors"/> before the load is aborted.
+        /// </exception>
+        protected bool ParseBoolean(string attributeName, string rawValue)
+        {
+            if (bool.TryParse(rawValue, out var value))
+            {
+                return value;
+            }
+
+            var message = $"The '{attributeName}' attribute of '{this.Identifier}' has a malformed boolean value '{rawValue}'.";
+            this.EResource.AddError(message);
+            throw new FormatException(message);
+        }
+
+        /// <summary>
+        /// Parses the value of an integer attribute, recording an error <see cref="Resource.Diagnostic"/> and
+        /// throwing when the value is malformed.
+        /// </summary>
+        /// <param name="attributeName">
+        /// The name of the attribute being parsed; used in the diagnostic message.
+        /// </param>
+        /// <param name="rawValue">
+        /// The raw attribute value to parse.
+        /// </param>
+        /// <returns>
+        /// The parsed <see cref="int"/> value.
+        /// </returns>
+        /// <exception cref="FormatException">
+        /// Thrown when <paramref name="rawValue"/> is not a valid integer. The issue is recorded in
+        /// <see cref="Resource.Resource.Errors"/> before the load is aborted.
+        /// </exception>
+        protected int ParseInt32(string attributeName, string rawValue)
+        {
+            if (int.TryParse(rawValue, out var value))
+            {
+                return value;
+            }
+
+            var message = $"The '{attributeName}' attribute of '{this.Identifier}' has a malformed integer value '{rawValue}'.";
+            this.EResource.AddError(message);
+            throw new FormatException(message);
+        }
+
         /// <summary>
         /// Instantiate new <see cref="EObject"/> from the current node of the <see cref="XmlReader"/>
         /// </summary>

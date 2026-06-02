@@ -404,10 +404,25 @@ namespace ECoreNetto.Resource
         }
 
         /// <summary>
+        /// Records an error <see cref="Diagnostic"/> that was encountered while loading the resource.
+        /// </summary>
+        /// <param name="message">
+        /// The translated message describing the issue.
+        /// </param>
+        /// <remarks>
+        /// The diagnostic is exposed through <see cref="Errors"/>. The source location is the URI of this
+        /// resource; line and column are not available once parsing has reached the property-resolution phase.
+        /// </remarks>
+        internal void AddError(string message)
+        {
+            this.errors.Add(new Diagnostic(0, 0, this.URI?.AbsoluteUri ?? string.Empty, message));
+        }
+
+        /// <summary>
         /// Gets an <see cref="IEnumerable{String}"/> of the errors in the resource;
         /// </summary>
         /// <remarks>
-        /// These will typically be produced as the resource is loaded. 
+        /// These will typically be produced as the resource is loaded.
         /// </remarks>
         public IEnumerable<Diagnostic> Errors => this.errors;
         

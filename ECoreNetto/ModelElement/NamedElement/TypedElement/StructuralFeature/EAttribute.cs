@@ -70,7 +70,7 @@ namespace ECoreNetto
 
             if (this.Attributes.TryGetValue("iD", out var output))
             {
-                this.ID = bool.Parse(output);
+                this.ID = this.ParseBoolean("iD", output);
             }
         }
     }

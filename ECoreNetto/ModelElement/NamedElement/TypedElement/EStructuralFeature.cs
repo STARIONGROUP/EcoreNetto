@@ -135,17 +135,17 @@ namespace ECoreNetto
 
             if (this.Attributes.TryGetValue("changeable", out var output))
             {
-                this.Changeable = bool.Parse(output);
+                this.Changeable = this.ParseBoolean("changeable", output);
             }
             
             if (this.Attributes.TryGetValue("volatile", out output))
             {
-                this.Volatile = bool.Parse(output);
+                this.Volatile = this.ParseBoolean("volatile", output);
             }
 
             if (this.Attributes.TryGetValue("transient", out output))
             {
-                this.Transient = bool.Parse(output);
+                this.Transient = this.ParseBoolean("transient", output);
             }
 
             if (this.Attributes.TryGetValue("defaultValueLiteral", out output))
@@ -155,12 +155,12 @@ namespace ECoreNetto
 
             if (this.Attributes.TryGetValue("unsettable", out output))
             {
-                this.Unsettable = bool.Parse(output);
+                this.Unsettable = this.ParseBoolean("unsettable", output);
             }
 
             if (this.Attributes.TryGetValue("derived", out output))
             {
-                this.Derived = bool.Parse(output);
+                this.Derived = this.ParseBoolean("derived", output);
             }
         }
 
