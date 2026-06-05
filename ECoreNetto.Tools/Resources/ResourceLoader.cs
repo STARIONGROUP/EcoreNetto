@@ -20,17 +20,18 @@
 
 namespace ECoreNetto.Tools.Resources
 {
-    using System.IO;
     using System.Reflection;
-    using System.Resources;
+
+    using SharedResourceLoader = ECoreNetto.Reporting.Resources.ResourceLoader;
 
     /// <summary>
-    /// Class responsible for loading embedded resources.
+    /// Class responsible for loading embedded resources from this assembly and for the
+    /// Tools-specific version and logo queries.
     /// </summary>
     public static class ResourceLoader
     {
         /// <summary>
-        /// Load an embedded resource
+        /// Load an embedded resource from the executing (ECoreNetto.Tools) assembly
         /// </summary>
         /// <param name="path">
         /// The path of the embedded resource
@@ -40,13 +41,7 @@ namespace ECoreNetto.Tools.Resources
         /// </returns>
         public static string LoadEmbeddedResource(string path)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-
-            using var stream = assembly.GetManifestResourceStream(path);
-
-            using var reader = new StreamReader(stream ?? throw new MissingManifestResourceException());
-
-            return reader.ReadToEnd();
+            return SharedResourceLoader.LoadEmbeddedResource(Assembly.GetExecutingAssembly(), path);
         }
 
         /// <summary>

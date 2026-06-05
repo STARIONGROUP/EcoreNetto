@@ -27,21 +27,22 @@ namespace ECoreNetto.Reporting.Resources
     /// <summary>
     /// Class responsible for loading embedded resources.
     /// </summary>
-    internal static class ResourceLoader
+    public static class ResourceLoader
     {
         /// <summary>
-        /// Load an embedded resource
+        /// Load an embedded resource from the provided <see cref="Assembly"/>
         /// </summary>
+        /// <param name="assembly">
+        /// The <see cref="Assembly"/> whose manifest contains the embedded resource
+        /// </param>
         /// <param name="path">
         /// The path of the embedded resource
         /// </param>
         /// <returns>
         /// a string containing the contents of the embedded resource
         /// </returns>
-        public static string LoadEmbeddedResource(string path)
+        public static string LoadEmbeddedResource(Assembly assembly, string path)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-
             using var stream = assembly.GetManifestResourceStream(path);
 
             using var reader = new StreamReader(stream ?? throw new MissingManifestResourceException());

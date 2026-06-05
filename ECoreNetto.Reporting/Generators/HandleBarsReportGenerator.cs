@@ -91,7 +91,7 @@ namespace ECoreNetto.Reporting.Generators
         {
             var templatePath = $"ECoreNetto.Reporting.Templates.{name}.hbs";
 
-            var template = ResourceLoader.LoadEmbeddedResource(templatePath);
+            var template = ResourceLoader.LoadEmbeddedResource(typeof(HandleBarsReportGenerator).Assembly, templatePath);
 
             var compiledTemplate = Handlebars.Compile(template);
 
