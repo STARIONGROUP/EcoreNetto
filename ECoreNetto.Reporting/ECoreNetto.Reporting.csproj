@@ -4,15 +4,20 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>10.0</LangVersion>
         <Title>ECoreNetto.Reporting</Title>
-        <Version>7.0.9</Version>
+        <Version>9.0.0</Version>
         <Description>Ecore Reporting use in combination with the ECoreNetto library generate reports</Description>
         <PackageId>ECoreNetto.Reporting</PackageId>
         <AssemblyTitle>EcoreNetto.Reporting</AssemblyTitle>
         <PackageTags>Ecore HandleBars Reporting modeltopia</PackageTags>
         <PackageReleaseNotes>
-            [Update] ECoreNetto.HandleBars version 7.0.9
-            [Update] System.IO.Packaging version 10.0.7
-            [Update] Microsoft.SourceLink.GitHub to version 10.0.203
+            [Feature] consolidate duplicated ResourceLoader into shared Reporting implementation; fixes #44
+            [Fix] write Excel info-sheet ns-uri to its own row so ns-prefix is not overwritten; fixes #30
+            [Fix] correct copy-paste XML-doc errors in report generators; fixes #43
+            [Update] enable nullable reference types; fixes #49
+            [Update] adopt central package management; fixes #47
+            [Update] ECoreNetto.HandleBars to version 9.0.0
+            [Update] System.IO.Packaging to version 10.0.9
+            [Update] Microsoft.SourceLink.GitHub to version 10.0.300
         </PackageReleaseNotes>
     </PropertyGroup>
 
