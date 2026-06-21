@@ -8,6 +8,42 @@ ECoreNetto is a suite of dotnet core libraries and tools that are used to deseri
 
 The core library used to deserialize an ecore file and create an in memory ECore model object graph.
 
+### Getting Started
+
+The following snippet shows how to load an `.ecore` file with the core **ECoreNetto** library, obtain the root `EPackage` and walk the model. A `ResourceSet` demand-loads the `.ecore` file (and any cross-referenced models) and `Resource.Load(...)` returns the root `EPackage`.
+
+```csharp
+using System;
+using ECoreNetto;
+using ECoreNetto.Resource;
+
+// point the ResourceSet at the .ecore file to deserialize
+var uri = new Uri(@"C:\path\to\model.ecore");
+
+var resourceSet = new ResourceSet();
+var resource = resourceSet.CreateResource(uri);
+
+// Resource.Load returns the root EPackage of the model
+EPackage rootPackage = resource.Load(null);
+
+Console.WriteLine($"package: {rootPackage.Name}");
+
+// iterate over the classifiers (EClass, EDataType, EEnum, ...) in the package
+foreach (var classifier in rootPackage.EClassifiers)
+{
+    Console.WriteLine($"  {classifier.GetType().Name}: {classifier.Name}");
+
+    // for classes, inspect their structural features (attributes and references)
+    if (classifier is EClass eClass)
+    {
+        foreach (var structuralFeature in eClass.EStructuralFeatures)
+        {
+            Console.WriteLine($"    - {structuralFeature.Name} : {structuralFeature.EType?.Name}");
+        }
+    }
+}
+```
+
 ## ECoreNetto.Extensions
 
 The **ECoreNetto.Extensions** library provides extensions methods to the EcoreNetto library to support code generation. This library is part of the EcoreNetto ecosystem.
