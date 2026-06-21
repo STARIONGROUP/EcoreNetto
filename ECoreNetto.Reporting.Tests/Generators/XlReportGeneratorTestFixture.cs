@@ -21,6 +21,7 @@
 namespace ECoreNetto.Reporting.Tests.Generators
 {
     using System.IO;
+    using System.Linq;
 
     using ClosedXML.Excel;
 
@@ -63,6 +64,33 @@ namespace ECoreNetto.Reporting.Tests.Generators
                 Assert.That(info.Cell(4, 2).GetString(), Is.EqualTo("recipe"));
                 Assert.That(info.Cell(5, 1).GetString(), Is.EqualTo("Root Package - ns uri"));
                 Assert.That(info.Cell(5, 2).GetString(), Is.EqualTo("hu.bme.mit.mdsd.recipe"));
+            });
+        }
+
+        [Test]
+        public void Verify_that_the_class_enum_and_datatype_sheets_contain_the_expected_content()
+        {
+            this.generator.GenerateReport(this.modelFileInfo, this.reportFileInfo);
+
+            using var workbook = new XLWorkbook(this.reportFileInfo.FullName);
+
+            var eClassSheet = workbook.Worksheet("EClass");
+            var eEnumSheet = workbook.Worksheet("EEnum");
+            var eDataTypeSheet = workbook.Worksheet("EDataType");
+
+            Assert.Multiple(() =>
+            {
+                // the EClass sheet must list representative classes and a feature of the recipe model
+                Assert.That(eClassSheet.CellsUsed().Any(c => c.GetString() == "Container"), Is.True);
+                Assert.That(eClassSheet.CellsUsed().Any(c => c.GetString() == "Recipe"), Is.True);
+                Assert.That(eClassSheet.CellsUsed().Any(c => c.GetString() == "capacity"), Is.True);
+
+                // the EEnum sheet must list the Unit enumeration and one of its literals
+                Assert.That(eEnumSheet.CellsUsed().Any(c => c.GetString() == "Unit"), Is.True);
+                Assert.That(eEnumSheet.CellsUsed().Any(c => c.GetString() == "PIECE"), Is.True);
+
+                // the EDataType sheet must carry its column header
+                Assert.That(eDataTypeSheet.CellsUsed().Any(c => c.GetString() == "DataType"), Is.True);
             });
         }
 

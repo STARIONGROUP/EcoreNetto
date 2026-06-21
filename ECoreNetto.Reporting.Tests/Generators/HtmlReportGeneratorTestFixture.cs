@@ -74,6 +74,27 @@ namespace ECoreNetto.Tools.Tests.Generators
         }
 
         [Test]
+        public void Verify_that_the_generated_html_contains_the_expected_content()
+        {
+            var modelFileInfo = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "recipe.ecore"));
+
+            var html = this.htmlReportGenerator.GenerateReport(modelFileInfo);
+
+            Assert.Multiple(() =>
+            {
+                // package name, the three top-level sections and a representative class and enum
+                // (and one of its literals) from the recipe model must all be rendered
+                Assert.That(html, Does.Contain("recipe"));
+                Assert.That(html, Does.Contain("Enumeration Types"));
+                Assert.That(html, Does.Contain("Data Types"));
+                Assert.That(html, Does.Contain("Classes"));
+                Assert.That(html, Does.Contain("Container"));
+                Assert.That(html, Does.Contain("Unit"));
+                Assert.That(html, Does.Contain("PIECE"));
+            });
+        }
+
+        [Test]
         public void Verify_that_when_modelpath_is_null_exception_is_thrown()
         {
             FileInfo? modelFileInfo = null;

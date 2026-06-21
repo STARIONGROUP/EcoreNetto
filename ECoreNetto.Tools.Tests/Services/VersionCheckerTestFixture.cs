@@ -159,6 +159,68 @@ namespace ECoreNetto.Tools.Tests.Services
             await Assert.ThatAsync(() => checker.ExecuteAsync(new CancellationTokenSource().Token), Throws.Nothing);
         }
 
+        [Test]
+        public async Task Verify_that_QueryLatestReleaseAsync_returns_a_populated_release_on_success()
+        {
+            var factory = new StubHttpClientFactory(new HttpClient(new SuccessHandler()));
+
+            var checker = new VersionChecker(factory, this.loggerFactory);
+
+            var release = await checker.QueryLatestReleaseAsync(new CancellationTokenSource().Token);
+
+            Assert.That(release, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(release!.TagName, Is.EqualTo("1.2.3"));
+                Assert.That(release.Body, Is.EqualTo("notes"));
+                Assert.That(release.HtmlUrl, Is.EqualTo("https://example.com"));
+            });
+        }
+
+        [Test]
+        public async Task Verify_that_QueryLatestReleaseAsync_returns_null_on_a_non_success_status()
+        {
+            var factory = new StubHttpClientFactory(new HttpClient(new NotFoundHandler()));
+
+            var checker = new VersionChecker(factory, this.loggerFactory);
+
+            var release = await checker.QueryLatestReleaseAsync(new CancellationTokenSource().Token);
+
+            Assert.That(release, Is.Null);
+        }
+
+        [Test]
+        public async Task Verify_that_ExecuteAsync_does_not_throw_on_a_non_success_status()
+        {
+            var factory = new StubHttpClientFactory(new HttpClient(new NotFoundHandler()));
+
+            var checker = new VersionChecker(factory, this.loggerFactory);
+
+            await Assert.ThatAsync(() => checker.ExecuteAsync(new CancellationTokenSource().Token), Throws.Nothing);
+        }
+
+        [Test]
+        public async Task Verify_that_QueryLatestReleaseAsync_returns_null_on_malformed_json()
+        {
+            var factory = new StubHttpClientFactory(new HttpClient(new MalformedJsonHandler()));
+
+            var checker = new VersionChecker(factory, this.loggerFactory);
+
+            var release = await checker.QueryLatestReleaseAsync(new CancellationTokenSource().Token);
+
+            Assert.That(release, Is.Null);
+        }
+
+        [Test]
+        public async Task Verify_that_ExecuteAsync_does_not_throw_on_malformed_json()
+        {
+            var factory = new StubHttpClientFactory(new HttpClient(new MalformedJsonHandler()));
+
+            var checker = new VersionChecker(factory, this.loggerFactory);
+
+            await Assert.ThatAsync(() => checker.ExecuteAsync(new CancellationTokenSource().Token), Throws.Nothing);
+        }
+
         /// <summary>
         /// Very simple IHttpClientFactory used just for tests.
         /// It always returns the HttpClient passed in the constructor.
@@ -254,6 +316,31 @@ namespace ECoreNetto.Tools.Tests.Services
                 return Task.FromResult(new HttpResponseMessage(System.Net.HttpStatusCode.OK)
                 {
                     Content = new StringContent(json)
+                });
+            }
+        }
+
+        /// <summary>
+        /// A handler that always responds with a non-success (404) status.
+        /// </summary>
+        private sealed class NotFoundHandler : HttpMessageHandler
+        {
+            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            {
+                return Task.FromResult(new HttpResponseMessage(System.Net.HttpStatusCode.NotFound));
+            }
+        }
+
+        /// <summary>
+        /// A handler that responds with a 200 status but a body that is not valid JSON.
+        /// </summary>
+        private sealed class MalformedJsonHandler : HttpMessageHandler
+        {
+            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            {
+                return Task.FromResult(new HttpResponseMessage(System.Net.HttpStatusCode.OK)
+                {
+                    Content = new StringContent("{ this is not valid json ")
                 });
             }
         }
