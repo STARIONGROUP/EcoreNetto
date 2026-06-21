@@ -87,7 +87,15 @@ namespace ECoreNetto
         /// </returns>
         public EClass EClass()
         {
-            throw new NotImplementedException();
+            var metaClass = this.EResource.GetMetaClass(this.GetType().Name);
+
+            if (metaClass == null)
+            {
+                throw new InvalidOperationException(
+                    $"No Ecore meta class is registered for '{this.GetType().Name}'.");
+            }
+
+            return metaClass;
         }
 
         /// <summary>
