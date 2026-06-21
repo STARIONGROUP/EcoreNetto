@@ -23,6 +23,7 @@ namespace ECoreNetto.Resource
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.IO;
     using System.Linq;
 
     using ECoreNetto.Utils;
@@ -267,13 +268,35 @@ namespace ECoreNetto.Resource
                 throw new ArgumentException($"Invalid path for the current resource: {this.URI.AbsolutePath}");
             }
 
-            var resourceUri = new Uri($"{this.URI.AbsolutePath.Substring(0, index)}/{uriFragments[0]}");
+            var candidateResourcePath = $"{this.URI.AbsolutePath.Substring(0, index)}/{uriFragments[0]}";
+
+            if (!Uri.TryCreate(candidateResourcePath, UriKind.Absolute, out var resourceUri))
+            {
+                // the reference cannot be turned into a valid resource URI: record a descriptive
+                // diagnostic and report it as unresolved rather than throwing a raw UriFormatException
+                var message = $"The reference '{uriFragment}' points at a malformed resource URI '{candidateResourcePath}'.";
+                this.AddError(message);
+                this.logger.LogTrace(message);
+
+                return null;
+            }
 
             this.logger.LogTrace("EObject not found in current resource, loading other resources: {0}", resourceUri);
 
             var resource = this.ResourceSet!.Resources.SingleOrDefault(x => x.URI == resourceUri);
             if (resource == null)
             {
+                if (!File.Exists(resourceUri.LocalPath))
+                {
+                    // the referenced '.ecore' resource does not exist: record a descriptive diagnostic
+                    // and report it as unresolved rather than throwing a raw FileNotFoundException
+                    var message = $"The reference '{uriFragment}' points at resource '{resourceUri.LocalPath}' which could not be found.";
+                    this.AddError(message);
+                    this.logger.LogTrace(message);
+
+                    return null;
+                }
+
                 resource = this.ResourceSet.CreateResource(resourceUri);
                 resource.Load(null);
             }

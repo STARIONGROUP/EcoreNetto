@@ -83,6 +83,30 @@ namespace ECoreNetto.Tests.Resource
         }
 
         [Test]
+        public void Verify_that_a_reference_to_a_missing_cross_resource_uri_is_recorded_as_an_error_and_aborts_the_load()
+        {
+            // the eType points at another '.ecore' resource that does not exist; the malformed/unresolvable
+            // URI must be recorded as a descriptive diagnostic instead of throwing a raw FileNotFoundException,
+            // and the typed resolver then reports the unresolved reference
+            var model = Package(
+                "missing-uri",
+                "<eClassifiers xsi:type=\"ecore:EClass\" name=\"A\">\r\n" +
+                "    <eStructuralFeatures xsi:type=\"ecore:EAttribute\" name=\"x\" eType=\"nonexistent.ecore#//X\"/>\r\n" +
+                "  </eClassifiers>");
+            var resource = this.CreateResourceForContent("missing-uri.ecore", model);
+
+            Assert.Throws<InvalidOperationException>(() => resource.Load(null));
+
+            var error = resource.Errors.SingleOrDefault();
+            Assert.That(error, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(error!.Message, Does.Contain("nonexistent.ecore"));
+                Assert.That(error.Location, Is.EqualTo(resource.URI.AbsoluteUri));
+            });
+        }
+
+        [Test]
         public void Verify_that_an_unrecognized_classifier_type_is_recorded_as_an_error_and_aborts_the_load()
         {
             var model = Package("unknown-classifier", "<eClassifiers xsi:type=\"ecore:Bogus\" name=\"A\"/>");
