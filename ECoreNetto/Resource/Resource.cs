@@ -23,6 +23,7 @@ namespace ECoreNetto.Resource
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.IO;
     using System.Linq;
 
     using ECoreNetto.Utils;
@@ -274,6 +275,17 @@ namespace ECoreNetto.Resource
             var resource = this.ResourceSet!.Resources.SingleOrDefault(x => x.URI == resourceUri);
             if (resource == null)
             {
+                if (!File.Exists(resourceUri.LocalPath))
+                {
+                    // the referenced '.ecore' resource does not exist: record a descriptive diagnostic
+                    // and report the reference as unresolved rather than throwing a raw FileNotFoundException
+                    var message = $"The reference '{uriFragment}' points at resource '{resourceUri.LocalPath}' which could not be found.";
+                    this.AddError(message);
+                    this.logger.LogTrace(message);
+
+                    return null;
+                }
+
                 resource = this.ResourceSet.CreateResource(resourceUri);
                 resource.Load(null);
             }
