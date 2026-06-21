@@ -76,3 +76,5 @@ test/ECoreNetto.Tests/project.lock.json
 
 # Rider folder
 .idea
+
+/.claude/settings.local.json
