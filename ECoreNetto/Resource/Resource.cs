@@ -201,7 +201,7 @@ namespace ECoreNetto.Resource
         }
 
         /// <summary>
-        /// Returns the URI fragment that, when passed to getEObject will return the given object. 
+        /// Returns the URI fragment that, when passed to <see cref="GetEObject(string)"/>, will return the given object.
         /// </summary>
         /// <param name="eObject">
         /// The object to identify
@@ -209,9 +209,36 @@ namespace ECoreNetto.Resource
         /// <returns>
         /// the URI fragment for the object.
         /// </returns>
+        /// <remarks>
+        /// The returned fragment is the name-based Ecore reference under which the object is registered in this
+        /// resource (its <see cref="EObject.Identifier"/>), for example <c>recipe.ecore#//Recipe</c> for a class or
+        /// <c>EStructuralFeature::recipe.ecore#//Recipe/ingredients</c> for a structural feature. This is exactly the
+        /// reference string consumed by <see cref="GetEObject(string)"/>, so the round-trip
+        /// <c>GetEObject(GetURIFragment(eObject))</c> returns the same instance.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <paramref name="eObject"/> is null.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when <paramref name="eObject"/> is not contained in this resource and therefore cannot be turned
+        /// into a resolvable URI fragment.
+        /// </exception>
         public string GetURIFragment(EObject eObject)
         {
-            throw new NotImplementedException();
+            if (eObject == null)
+            {
+                throw new ArgumentNullException(nameof(eObject));
+            }
+
+            var fragment = eObject.Identifier;
+
+            if (string.IsNullOrEmpty(fragment) || !this.Cache.TryGetValue(fragment, out var cached) || !ReferenceEquals(cached, eObject))
+            {
+                throw new InvalidOperationException(
+                    $"The provided '{eObject.GetType().Name}' is not contained in this resource and cannot be turned into a URI fragment.");
+            }
+
+            return fragment;
         }
 
         /// <summary>
