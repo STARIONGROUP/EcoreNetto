@@ -72,5 +72,26 @@ namespace ECoreNetto.Tools.Tests.Generators
 
             Assert.That(() => this.markdownReportGenerator.GenerateReport(modelFileInfo, reportFileInfo), Throws.Nothing);
         }
+
+        [Test]
+        public void Verify_that_the_generated_markdown_contains_the_expected_content()
+        {
+            var modelFileInfo = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "recipe.ecore"));
+
+            var markdown = this.markdownReportGenerator.GenerateReport(modelFileInfo);
+
+            Assert.Multiple(() =>
+            {
+                // the model-information block (with the namespace uri), the section headers and a
+                // representative class and enum from the recipe model must all be rendered
+                Assert.That(markdown, Does.Contain("## Model Information"));
+                Assert.That(markdown, Does.Contain("hu.bme.mit.mdsd.recipe"));
+                Assert.That(markdown, Does.Contain("## Data Types"));
+                Assert.That(markdown, Does.Contain("## Enumeration Types"));
+                Assert.That(markdown, Does.Contain("## Classes"));
+                Assert.That(markdown, Does.Contain("Container"));
+                Assert.That(markdown, Does.Contain("Unit"));
+            });
+        }
     }
 }

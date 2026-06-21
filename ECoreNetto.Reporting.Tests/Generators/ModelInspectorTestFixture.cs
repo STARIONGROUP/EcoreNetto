@@ -20,7 +20,6 @@
 
 namespace ECoreNetto.Tools.Tests.Generators
 {
-    using System;
     using System.IO;
 
     using ECoreNetto.Resource;
@@ -85,9 +84,12 @@ namespace ECoreNetto.Tools.Tests.Generators
         {
             var report = this.modelInspector.Inspect(this.rootPackage, false);
 
-            Assert.That(report, Is.Not.Empty);
-
-            Console.Write(report);
+            Assert.Multiple(() =>
+            {
+                Assert.That(report, Does.Contain("ANALYSIS"));
+                Assert.That(report, Does.Contain("MULTIPLICITY RESULTS"));
+                Assert.That(report, Does.Contain("INTERESTING CLASSES"));
+            });
         }
 
         [Test]
@@ -95,9 +97,12 @@ namespace ECoreNetto.Tools.Tests.Generators
         {
             var report = this.modelInspector.Inspect(this.rootPackage, true);
 
-            Assert.That(report, Is.Not.Empty);
-
-            Console.Write(report);
+            Assert.Multiple(() =>
+            {
+                Assert.That(report, Does.Contain("MULTIPLICITY RESULTS"));
+                // recursion descends into the recipe package, so its name must appear in the analysis
+                Assert.That(report, Does.Contain("recipe"));
+            });
         }
 
         [Test]
@@ -105,9 +110,8 @@ namespace ECoreNetto.Tools.Tests.Generators
         {
             var report = this.modelInspector.Inspect(this.rootPackage, "Container");
 
-            Assert.That(report, Is.Not.Empty);
-
-            Console.Write(report);
+            // the per-class inspection must be headed by the inspected class
+            Assert.That(report, Does.Contain("Container"));
         }
 
         [Test]
@@ -115,9 +119,7 @@ namespace ECoreNetto.Tools.Tests.Generators
         {
             var report = this.modelInspector.AnalyzeDocumentation(this.rootPackage, false);
 
-            Assert.That(report, Is.Not.Empty);
-
-            Console.Write(report);
+            Assert.That(report, Does.Contain("MISSING DOCUMENTATION"));
         }
 
         [Test]
@@ -125,9 +127,7 @@ namespace ECoreNetto.Tools.Tests.Generators
         {
             var report = this.modelInspector.AnalyzeDocumentation(this.rootPackage, true);
 
-            Assert.That(report, Is.Not.Empty);
-
-            Console.Write(report);
+            Assert.That(report, Does.Contain("MISSING DOCUMENTATION"));
         }
 
         [Test]
