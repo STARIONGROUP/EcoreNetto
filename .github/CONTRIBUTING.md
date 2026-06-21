@@ -5,6 +5,12 @@ We would like to start with saying thank you for wanting to contribute to EcoreN
 - [Making Changes](#making-changes)
   - [Handling Updates from Upstream/Development](#handling-updates-from-upstreamdevelopment)
   - [Sending a Pull Request](#sending-a-pull-request)
+- [Building and Testing](#building-and-testing)
+  - [Prerequisites](#prerequisites)
+  - [Building](#building)
+  - [Running the Tests](#running-the-tests)
+  - [Collecting Code Coverage Locally](#collecting-code-coverage-locally)
+  - [Code-Quality Gate](#code-quality-gate)
 - [Style Guidelines](#style-guidelines)
 
 ## Making Changes
@@ -48,6 +54,73 @@ When you're ready to go you should confirm that you are up to date and rebased w
 
 And remember; **A pull-request with tests is a pull-request that's likely to be pulled in.** :grin: Bonus points if you document your feature in our [wiki](https://github.com/STARIONGROUP/EcoreNetto/wiki) once it has been pulled in
 
+## Building and Testing
+
+Before you send a pull request, please build the solution and run the tests locally. The same build and tests run automatically on every push and pull request (see [Code-Quality Gate](#code-quality-gate) below), so validating locally first is the quickest way to keep your pull request green.
+
+All commands below are run from the repository root and assume the solution file `EcoreNetto.sln`.
+
+### Prerequisites
+
+- The **.NET 10 SDK** ([download](https://dotnet.microsoft.com/download/dotnet/10.0)). The CLI (`ECoreNetto.Tools`) and all test projects target `net10.0`; the libraries target `netstandard2.0`.
+
+### Building
+
+```powershell
+dotnet restore EcoreNetto.sln
+dotnet build EcoreNetto.sln          # add -c Release for a release build
+```
+
+### Running the Tests
+
+The tests are written with **NUnit 4** (with **Moq**) and live in the five `*.Tests` projects.
+
+```powershell
+# run the whole suite
+dotnet test EcoreNetto.sln
+
+# run a single test project
+dotnet test ECoreNetto.Tests/ECoreNetto.Tests.csproj
+
+# run a single test (or a subset) by name
+dotnet test EcoreNetto.sln --filter "FullyQualifiedName~SomeTestClass.SomeTestMethod"
+```
+
+### Collecting Code Coverage Locally
+
+Coverage is collected with **coverlet**. The most convenient option mirrors what CI runs and produces a Cobertura report:
+
+```powershell
+dotnet test EcoreNetto.sln --collect:"XPlat Code Coverage"
+```
+
+This writes a `coverage.cobertura.xml` file under each test project's `TestResults/<guid>/` folder.
+
+The repository also ships a `coverlet.runsettings` at the root that emits the OpenCover format, which some tools expect:
+
+```powershell
+dotnet test EcoreNetto.sln --settings coverlet.runsettings
+```
+
+Optionally, turn the coverage data into a browsable HTML report using the same ReportGenerator tool that CI uses:
+
+```powershell
+dotnet tool install --global dotnet-reportgenerator-globaltool
+reportgenerator -reports:**/coverage.cobertura.xml -targetdir:CoverageReport -reporttypes:Html
+```
+
+Then open `CoverageReport/index.html` in a browser.
+
+### Code-Quality Gate
+
+Every push and pull request triggers the `.github/workflows/CodeQuality.yml` workflow, which:
+
+- builds and runs the full test suite on both Linux and Windows;
+- runs **SonarCloud** analysis (project `STARIONGROUP_EcoreNetto`, organisation `stariongroup`) — see the [SonarCloud dashboard](https://sonarcloud.io/project/overview?id=STARIONGROUP_EcoreNetto) and the badges in the [README](../README.md); and
+- posts a code-coverage summary as a comment on the pull request.
+
+The SonarCloud check is required and must pass before a pull request can be merged. Please make sure your change keeps the tests green and does not regress code coverage. You do **not** need to run SonarCloud locally — building and running the tests with coverage (as described above) is enough to anticipate the gate.
+
 ## Style Guidelines
 
 - Indent with 4 spaces, **not** tabs.
@@ -61,4 +134,6 @@ And remember; **A pull-request with tests is a pull-request that's likely to be 
 - Pay attention to whitespace and extra blank lines
 - Absolutely **no** regions
 
-> If you are a ReSharper user, you can make use of our `.DotSettings` file to ensure you cover as many of our style guidelines as possible. There may be some style guidelines which are not covered by the file, so please pay attention to the style of existing code.
+> If you use **ReSharper** or **Rider**, the repository ships an `EcoreNetto.sln.DotSettings` file that is applied automatically when you open the solution. It covers many of the guidelines above — such as `this.` qualification, placing `using` statements inside the namespace, naming rules, and the Apache copyright file header. There may be some style guidelines which are not covered by the file, so please pay attention to the style of existing code.
+>
+> If you do not use ReSharper or Rider, note that the repository does not currently provide an `.editorconfig`; please follow the guidelines above manually and match the style of the surrounding code.
