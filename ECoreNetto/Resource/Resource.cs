@@ -201,6 +201,26 @@ namespace ECoreNetto.Resource
         }
 
         /// <summary>
+        /// Gets the Ecore meta class registered for the provided simple type name.
+        /// </summary>
+        /// <param name="name">
+        /// The simple name of the meta class (e.g. <c>EClass</c>, <c>EAttribute</c>), which matches the
+        /// runtime type name of the model elements.
+        /// </param>
+        /// <returns>
+        /// The <see cref="EClass"/> meta class, or null when no meta class is registered for <paramref name="name"/>.
+        /// </returns>
+        internal EClass? GetMetaClass(string name)
+        {
+            if (this.eCoreTypes.TryGetValue($"//{name}", out var metaClass) && metaClass is EClass eClass)
+            {
+                return eClass;
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Returns the URI fragment that, when passed to <see cref="GetEObject(string)"/>, will return the given object.
         /// </summary>
         /// <param name="eObject">

@@ -71,6 +71,16 @@ Logging throughout uses optional injected `ILoggerFactory`, falling back to `Nul
 
 Sample models live in `TestData/` (`ecore.ecore`, `recipe.ecore`, `wizardEcore.ecore`) and are linked into test projects' output under `Data/` via `<None>` items with `CopyToOutputDirectory`. Test framework is **NUnit 4** with **Moq**; coverage via coverlet. `InternalsVisibleTo` exposes internals (e.g. `ECoreParser`) to each project's `.Tests` assembly.
 
+## Code coverage requirement
+
+**All new code must reach at least 80% line/branch coverage** — this is enforced by the SonarCloud quality gate on new code. When implementing a feature or fix, add tests that exercise every new branch (happy path *and* guard/error paths) so coverage on the changed lines is ≥ 80%. Verify locally before opening/updating a PR:
+
+```powershell
+dotnet test ECoreNetto.Tests/ECoreNetto.Tests.csproj --collect:"XPlat Code Coverage" --settings coverlet.runsettings
+```
+
+Then inspect the generated Cobertura report (or run ReportGenerator) and confirm the new members are covered. Do not consider an issue "done" until its new code clears the 80% bar.
+
 ## Code style (from .github/CONTRIBUTING.md)
 
 These differ from default .NET conventions — match them:
