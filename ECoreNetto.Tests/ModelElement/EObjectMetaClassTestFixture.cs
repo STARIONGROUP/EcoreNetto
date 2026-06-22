@@ -98,5 +98,36 @@ namespace ECoreNetto.Tests.ModelElement
             Assert.That(attributes, Has.Count.EqualTo(2));
             Assert.That(attributes[0].EClass(), Is.SameAs(attributes[1].EClass()));
         }
+
+        [Test]
+        public void Verify_that_EClass_throws_when_no_meta_class_is_registered_for_the_runtime_type()
+        {
+            // a runtime type whose name is not present in the Ecore meta model registry
+            var unregistered = new UnregisteredEObject(this.resource);
+
+            Assert.That(() => unregistered.EClass(), Throws.TypeOf<InvalidOperationException>());
+        }
+
+        [Test]
+        public void Verify_that_GetMetaClass_returns_null_for_an_unknown_type_name()
+        {
+            Assert.That(this.resource.GetMetaClass("ThisTypeDoesNotExist"), Is.Null);
+        }
+
+        /// <summary>
+        /// A minimal <see cref="EObject"/> subtype whose runtime type name has no corresponding Ecore
+        /// meta class, used to exercise the guard path of <see cref="EObject.EClass"/>.
+        /// </summary>
+        private sealed class UnregisteredEObject : EObject
+        {
+            public UnregisteredEObject(Resource resource)
+                : base(resource)
+            {
+            }
+
+            internal override void SetProperties()
+            {
+            }
+        }
     }
 }
