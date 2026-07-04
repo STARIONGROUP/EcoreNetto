@@ -73,7 +73,12 @@ namespace ECoreNetto
         /// The top level <see cref="EPackage"/> contained by the <see cref="resource"/>
         /// </returns>
         /// <exception cref="FileNotFoundException">
-        /// If the source file not found
+        /// If the source file could not be found. A descriptive <see cref="Resource.Diagnostic"/> is recorded in
+        /// <see cref="Resource.Resource.Errors"/> before the exception is thrown.
+        /// </exception>
+        /// <exception cref="XmlException">
+        /// If the source file is not well-formed XML. A descriptive <see cref="Resource.Diagnostic"/> is recorded in
+        /// <see cref="Resource.Resource.Errors"/> before the exception is re-thrown.
         /// </exception>
         internal EPackage ParseXml()
         {
@@ -91,10 +96,35 @@ namespace ECoreNetto
             var fileInfo = new FileInfo(this.resource.URI.AbsolutePath.Replace("%20", " "));
             var fullPath = Path.GetFullPath(fileInfo.FullName);
 
+            if (!File.Exists(fullPath))
+            {
+                // record a descriptive diagnostic before surfacing the documented FileNotFoundException
+                var message = $"The Ecore file '{fullPath}' could not be found.";
+                this.resource.AddError(message);
+                this.logger.LogError(message);
+
+                throw new FileNotFoundException(message, fullPath);
+            }
+
             // now read the actual model file
-            var xmlReader = XmlReader.Create(fullPath, settings);
             var xmlDocument = new XmlDocument { XmlResolver = null };
-            xmlDocument.Load(xmlReader);
+
+            try
+            {
+                using var xmlReader = XmlReader.Create(fullPath, settings);
+                xmlDocument.Load(xmlReader);
+            }
+            catch (XmlException xmlException)
+            {
+                // record a descriptive diagnostic in Resource.Errors, then re-throw the raw XmlException
+                // unchanged so callers still observe the original type (see XxeHardeningTestFixture). We do
+                // not also log here: that would be a redundant log-and-rethrow (Sonar S2139).
+                var message = $"The Ecore file '{fullPath}' is not well-formed XML and could not be parsed. {xmlException.Message}";
+                this.resource.AddError(message);
+
+                throw;
+            }
+
             var package = new EPackage(this.resource, this.loggerFactory);
             package.ReadXml(xmlDocument.DocumentElement);
             
