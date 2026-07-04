@@ -474,7 +474,7 @@ namespace ECoreNetto
             var attributeValueParts = attributeValue.Split(' ');
 
             // rewrite an implicit reference to the current resource's file so it matches the file-name-based
-            // cache keys (issue #79); fall back to the top package name when there is no backing file
+            // cache keys; fall back to the top package name when there is no backing file
             for (var i = 0; i < attributeValueParts.Length; i++)
             {
                 if (attributeValueParts[i].StartsWith("#//"))
