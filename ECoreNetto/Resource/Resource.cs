@@ -275,6 +275,26 @@ namespace ECoreNetto.Resource
         /// </returns>
         public EObject? GetEObject(string uriFragment)
         {
+            return this.GetEObject(uriFragment, new HashSet<Resource>());
+        }
+
+        /// <summary>
+        /// Returns the resolved object for the given URI fragment, tracking the resources already consulted
+        /// during the current resolution so that resolution always terminates.
+        /// </summary>
+        /// <param name="uriFragment">
+        /// the fragment to resolve.
+        /// </param>
+        /// <param name="visitedResources">
+        /// the resources already visited while resolving <paramref name="uriFragment"/>. A delegation to a
+        /// resource that is already present would repeat with the same (resource, fragment) pair and never
+        /// make progress, so it is reported as unresolved rather than recursed into.
+        /// </param>
+        /// <returns>
+        /// The resolved object for the given fragment, or null if it can't be resolved.
+        /// </returns>
+        private EObject? GetEObject(string uriFragment, HashSet<Resource> visitedResources)
+        {
             this.logger.LogTrace("Getting EObject for resources {0}", uriFragment);
 
             if (string.IsNullOrWhiteSpace(uriFragment))
@@ -325,6 +345,9 @@ namespace ECoreNetto.Resource
 
             this.logger.LogTrace("EObject not found in current resource, loading other resources: {0}", resourceUri);
 
+            // record that resolution has now passed through this resource
+            visitedResources.Add(this);
+
             var resource = this.ResourceSet!.Resources.SingleOrDefault(x => x.URI == resourceUri);
             if (resource == null)
             {
@@ -343,16 +366,19 @@ namespace ECoreNetto.Resource
                 resource.Load(null);
             }
 
-            if (resource == this)
+            if (visitedResources.Contains(resource))
             {
-                // the fragment points back at the current resource but was not found in its cache:
-                // it cannot be resolved. Returning here avoids unbounded self-recursion.
-                this.logger.LogTrace("EObject using uri fragment '{0}' could not be resolved", uriFragment);
+                // delegating to a resource already on the resolution path would repeat with the same
+                // (resource, fragment) pair and never terminate; report the reference as unresolved
+                // instead of recursing unboundedly.
+                var message = $"The reference '{uriFragment}' could not be resolved; resolution cycled back to resource '{resource.URI}'.";
+                this.AddError(message);
+                this.logger.LogTrace(message);
 
                 return null;
             }
 
-            return resource.GetEObject(uriFragment);
+            return resource.GetEObject(uriFragment, visitedResources);
         }
 
         /// <summary>
