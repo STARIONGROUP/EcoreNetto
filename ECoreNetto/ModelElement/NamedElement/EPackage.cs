@@ -22,7 +22,6 @@ namespace ECoreNetto
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Xml;
 
@@ -200,11 +199,6 @@ namespace ECoreNetto
         {
             var packageHierarchy = new List<string> { this.Name };
             var superPackage = this.ESuperPackage;
-            if (superPackage == null)
-            {
-                // set the current package
-                EModelElement.TopPackageName = this.Name;
-            }
 
             while (superPackage != null)
             {
@@ -212,12 +206,8 @@ namespace ECoreNetto
                 superPackage = superPackage.ESuperPackage;
             }
 
-            // use the actual .ecore file name, falling back to the package name when there is no backing file
-            var fileName = this.EResource.URI != null
-                ? Path.GetFileName(this.EResource.URI.LocalPath)
-                : $"{packageHierarchy[packageHierarchy.Count - 1]}.ecore";
-
-            packageHierarchy[packageHierarchy.Count - 1] = $"{fileName}#/";
+            // the resource segment is the actual .ecore file name so cross-file references resolve
+            packageHierarchy[packageHierarchy.Count - 1] = $"{this.QueryResourceSegment()}#/";
 
             packageHierarchy.Reverse();
 
