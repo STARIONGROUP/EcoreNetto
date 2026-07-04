@@ -60,9 +60,29 @@ namespace ECoreNetto
         public Resource.Resource EResource { get; private set; }
 
         /// <summary>
-        /// Gets or sets the current top package name used during .
+        /// Queries the '.ecore' resource segment used when building identifiers and when rewriting implicit
+        /// references, so that both agree with the file name that cross-file references use.
         /// </summary>
-        internal static string? TopPackageName { get; set; }
+        /// <returns>
+        /// The resource file name (e.g. <c>recipe.ecore</c>) taken from the <see cref="EResource"/> URI, or the
+        /// root package name suffixed with <c>.ecore</c> when the resource has no backing file.
+        /// </returns>
+        protected string QueryResourceSegment()
+        {
+            if (this.EResource.URI != null)
+            {
+                return Path.GetFileName(this.EResource.URI.LocalPath);
+            }
+
+            // no backing file (in-memory construction): fall back to the root package name
+            var root = this;
+            while (root.EContainer != null)
+            {
+                root = root.EContainer;
+            }
+
+            return $"{(root as ENamedElement)?.Name}.ecore";
+        }
 
         /// <summary>
         /// Gets the identifier for this <see cref="EModelElement"/>
@@ -473,17 +493,12 @@ namespace ECoreNetto
             // split the attribute value to support one or many value parts
             var attributeValueParts = attributeValue.Split(' ');
 
-            // rewrite an implicit reference to the current resource's file so it matches the file-name-based
-            // cache keys; fall back to the top package name when there is no backing file
+            // rewrite an implicit reference so it matches the file-name-based cache keys of the current resource
             for (var i = 0; i < attributeValueParts.Length; i++)
             {
                 if (attributeValueParts[i].StartsWith("#//"))
                 {
-                    var fileName = this.EResource.URI != null
-                        ? Path.GetFileName(this.EResource.URI.LocalPath)
-                        : $"{TopPackageName}.ecore";
-
-                    attributeValueParts[i] = $"{fileName}{attributeValueParts[i]}";
+                    attributeValueParts[i] = $"{this.QueryResourceSegment()}{attributeValueParts[i]}";
                 }
             }
 

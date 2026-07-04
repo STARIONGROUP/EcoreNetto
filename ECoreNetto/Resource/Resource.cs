@@ -330,22 +330,18 @@ namespace ECoreNetto.Resource
                 filePart = filePart.Substring(typePrefixIndex + 2);
             }
 
-            if (!filePart.Contains(".ecore"))
+            if (!Path.HasExtension(filePart))
             {
-                // the fragment does not point at another .ecore resource and was not found in
-                // this resource's cache or the known ECore types: it cannot be resolved.
+                // the fragment does not point at another resource file and was not found in this resource's
+                // cache or the known ECore types: it cannot be resolved.
                 this.logger.LogTrace("EObject using uri fragment '{0}' could not be resolved", uriFragment);
 
                 return null;
             }
 
-            var index = this.URI.AbsolutePath.LastIndexOf('/');
-            if (index <= 0)
-            {
-                throw new ArgumentException($"Invalid path for the current resource: {this.URI.AbsolutePath}");
-            }
-
-            var resourceUri = new Uri($"{this.URI.AbsolutePath.Substring(0, index)}/{filePart}");
+            // resolve the file part against the current resource URI (proper URI resolution handles escaped
+            // path segments and any file extension without hardcoded string manipulation)
+            var resourceUri = new Uri(this.URI, filePart);
 
             this.logger.LogTrace("EObject not found in current resource, loading other resources: {0}", resourceUri);
 

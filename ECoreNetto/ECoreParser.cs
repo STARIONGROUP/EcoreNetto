@@ -93,8 +93,8 @@ namespace ECoreNetto
                 XmlResolver = null
             };
 
-            var fileInfo = new FileInfo(this.resource.URI.AbsolutePath.Replace("%20", " "));
-            var fullPath = Path.GetFullPath(fileInfo.FullName);
+            // URI.LocalPath yields the unescaped local file path (handles %20 and any other escaped characters)
+            var fullPath = Path.GetFullPath(this.resource.URI.LocalPath);
 
             if (!File.Exists(fullPath))
             {
