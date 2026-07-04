@@ -116,10 +116,11 @@ namespace ECoreNetto
             }
             catch (XmlException xmlException)
             {
-                // record a descriptive diagnostic before re-throwing the raw XmlException
+                // record a descriptive diagnostic in Resource.Errors, then re-throw the raw XmlException
+                // unchanged so callers still observe the original type (see XxeHardeningTestFixture). We do
+                // not also log here: that would be a redundant log-and-rethrow (Sonar S2139).
                 var message = $"The Ecore file '{fullPath}' is not well-formed XML and could not be parsed. {xmlException.Message}";
                 this.resource.AddError(message);
-                this.logger.LogError(xmlException, message);
 
                 throw;
             }
