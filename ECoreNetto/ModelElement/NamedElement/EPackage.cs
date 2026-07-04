@@ -212,9 +212,7 @@ namespace ECoreNetto
                 superPackage = superPackage.ESuperPackage;
             }
 
-            // the resource segment is the actual .ecore file name so cross-file references (which use the
-            // file name) resolve even when the file name differs from the root package name (issue #79);
-            // fall back to the root package name when the package has no backing file (in-memory construction)
+            // use the actual .ecore file name, falling back to the package name when there is no backing file
             var fileName = this.EResource.URI != null
                 ? Path.GetFileName(this.EResource.URI.LocalPath)
                 : $"{packageHierarchy[packageHierarchy.Count - 1]}.ecore";
