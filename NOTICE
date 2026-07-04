@@ -17,3 +17,22 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 This NOTICE file is part of the distribution of ECoreNetto and must
 be included in all copies or substantial portions of the Software.
+
+-------------------------------------------------------------------------------
+
+THIRD-PARTY COMPONENTS
+
+This repository bundles the following third-party material, which is NOT
+covered by the Apache License 2.0 above and remains subject to its own license.
+
+Eclipse Capella metamodel (test data)
+  Location: TestData/capella/ (*.ecore)
+  Origin:   Eclipse Capella (https://www.eclipse.org/capella/,
+            https://github.com/eclipse/capella)
+  License:  Eclipse Public License 2.0 (EPL-2.0)
+            see TestData/capella/LICENSE-EPL-2.0.md
+
+  These Capella 7.0 metamodel .ecore files are included solely as test data to
+  validate ECoreNetto's loading of cross-referencing multi-file Ecore models.
+  They are not part of the ECoreNetto library and are not distributed in the
+  published ECoreNetto packages.
