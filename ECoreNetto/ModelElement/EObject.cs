@@ -22,6 +22,7 @@ namespace ECoreNetto
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Xml;
 
@@ -472,12 +473,17 @@ namespace ECoreNetto
             // split the attribute value to support one or many value parts
             var attributeValueParts = attributeValue.Split(' ');
 
-            // rewrite implicit reference attributes to point to the current top container.ecore
+            // rewrite an implicit reference to the current resource's file so it matches the file-name-based
+            // cache keys (issue #79); fall back to the top package name when there is no backing file
             for (var i = 0; i < attributeValueParts.Length; i++)
             {
                 if (attributeValueParts[i].StartsWith("#//"))
                 {
-                    attributeValueParts[i] = $"{TopPackageName}.ecore{attributeValueParts[i]}";
+                    var fileName = this.EResource.URI != null
+                        ? Path.GetFileName(this.EResource.URI.LocalPath)
+                        : $"{TopPackageName}.ecore";
+
+                    attributeValueParts[i] = $"{fileName}{attributeValueParts[i]}";
                 }
             }
 
