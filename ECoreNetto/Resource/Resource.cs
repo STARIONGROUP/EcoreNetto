@@ -400,6 +400,8 @@ namespace ECoreNetto.Resource
         /// </summary>
         /// <remarks>
         /// Options are handled generically as feature-to-setting entries; the resource will ignore options it doesn't recognize.
+        /// When the load fails because the file is missing or malformed, a descriptive <see cref="Diagnostic"/> is
+        /// recorded in <see cref="Errors"/> before the exception is surfaced.
         /// </remarks>
         /// <param name="options">
         /// The load options
@@ -407,6 +409,12 @@ namespace ECoreNetto.Resource
         /// <returns>
         /// The top-level <see cref="EPackage"/> contained by the resource.
         /// </returns>
+        /// <exception cref="FileNotFoundException">
+        /// If the resource's file could not be found.
+        /// </exception>
+        /// <exception cref="System.Xml.XmlException">
+        /// If the resource's file is not well-formed XML.
+        /// </exception>
         public EPackage Load(Dictionary<object, object>? options)
         {
             var sw = Stopwatch.StartNew();
