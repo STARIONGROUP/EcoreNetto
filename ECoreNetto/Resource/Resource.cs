@@ -300,7 +300,17 @@ namespace ECoreNetto.Resource
             // load another resource
             // parse uri
             var uriFragments = uriFragment.Split('#');
-            if (!uriFragments[0].Contains(".ecore"))
+
+            // the file part may carry a type prefix (e.g. 'EStructuralFeature::CompositeStructure.ecore' for an
+            // eOpposite reference); strip it so only the '.ecore' file name is used to locate the sibling resource.
+            var filePart = uriFragments[0];
+            var typePrefixIndex = filePart.LastIndexOf("::", StringComparison.Ordinal);
+            if (typePrefixIndex >= 0)
+            {
+                filePart = filePart.Substring(typePrefixIndex + 2);
+            }
+
+            if (!filePart.Contains(".ecore"))
             {
                 // the fragment does not point at another .ecore resource and was not found in
                 // this resource's cache or the known ECore types: it cannot be resolved.
@@ -315,7 +325,7 @@ namespace ECoreNetto.Resource
                 throw new ArgumentException($"Invalid path for the current resource: {this.URI.AbsolutePath}");
             }
 
-            var resourceUri = new Uri($"{this.URI.AbsolutePath.Substring(0, index)}/{uriFragments[0]}");
+            var resourceUri = new Uri($"{this.URI.AbsolutePath.Substring(0, index)}/{filePart}");
 
             this.logger.LogTrace("EObject not found in current resource, loading other resources: {0}", resourceUri);
 

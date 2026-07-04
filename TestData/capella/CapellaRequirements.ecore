@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="CapellaRequirements" nsURI="http://www.polarsys.org/capella/requirements"
+    nsPrefix="CapellaRequirements">
+  <eClassifiers xsi:type="ecore:EClass" name="CapellaTypesFolder" eSuperTypes="Requirements.ecore#//TypesFolder eMDE.ecore#//ElementExtension">
+    <eAnnotations source="http://www.polarsys.org/kitalpha/emde/1.0.0/constraint">
+      <details key="ExtendedElement" value=" http://www.polarsys.org/capella/core/cs/7.0.0#//BlockArchitecture"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.polarsys.org/kitalpha/emde/1.0.0/constraintMapping">
+      <details key="Mapping" value=" CompositeStructure.ecore#//BlockArchitecture"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CapellaModule" eSuperTypes="Requirements.ecore#//Module eMDE.ecore#//ElementExtension">
+    <eAnnotations source="http://www.polarsys.org/kitalpha/emde/1.0.0/constraint">
+      <details key="ExtendedElement" value=" http://www.polarsys.org/capella/core/cs/7.0.0#//BlockArchitecture"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.polarsys.org/kitalpha/emde/1.0.0/constraintMapping">
+      <details key="Mapping" value=" CompositeStructure.ecore#//BlockArchitecture"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CapellaRelation" abstract="true" eSuperTypes="Requirements.ecore#//AbstractRelation"/>
+  <eClassifiers xsi:type="ecore:EClass" name="CapellaIncomingRelation" eSuperTypes="#//CapellaRelation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" eType="ecore:EClass Requirements.ecore#//Requirement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="ecore:EClass CapellaCore.ecore#//CapellaElement"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CapellaOutgoingRelation" eSuperTypes="#//CapellaRelation eMDE.ecore#//ElementExtension">
+    <eAnnotations source="http://www.polarsys.org/kitalpha/emde/1.0.0/constraint">
+      <details key="ExtendedElement" value=" http://www.polarsys.org/capella/core/core/7.0.0#//CapellaElement"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.polarsys.org/kitalpha/emde/1.0.0/constraintMapping">
+      <details key="Mapping" value=" CapellaCore.ecore#//CapellaElement"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" eType="ecore:EClass CapellaCore.ecore#//CapellaElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="ecore:EClass Requirements.ecore#//Requirement"/>
+  </eClassifiers>
+</ecore:EPackage>

@@ -36,6 +36,9 @@
         <None Include="..\TestData\wizardEcore.ecore" Link="Data\wizardEcore.ecore">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+        <None Include="..\TestData\capella\*.ecore" Link="Data\capella\%(Filename)%(Extension)">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 </Project>
