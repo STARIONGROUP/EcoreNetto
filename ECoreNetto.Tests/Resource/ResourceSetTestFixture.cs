@@ -129,5 +129,33 @@ namespace ECoreNetto.Tests.Resource
         {
             Assert.That(() => this.resourceSet.Resource(null!, false), Throws.ArgumentNullException);
         }
+
+        [Test]
+        public void Verify_that_with_loadOnDemand_true_a_missing_resource_is_created_and_loaded()
+        {
+            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "ecore.ecore");
+            var uri = new Uri(Path.GetFullPath(path));
+
+            var result = this.resourceSet.Resource(uri, true);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(result!.IsLoaded(), Is.True);
+                Assert.That(this.resourceSet.Resources, Does.Contain(result));
+            });
+        }
+
+        [Test]
+        public void Verify_that_with_loadOnDemand_true_and_a_nonexistent_file_returns_null()
+        {
+            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "does-not-exist.ecore");
+            var uri = new Uri(Path.GetFullPath(path));
+
+            var result = this.resourceSet.Resource(uri, true);
+
+            Assert.That(result, Is.Null);
+            Assert.That(this.resourceSet.Resources, Is.Empty);
+        }
     }
 }

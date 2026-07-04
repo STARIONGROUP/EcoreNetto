@@ -22,6 +22,7 @@ namespace ECoreNetto.Resource
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Logging.Abstractions;
@@ -138,7 +139,8 @@ namespace ECoreNetto.Resource
         /// the URI to resolve.
         /// </param>
         /// <param name="loadOnDemand">
-        /// whether to create and load the resource, if it doesn't already exist.
+        /// whether to create and load the resource, if it doesn't already exist. The resource is only
+        /// demand-loaded when the <paramref name="uri"/> points at a file that exists on disk.
         /// </param>
         /// <returns>
         /// the resource resolved by the URI, or null if there isn't one, and it's not being demand loaded.
@@ -156,6 +158,22 @@ namespace ECoreNetto.Resource
                 {
                     return resource;
                 }
+            }
+
+            if (loadOnDemand)
+            {
+                if (!File.Exists(uri.LocalPath))
+                {
+                    this.logger.LogTrace(
+                        "The resource for uri '{0}' could not be demand-loaded because the file does not exist", uri);
+
+                    return null;
+                }
+
+                var resource = this.CreateResource(uri);
+                resource.Load(null);
+
+                return resource;
             }
 
             return null;
