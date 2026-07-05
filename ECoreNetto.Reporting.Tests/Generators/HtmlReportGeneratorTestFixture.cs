@@ -84,6 +84,96 @@ namespace ECoreNetto.Tools.Tests.Generators
         }
 
         [Test]
+        public void Verify_that_the_generated_html_renders_the_rich_feature_set()
+        {
+            var modelFileInfo = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "report-features.ecore"));
+
+            var html = this.htmlReportGenerator.GenerateReport(modelFileInfo);
+
+            Assert.Multiple(() =>
+            {
+                // sections and type classification
+                Assert.That(html, Does.Contain("[Primitive Type]"));
+                Assert.That(html, Does.Contain("[Data Type]"));
+                Assert.That(html, Does.Contain("[Interface]"));
+                Assert.That(html, Does.Contain("[Enumeration]"));
+
+                // enum literal value + literal columns
+                Assert.That(html, Does.Contain("active"));
+
+                // feature flag chips
+                Assert.That(html, Does.Contain("{ordered}"));
+                Assert.That(html, Does.Contain("{unique}"));
+                Assert.That(html, Does.Contain("{id}"));
+                Assert.That(html, Does.Contain("{readonly}"));
+                Assert.That(html, Does.Contain("{transient}"));
+                Assert.That(html, Does.Contain("{volatile}"));
+                Assert.That(html, Does.Contain("{unsettable}"));
+                Assert.That(html, Does.Contain("{derived}"));
+                Assert.That(html, Does.Contain("{composite}"));
+                Assert.That(html, Does.Contain("{opposite:"));
+
+                // specializations / containers
+                Assert.That(html, Does.Contain("Specializations"));
+                Assert.That(html, Does.Contain("Containers"));
+
+                // operations table with a rendered parameter and return type
+                Assert.That(html, Does.Contain("Operations"));
+                Assert.That(html, Does.Contain("greet"));
+                Assert.That(html, Does.Contain("greeting"));
+
+                // OCL constraint (rule)
+                Assert.That(html, Does.Contain("hasFullName"));
+                Assert.That(html, Does.Contain("self.fullName"));
+
+                // collapsible UX, diagrams, custom-HTML injection point and Open Graph metadata
+                Assert.That(html, Does.Contain("collapsible-section"));
+                Assert.That(html, Does.Contain("expand-all"));
+                Assert.That(html, Does.Contain("inheritance-diagram"));
+                Assert.That(html, Does.Contain("inheritance-tree-"));
+                Assert.That(html, Does.Contain("association-diagram-"));
+                Assert.That(html, Does.Contain("download-svg"));
+                Assert.That(html, Does.Contain("og:title"));
+            });
+        }
+
+        [Test]
+        public void Verify_that_an_existing_report_file_is_overwritten()
+        {
+            var modelFileInfo = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "recipe.ecore"));
+
+            var reportFileInfo = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "html-report.overwrite.html"));
+
+            this.htmlReportGenerator.GenerateReport(modelFileInfo, reportFileInfo);
+
+            // a second generation to the same path must overwrite the existing file without throwing
+            Assert.That(() => this.htmlReportGenerator.GenerateReport(modelFileInfo, reportFileInfo), Throws.Nothing);
+            Assert.That(reportFileInfo.Exists, Is.True);
+        }
+
+        [Test]
+        public void Verify_that_the_custom_html_is_injected_into_the_report()
+        {
+            var modelFileInfo = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "recipe.ecore"));
+
+            const string customHtml = "<div id=\"my-injected-block\">custom-content-marker</div>";
+
+            var html = this.htmlReportGenerator.GenerateReport(modelFileInfo, customHtml);
+
+            Assert.That(html, Does.Contain("custom-content-marker"));
+        }
+
+        [Test]
+        public void Verify_that_the_default_constructor_generates_a_report()
+        {
+            var generator = new HtmlReportGenerator();
+
+            var modelFileInfo = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "recipe.ecore"));
+
+            Assert.That(() => generator.GenerateReport(modelFileInfo), Throws.Nothing);
+        }
+
+        [Test]
         public void Verify_that_when_modelpath_is_null_exception_is_thrown()
         {
             FileInfo? modelFileInfo = null;
