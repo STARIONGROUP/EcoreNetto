@@ -93,7 +93,11 @@ Development | ![Build Status](https://github.com/STARIONGROUP/EcoreNetto/actions
 
 ## Ecore Documentation
 
-http://download.eclipse.org/modeling/emf/emf/javadoc/2.10.0/index.html?org/eclipse/emf/ecore/EObject.html
+ECoreNetto targets the **Ecore 2.0 metamodel** (namespace `http://www.eclipse.org/emf/2002/Ecore`), the core metamodel of the [Eclipse Modeling Framework (EMF)](https://eclipse.dev/emf/). This metamodel has been stable since EMF 2.0 and is the same one used by current EMF releases. The Java reference implementation is the `org.eclipse.emf.ecore` bundle maintained by the Eclipse Foundation; as of the EMF 2.46.0 distribution (December 2025) the `org.eclipse.emf.ecore` runtime is at version 2.42.0 and `org.eclipse.emf.ecore.xmi` at 2.40.0.
+
+- EMF project &amp; current documentation: https://eclipse.dev/emf/
+- Java reference implementation (Ecore source, `org.eclipse.emf.ecore`): https://github.com/eclipse-emf/org.eclipse.emf
+- Ecore API reference (EMF Javadoc, v2.10.0): https://download.eclipse.org/modeling/emf/emf/javadoc/2.10.0/index.html?org/eclipse/emf/ecore/EObject.html
 
 ## Software Bill of Materials (SBOM)
 
