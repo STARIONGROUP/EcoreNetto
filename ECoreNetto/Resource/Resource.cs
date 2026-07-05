@@ -77,6 +77,13 @@ namespace ECoreNetto.Resource
         private readonly Dictionary<string, EObject> eCoreTypes;
 
         /// <summary>
+        /// The namespace URI prefix under which the built-in Ecore types are referenced, i.e. the part that
+        /// precedes the <c>//EName</c> fragment in a fully-qualified reference such as
+        /// <c>http://www.eclipse.org/emf/2002/Ecore#//EString</c>.
+        /// </summary>
+        private const string EcoreNamespacePrefix = "http://www.eclipse.org/emf/2002/Ecore#";
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Resource"/> class.
         /// </summary>
         /// <param name="loggerFactory">
@@ -113,39 +120,39 @@ namespace ECoreNetto.Resource
                 { "//EGenericType", ecoreObjectFactory.EGenericType },
                 { "//ETypeParameter", ecoreObjectFactory.ETypeParameter },
                 
-                { "http://www.eclipse.org/emf/2002/Ecore#//EBigDecimal", ecoreObjectFactory.EBigDecimal},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EBigInteger", ecoreObjectFactory.EBigInteger},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EBool", ecoreObjectFactory.EBool},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EBooleanObject", ecoreObjectFactory.EBooleanObject},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EByte", ecoreObjectFactory.EByte},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EByteArray", ecoreObjectFactory.EByteArray},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EByteObject", ecoreObjectFactory.EByteObject},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EChar", ecoreObjectFactory.EChar},
-                { "http://www.eclipse.org/emf/2002/Ecore#//ECharacterObject", ecoreObjectFactory.ECharacterObject},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EDate", ecoreObjectFactory.EDate},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EDiagnosticChain", ecoreObjectFactory.EDiagnosticChain},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EDouble", ecoreObjectFactory.EDouble},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EDoubleObject", ecoreObjectFactory.EDoubleObject},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EEList", ecoreObjectFactory.EEList},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EEnumerator", ecoreObjectFactory.EEnumerator},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EFeatureMap", ecoreObjectFactory.EFeatureMap},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry", ecoreObjectFactory.EFeatureMapEntry},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EFloat", ecoreObjectFactory.EFloat},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EFloatObject", ecoreObjectFactory.EFloatObject},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EInt", ecoreObjectFactory.EInt},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject", ecoreObjectFactory.EIntegerObject},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EJavaClass", ecoreObjectFactory.EJavaClass},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EJavaObject", ecoreObjectFactory.EJavaObject},
-                { "http://www.eclipse.org/emf/2002/Ecore#//ELong", ecoreObjectFactory.ELong},
-                { "http://www.eclipse.org/emf/2002/Ecore#//ELongObject", ecoreObjectFactory.ELongObject},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EMap", ecoreObjectFactory.EMap},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EResource", ecoreObjectFactory.EResource},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EResourceSet", ecoreObjectFactory.EResourceSet},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EShort", ecoreObjectFactory.EShort},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EShortObject", ecoreObjectFactory.EShortObject},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EString", ecoreObjectFactory.EString},
-                { "http://www.eclipse.org/emf/2002/Ecore#//ETreeIterator", ecoreObjectFactory.ETreeIterator},
-                { "http://www.eclipse.org/emf/2002/Ecore#//EInvocationTargetException", ecoreObjectFactory.EInvocationTargetException}
+                { "//EBigDecimal", ecoreObjectFactory.EBigDecimal},
+                { "//EBigInteger", ecoreObjectFactory.EBigInteger},
+                { "//EBoolean", ecoreObjectFactory.EBoolean},
+                { "//EBooleanObject", ecoreObjectFactory.EBooleanObject},
+                { "//EByte", ecoreObjectFactory.EByte},
+                { "//EByteArray", ecoreObjectFactory.EByteArray},
+                { "//EByteObject", ecoreObjectFactory.EByteObject},
+                { "//EChar", ecoreObjectFactory.EChar},
+                { "//ECharacterObject", ecoreObjectFactory.ECharacterObject},
+                { "//EDate", ecoreObjectFactory.EDate},
+                { "//EDiagnosticChain", ecoreObjectFactory.EDiagnosticChain},
+                { "//EDouble", ecoreObjectFactory.EDouble},
+                { "//EDoubleObject", ecoreObjectFactory.EDoubleObject},
+                { "//EEList", ecoreObjectFactory.EEList},
+                { "//EEnumerator", ecoreObjectFactory.EEnumerator},
+                { "//EFeatureMap", ecoreObjectFactory.EFeatureMap},
+                { "//EFeatureMapEntry", ecoreObjectFactory.EFeatureMapEntry},
+                { "//EFloat", ecoreObjectFactory.EFloat},
+                { "//EFloatObject", ecoreObjectFactory.EFloatObject},
+                { "//EInt", ecoreObjectFactory.EInt},
+                { "//EIntegerObject", ecoreObjectFactory.EIntegerObject},
+                { "//EJavaClass", ecoreObjectFactory.EJavaClass},
+                { "//EJavaObject", ecoreObjectFactory.EJavaObject},
+                { "//ELong", ecoreObjectFactory.ELong},
+                { "//ELongObject", ecoreObjectFactory.ELongObject},
+                { "//EMap", ecoreObjectFactory.EMap},
+                { "//EResource", ecoreObjectFactory.EResource},
+                { "//EResourceSet", ecoreObjectFactory.EResourceSet},
+                { "//EShort", ecoreObjectFactory.EShort},
+                { "//EShortObject", ecoreObjectFactory.EShortObject},
+                { "//EString", ecoreObjectFactory.EString},
+                { "//ETreeIterator", ecoreObjectFactory.ETreeIterator},
+                { "//EInvocationTargetException", ecoreObjectFactory.EInvocationTargetException}
             };
 
             this.Cache = new Dictionary<string, EObject>();
@@ -309,12 +316,20 @@ namespace ECoreNetto.Resource
                 return @object;
             }
 
-            var ecoreType = this.eCoreTypes.SingleOrDefault(x => uriFragment.Contains(x.Key));
-            if (ecoreType.Value != null)
-            {
-                this.logger.LogTrace("EObject using Key: '{0}' found in found in ECore Types", ecoreType.Key);
+            // resolve a built-in Ecore type by exact key. References to these types appear either as the bare
+            // '//EName' fragment or in the fully-qualified 'http://www.eclipse.org/emf/2002/Ecore#//EName' form;
+            // normalize the latter to the bare fragment so a single exact lookup covers both. Substring matching
+            // would mis-resolve '//EBoolean' onto a '//EBool' key and throw on ambiguous prefixes such as
+            // '//EClass'/'//EClassifier' or '//EString'/'//EStringToStringMapEntry'.
+            var ecoreTypeKey = uriFragment.StartsWith(EcoreNamespacePrefix, StringComparison.Ordinal)
+                ? uriFragment.Substring(EcoreNamespacePrefix.Length)
+                : uriFragment;
 
-                return ecoreType.Value;
+            if (this.eCoreTypes.TryGetValue(ecoreTypeKey, out var ecoreType))
+            {
+                this.logger.LogTrace("EObject using Key: '{0}' found in ECore Types", ecoreTypeKey);
+
+                return ecoreType;
             }
 
             // load another resource
