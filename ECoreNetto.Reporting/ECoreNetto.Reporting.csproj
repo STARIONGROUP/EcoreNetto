@@ -41,6 +41,8 @@
 
     <ItemGroup>
         <PackageReference Include="ClosedXML" />
+        <PackageReference Include="Microsoft.Msagl" />
+        <PackageReference Include="Svg" />
     </ItemGroup>
 
     <ItemGroup Label="Transitive Dependency overrides">

@@ -24,8 +24,9 @@ namespace ECoreNetto.Tools
     using Serilog.Events;
     
     using ECoreNetto.Tools.Commands;
+    using ECoreNetto.Reporting.Drawing;
     using ECoreNetto.Reporting.Generators;
-    
+
     using ECoreNetto.Tools.Services;
 
     /// <summary>
@@ -94,6 +95,8 @@ namespace ECoreNetto.Tools
                     services.AddSingleton<IVersionChecker, VersionChecker>();
                     services.AddSingleton<IXlReportGenerator, XlReportGenerator>();
                     services.AddSingleton<IModelInspector, ModelInspector>();
+                    services.AddSingleton<IInheritanceDiagramRenderer, InheritanceDiagramRenderer>();
+                    services.AddSingleton<IAssociationDiagramRenderer, AssociationDiagramRenderer>();
                     services.AddSingleton<IHtmlReportGenerator, HtmlReportGenerator>();
                     services.AddSingleton<IMarkdownReportGenerator, MarkdownReportGenerator>();
                 });

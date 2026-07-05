@@ -40,6 +40,9 @@
 		<None Include="..\TestData\wizardEcore.ecore" Link="Data\wizardEcore.ecore">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<None Include="..\TestData\report-features.ecore" Link="Data\report-features.ecore">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 </Project>

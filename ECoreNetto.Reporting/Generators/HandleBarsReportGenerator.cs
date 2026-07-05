@@ -63,6 +63,11 @@ namespace ECoreNetto.Reporting.Generators
             ECoreNetto.HandleBars.StructuralFeatureHelper.RegisterStructuralFeatureHelper(this.Handlebars);
             ECoreNetto.HandleBars.GeneralizationHelper.RegisterGeneralizationHelper(this.Handlebars);
             ECoreNetto.HandleBars.DocumentationHelper.RegisteredDocumentationHelper(this.Handlebars);
+            ECoreNetto.HandleBars.AnchorHelper.RegisterAnchorHelper(this.Handlebars);
+            ECoreNetto.HandleBars.ParameterHelper.RegisterParameterHelper(this.Handlebars);
+            ECoreNetto.HandleBars.ClassHelper.RegisterClassHelper(this.Handlebars);
+            ECoreNetto.HandleBars.BooleanHelper.RegisterBooleanHelper(this.Handlebars);
+            ECoreNetto.HandleBars.IEnumerableHelper.RegisterIEnumerableHelper(this.Handlebars);
         }
 
         /// <summary>
@@ -110,17 +115,22 @@ namespace ECoreNetto.Reporting.Generators
 
                 dataTypes.AddRange(package.EClassifiers
                     .OfType<EDataType>()
-                    .Where(x => !(x is EEnum))
-                    .OrderBy(x => x.Name));
+                    .Where(x => !(x is EEnum)));
 
                 eClasses.AddRange(package.EClassifiers.OfType<EClass>());
             }
 
             var orderedEnums = enums.OrderBy(x => x.Name);
-            var orderedDataTypes = dataTypes.OrderBy(x => x.Name);
-            var orderedClasses = eClasses.OrderBy(x => x.Name);
 
-            var payload = new HandlebarsPayload(rootPackage, orderedEnums, orderedDataTypes, orderedClasses);
+            // a data type backed by an instance class (e.g. 'java.lang.String', 'int') is treated as a
+            // primitive type; a modeled data type without an instance class is an "other" data type.
+            var orderedPrimitiveTypes = dataTypes.Where(x => !string.IsNullOrEmpty(x.InstanceClassName)).OrderBy(x => x.Name);
+            var orderedDataTypes = dataTypes.Where(x => string.IsNullOrEmpty(x.InstanceClassName)).OrderBy(x => x.Name);
+
+            var orderedClasses = eClasses.OrderBy(x => x.Name);
+            var orderedInterfaces = eClasses.Where(x => x.Interface).OrderBy(x => x.Name);
+
+            var payload = new HandlebarsPayload(rootPackage, orderedEnums, orderedPrimitiveTypes, orderedDataTypes, orderedClasses, orderedInterfaces);
 
             return payload;
         }
