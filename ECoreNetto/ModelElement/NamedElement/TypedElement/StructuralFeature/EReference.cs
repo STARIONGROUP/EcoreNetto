@@ -20,6 +20,8 @@
 
 namespace ECoreNetto
 {
+    using System.Collections.Generic;
+
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Logging.Abstractions;
 
@@ -52,6 +54,7 @@ namespace ECoreNetto
             this.logger = loggerFactory == null ? NullLogger<EReference>.Instance : loggerFactory.CreateLogger<EReference>();
 
             this.IsResolveProxies = true;
+            this.EKeys = new List<EAttribute>();
         }
 
         /// <summary>
@@ -93,6 +96,12 @@ namespace ECoreNetto
         public EReference? EOpposite { get; private set; }
 
         /// <summary>
+        /// Gets the <see cref="EAttribute"/>s that act as the key of this reference (the <c>eKeys</c> feature),
+        /// used to identify a referenced object by value.
+        /// </summary>
+        public List<EAttribute> EKeys { get; private set; }
+
+        /// <summary>
         /// Read the attributes of the current node
         /// </summary>
         internal override void SetProperties()
@@ -120,6 +129,14 @@ namespace ECoreNetto
             {
                 var typeName = output;
                 this.EOpposite = this.EResource.GetEObject<EReference>($"EStructuralFeature::{typeName}");
+            }
+
+            if (this.Attributes.TryGetValue("eKeys", out output))
+            {
+                foreach (var keyName in output.Split(' '))
+                {
+                    this.EKeys.Add(this.EResource.GetEObject<EAttribute>($"EStructuralFeature::{keyName}"));
+                }
             }
         }
     }

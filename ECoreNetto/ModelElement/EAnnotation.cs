@@ -51,6 +51,7 @@ namespace ECoreNetto
             this.logger = loggerFactory == null ? NullLogger<EAnnotation>.Instance : loggerFactory.CreateLogger<EAnnotation>();
 
             this.Details = new Dictionary<string, string>();
+            this.References = new List<EObject>();
         }
 
         /// <summary>
@@ -59,9 +60,15 @@ namespace ECoreNetto
         public string? Source { get; private set; }
 
         /// <summary>
-        /// Gets the 
+        /// Gets the
         /// </summary>
         public Dictionary<string, string> Details { get; private set; }
+
+        /// <summary>
+        /// Gets the <see cref="EObject"/>s referenced by this <see cref="EAnnotation"/> (the
+        /// <c>references</c> feature).
+        /// </summary>
+        public List<EObject> References { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="EModelElement"/> that is annotated by the current <see cref="EAnnotation"/>
@@ -80,6 +87,18 @@ namespace ECoreNetto
             if (this.Attributes.TryGetValue("source", out var source))
             {
                 this.Source = source;
+            }
+
+            if (this.Attributes.TryGetValue("references", out var references))
+            {
+                foreach (var reference in references.Split(' '))
+                {
+                    var referenced = this.EResource.GetEObject(reference);
+                    if (referenced != null)
+                    {
+                        this.References.Add(referenced);
+                    }
+                }
             }
         }
 

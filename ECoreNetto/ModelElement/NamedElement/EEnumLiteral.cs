@@ -53,9 +53,15 @@ namespace ECoreNetto
         public EEnum EEnum => (EEnum)this.EContainer!;
 
         /// <summary>
-        /// Gets or sets int value of an enumerator. 
+        /// Gets or sets int value of an enumerator.
         /// </summary>
         public int Value { get; private set; }
+
+        /// <summary>
+        /// Gets the literal string of this enumerator (the <c>literal</c> feature), i.e. the serialized
+        /// form, which may differ from the <see cref="ENamedElement.Name"/>.
+        /// </summary>
+        public string? Literal { get; private set; }
 
         /// <summary>
         /// The set properties.
@@ -69,6 +75,11 @@ namespace ECoreNetto
             if (this.Attributes.TryGetValue("value", out var output))
             {
                 this.Value = this.ParseInt32("value", output);
+            }
+
+            if (this.Attributes.TryGetValue("literal", out output))
+            {
+                this.Literal = output;
             }
         }
 

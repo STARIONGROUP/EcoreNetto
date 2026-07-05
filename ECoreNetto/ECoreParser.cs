@@ -20,6 +20,7 @@
 
 namespace ECoreNetto
 {
+    using System;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
@@ -125,9 +126,36 @@ namespace ECoreNetto
                 throw;
             }
 
+            // an .ecore document root is normally the ecore:EPackage itself, but some tools wrap it in an
+            // <xmi:XMI> element. Unwrap that so the root package is read rather than silently returning an
+            // empty, nameless package.
+            var rootElement = xmlDocument.DocumentElement;
+
+            if (rootElement.LocalName == "XMI")
+            {
+                var packageElements = rootElement.ChildNodes
+                    .OfType<XmlElement>()
+                    .Where(element => element.LocalName == "EPackage")
+                    .ToList();
+
+                if (packageElements.Count != 1)
+                {
+                    var message = packageElements.Count == 0
+                        ? $"The Ecore file '{fullPath}' has an XMI document root but contains no ecore:EPackage element."
+                        : $"The Ecore file '{fullPath}' has an XMI document root wrapping {packageElements.Count} ecore:EPackage elements; multiple root packages in a single resource are not supported.";
+
+                    this.resource.AddError(message);
+                    this.logger.LogError(message);
+
+                    throw new InvalidOperationException(message);
+                }
+
+                rootElement = packageElements[0];
+            }
+
             var package = new EPackage(this.resource, this.loggerFactory);
-            package.ReadXml(xmlDocument.DocumentElement);
-            
+            package.ReadXml(rootElement);
+
             foreach (var modelElement in this.resource.AllContents().ToArray())
             {
                 modelElement.SetProperties();
