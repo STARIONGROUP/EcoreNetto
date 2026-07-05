@@ -28,10 +28,13 @@ namespace ECoreNetto.Tests.Resource
     {
         private ResourceSet resourceSet = null!;
 
+        private string capellaDirectory = null!;
+
         [SetUp]
         public void SetUp()
         {
             this.resourceSet = new ResourceSet();
+            this.capellaDirectory = Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "capella");
         }
 
         [Test]
@@ -129,6 +132,80 @@ namespace ECoreNetto.Tests.Resource
                 // resolution still works across the set (no duplicate URIs poisoning the lookup)
                 Assert.That(main.GetEObject("loop-child.ecore#//Base"), Is.Not.Null);
             });
+        }
+
+        [Test]
+        public void Verify_that_loading_the_capella_metamodel_populates_Contents_for_every_resource()
+        {
+            this.DemandLoadCapellaMetamodel();
+
+            // the 21 cross-referencing Capella files were pulled into the set (some directly, some as
+            // demand-loaded dependencies); every one must expose its single root package via Contents (#82)
+            Assert.That(this.resourceSet.Resources, Is.Not.Empty);
+            Assert.Multiple(() =>
+            {
+                foreach (var resource in this.resourceSet.Resources)
+                {
+                    Assert.That(resource.Contents, Has.Count.EqualTo(1), $"resource '{resource.URI}' did not expose its root package");
+                    Assert.That(resource.Contents[0], Is.InstanceOf<EPackage>());
+                }
+            });
+
+            // AllContents flattens every resource's content tree across the whole metamodel
+            var allContents = this.resourceSet.AllContents().ToList();
+            Assert.That(allContents.OfType<EClass>().Any(), Is.True);
+        }
+
+        [Test]
+        public void Verify_that_re_registering_and_loading_capella_files_does_not_duplicate_resources()
+        {
+            // first pass: demand-load the whole metamodel (files reference each other across the set)
+            this.DemandLoadCapellaMetamodel();
+            var resourceCountAfterFirstPass = this.resourceSet.Resources.Count;
+
+            // second pass: the naive "register each file then load it" loop must reuse the already-loaded
+            // resources rather than registering duplicates or re-parsing (and corrupting) the set (#84)
+            Assert.That(() =>
+            {
+                foreach (var file in Directory.EnumerateFiles(this.capellaDirectory, "*.ecore"))
+                {
+                    var uri = new Uri(Path.GetFullPath(file));
+                    var resource = this.resourceSet.CreateResource(uri);
+                    resource.Load(null);
+                }
+            }, Throws.Nothing);
+
+            Assert.Multiple(() =>
+            {
+                // no new resources were added, and none carry a duplicate URI
+                Assert.That(this.resourceSet.Resources.Count, Is.EqualTo(resourceCountAfterFirstPass));
+                var duplicateUris = this.resourceSet.Resources
+                    .GroupBy(r => r.URI.AbsoluteUri)
+                    .Where(g => g.Count() > 1)
+                    .Select(g => g.Key)
+                    .ToList();
+                Assert.That(duplicateUris, Is.Empty, $"duplicate resource URIs: {string.Join("; ", duplicateUris)}");
+
+                // resolution across the set still works after the re-registration pass
+                foreach (var resource in this.resourceSet.Resources)
+                {
+                    Assert.That(resource.Errors, Is.Empty, $"resource '{resource.URI}' recorded errors after re-registration");
+                }
+            });
+        }
+
+        /// <summary>
+        /// Demand-loads every <c>.ecore</c> file in the Capella test-data directory into
+        /// <see cref="resourceSet"/> using <see cref="ResourceSet.Resource(Uri, bool)"/>, so files already
+        /// pulled in through cross-file references are not loaded twice.
+        /// </summary>
+        private void DemandLoadCapellaMetamodel()
+        {
+            foreach (var file in Directory.EnumerateFiles(this.capellaDirectory, "*.ecore"))
+            {
+                var uri = new Uri(Path.GetFullPath(file));
+                this.resourceSet.Resource(uri, true);
+            }
         }
 
         /// <summary>
