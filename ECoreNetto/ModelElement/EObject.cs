@@ -347,7 +347,21 @@ namespace ECoreNetto
         public virtual void ReadXml(XmlNode element)
         {
             this.SaveAttributes(element);
+            this.RegisterXmiId();
             this.ReadChildNodes(element);
+        }
+
+        /// <summary>
+        /// Registers this object in its <see cref="EResource"/> under its intrinsic <c>xmi:id</c>, when it
+        /// carries one, so that a reference of the bare <c>xmi:id</c> form (a URI fragment without a leading
+        /// slash, resolved by EMF through <c>getEObjectByID</c>) can be resolved to this object.
+        /// </summary>
+        private void RegisterXmiId()
+        {
+            if (this.Attributes.TryGetValue("xmi:id", out var id) && !string.IsNullOrEmpty(id))
+            {
+                this.EResource.RegisterEObjectId(id, this);
+            }
         }
 
         /// <summary>

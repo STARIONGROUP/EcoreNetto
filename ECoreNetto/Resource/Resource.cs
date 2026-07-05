@@ -66,6 +66,13 @@ namespace ECoreNetto.Resource
         private readonly Dictionary<string, EObject> eCoreTypes;
 
         /// <summary>
+        /// Maps the intrinsic <c>xmi:id</c> of an <see cref="EObject"/> to that object, populated while the
+        /// resource is read. It backs resolution of the bare <c>xmi:id</c> URI-fragment form (a fragment
+        /// without a leading slash), which EMF resolves through <c>getEObjectByID</c>.
+        /// </summary>
+        private readonly Dictionary<string, EObject> idToEObject;
+
+        /// <summary>
         /// The namespace URI prefix under which the built-in Ecore types are referenced, i.e. the part that
         /// precedes the <c>//EName</c> fragment in a fully-qualified reference such as
         /// <c>http://www.eclipse.org/emf/2002/Ecore#//EString</c>.
@@ -153,6 +160,7 @@ namespace ECoreNetto.Resource
             }
 
             this.Cache = new Dictionary<string, EObject>();
+            this.idToEObject = new Dictionary<string, EObject>();
 
             this.isLoaded = false;
 
@@ -342,13 +350,22 @@ namespace ECoreNetto.Resource
                 filePart = filePart.Substring(typePrefixIndex + 2);
             }
 
+            // the part after '#' is the in-document fragment: a name-based path ('//A/b'), a positional path
+            // ('//@eClassifiers.3'), or a bare xmi:id. When there is no '#', the whole value may itself be a
+            // bare xmi:id.
+            var inDocumentFragment = uriFragments.Length > 1 ? uriFragments[1] : filePart;
+
             if (!Path.HasExtension(filePart))
             {
-                // the fragment does not point at another resource file and was not found in this resource's
-                // cache or the known ECore types: it cannot be resolved.
-                this.logger.LogTrace("EObject using uri fragment '{0}' could not be resolved", uriFragment);
+                // the fragment does not point at another resource file: resolve a positional path or an
+                // xmi:id within this resource, otherwise it cannot be resolved.
+                var localResolved = this.ResolveInDocumentFragment(inDocumentFragment);
+                if (localResolved == null)
+                {
+                    this.logger.LogTrace("EObject using uri fragment '{0}' could not be resolved", uriFragment);
+                }
 
-                return null;
+                return localResolved;
             }
 
             // resolve the file part against the current resource URI (proper URI resolution handles escaped
@@ -376,6 +393,15 @@ namespace ECoreNetto.Resource
 
                 resource = this.ResourceSet.CreateResource(resourceUri);
                 resource.Load(null);
+            }
+
+            // a positional path or an xmi:id is resolved structurally within the owning resource. That owning
+            // resource is this resource itself for a same-file positional reference such as
+            // 'file.ecore#//@eClassifiers.3', which carries the file name after reference rewriting.
+            var withinResource = resource.ResolveInDocumentFragment(inDocumentFragment);
+            if (withinResource != null)
+            {
+                return withinResource;
             }
 
             if (visitedResources.Contains(resource))
@@ -421,6 +447,183 @@ namespace ECoreNetto.Resource
             }
 
             return typedEObject;
+        }
+
+        /// <summary>
+        /// Resolves an in-document URI fragment against this resource: a positional path of the
+        /// <c>//@feature.index</c> form, or a bare <c>xmi:id</c>.
+        /// </summary>
+        /// <param name="fragment">
+        /// The in-document fragment (the part after '#', or the whole value when there is no '#').
+        /// </param>
+        /// <returns>
+        /// The resolved <see cref="EObject"/>, or null when the fragment is not a positional path or a
+        /// known <c>xmi:id</c>. Pure name-based paths return null here because they are already resolved
+        /// through the identifier cache.
+        /// </returns>
+        private EObject? ResolveInDocumentFragment(string fragment)
+        {
+            if (string.IsNullOrEmpty(fragment))
+            {
+                return null;
+            }
+
+            if (fragment[0] == '/')
+            {
+                // a '/'-rooted path. Pure name paths are already covered by the identifier cache; only the
+                // positional '@feature.index' form needs structural navigation here.
+                return fragment.IndexOf('@') >= 0 ? this.ResolveStructuralFragment(fragment) : null;
+            }
+
+            // a fragment without a leading slash is an intrinsic xmi:id
+            return this.idToEObject.TryGetValue(fragment, out var byId) ? byId : null;
+        }
+
+        /// <summary>
+        /// Navigates a positional (structural) URI fragment such as
+        /// <c>//@eClassifiers.3/@eStructuralFeatures.1</c> from the root of this resource, indexing into the
+        /// containment feature named by each <c>@feature.index</c> segment. This mirrors EMF's
+        /// <c>eObjectForURIFragmentSegment</c>.
+        /// </summary>
+        /// <param name="fragment">
+        /// The positional path, starting with a leading slash.
+        /// </param>
+        /// <returns>
+        /// The resolved <see cref="EObject"/>, or null when the path does not address an existing object.
+        /// </returns>
+        private EObject? ResolveStructuralFragment(string fragment)
+        {
+            // 'fragment' has a leading slash: split yields an empty first element (before that slash), then the
+            // resource root-position segment, then the '@feature.index' navigation segments.
+            var parts = fragment.Split('/');
+            if (parts.Length < 2)
+            {
+                return null;
+            }
+
+            var rootSegment = parts[1];
+            if (rootSegment.Length != 0 && rootSegment != "0")
+            {
+                // a non-zero resource root position addresses a second root object; ECoreNetto resources are
+                // single-root, so this cannot be resolved.
+                return null;
+            }
+
+            var current = this.QueryRootObject();
+
+            for (var i = 2; i < parts.Length && current != null; i++)
+            {
+                current = NavigateContainmentSegment(current, parts[i]);
+            }
+
+            return current;
+        }
+
+        /// <summary>
+        /// Returns the root object of this resource, i.e. the object at position 0 of its contents.
+        /// </summary>
+        /// <returns>
+        /// The root <see cref="EObject"/>, or null when the resource has no contents.
+        /// </returns>
+        /// <remarks>
+        /// While the resource is still being loaded its <see cref="Contents"/> are not yet populated, so the
+        /// root is taken as the single cached object that has no container.
+        /// </remarks>
+        private EObject? QueryRootObject()
+        {
+            if (this.Contents.Count > 0)
+            {
+                return this.Contents[0];
+            }
+
+            return this.Cache.Values.FirstOrDefault(o => o.EContainer == null);
+        }
+
+        /// <summary>
+        /// Resolves a single positional navigation segment of the <c>@feature.index</c> form against the
+        /// given owner, returning the child at that index of the named containment feature.
+        /// </summary>
+        /// <param name="owner">
+        /// The object the segment is navigated from.
+        /// </param>
+        /// <param name="segment">
+        /// The <c>@feature.index</c> segment.
+        /// </param>
+        /// <returns>
+        /// The addressed child, or null when the segment is malformed, names an unknown containment feature,
+        /// or the index is out of range.
+        /// </returns>
+        private static EObject? NavigateContainmentSegment(EObject owner, string segment)
+        {
+            if (segment.Length == 0 || segment[0] != '@')
+            {
+                return null;
+            }
+
+            var body = segment.Substring(1);
+            var separator = body.LastIndexOf('.');
+            if (separator < 0)
+            {
+                return null;
+            }
+
+            var featureName = body.Substring(0, separator);
+            if (!int.TryParse(body.Substring(separator + 1), out var index) || index < 0)
+            {
+                return null;
+            }
+
+            var containment = QueryContainmentList(owner, featureName);
+            if (containment == null || index >= containment.Count)
+            {
+                return null;
+            }
+
+            return containment[index];
+        }
+
+        /// <summary>
+        /// Returns the ordered containment list of <paramref name="owner"/> for the containment feature named
+        /// <paramref name="featureName"/>, or null when the owner has no such containment feature.
+        /// </summary>
+        /// <param name="owner">
+        /// The object whose containment feature is requested.
+        /// </param>
+        /// <param name="featureName">
+        /// The Ecore name of the containment feature (e.g. <c>eClassifiers</c>, <c>eStructuralFeatures</c>).
+        /// </param>
+        /// <returns>
+        /// The containment list, or null.
+        /// </returns>
+        private static IReadOnlyList<EObject>? QueryContainmentList(EObject owner, string featureName)
+        {
+            switch (featureName)
+            {
+                case "eAnnotations":
+                    return (owner as EModelElement)?.EAnnotations;
+                case "eSubpackages":
+                    return (owner as EPackage)?.ESubPackages;
+                case "eClassifiers":
+                    return (owner as EPackage)?.EClassifiers;
+                case "eStructuralFeatures":
+                    return (owner as EClass)?.EStructuralFeatures;
+                case "eOperations":
+                    return (owner as EClass)?.EOperations;
+                case "eGenericSuperTypes":
+                    return (owner as EClass)?.EGenericSuperTypes;
+                case "eLiterals":
+                    return (owner as EEnum)?.ELiterals;
+                case "eParameters":
+                    return (owner as EOperation)?.EParameters;
+                case "eGenericExceptions":
+                    return (owner as EOperation)?.EGenericExceptions;
+                case "eTypeParameters":
+                    return (owner as EClassifier)?.ETypeParameters ?? (owner as EOperation)?.ETypeParameters;
+                case "eBounds":
+                    return (owner as ETypeParameter)?.EBounds;
+                default:
+                    return null;
+            }
         }
 
         /// <summary>
@@ -535,6 +738,28 @@ namespace ECoreNetto.Resource
         internal void AddError(string message)
         {
             this.errors.Add(new Diagnostic(0, 0, this.URI?.AbsoluteUri ?? string.Empty, message));
+        }
+
+        /// <summary>
+        /// Registers the given <see cref="EObject"/> under its intrinsic <c>xmi:id</c> so that a bare
+        /// <c>xmi:id</c> URI fragment can be resolved to it.
+        /// </summary>
+        /// <param name="id">
+        /// The <c>xmi:id</c> value carried by <paramref name="eObject"/>.
+        /// </param>
+        /// <param name="eObject">
+        /// The object to register.
+        /// </param>
+        /// <remarks>
+        /// The first registration for a given <paramref name="id"/> wins. A duplicate <c>xmi:id</c> is
+        /// invalid, but recording it must not abort the load, so later duplicates are ignored.
+        /// </remarks>
+        internal void RegisterEObjectId(string id, EObject eObject)
+        {
+            if (!this.idToEObject.ContainsKey(id))
+            {
+                this.idToEObject.Add(id, eObject);
+            }
         }
 
         /// <summary>
