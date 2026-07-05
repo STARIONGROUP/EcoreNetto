@@ -81,6 +81,12 @@ namespace ECoreNetto.Tools.Commands
         private bool autoOpenReport;
 
         /// <summary>
+        /// The value indicating whether the report should also include every cross-referenced model that is
+        /// reachable from the input model (a single combined report).
+        /// </summary>
+        private bool includeReferencedModels;
+
+        /// <summary>
         /// Asynchronously invokes the <see cref="ReportHandler"/>
         /// </summary>
         /// <param name="parseResult">
@@ -131,7 +137,14 @@ namespace ECoreNetto.Tools.Commands
 
                         await Task.Delay(this.StatusDelay, cancellationToken);
 
-                        this.ReportGenerator.GenerateReport(this.inputModel, this.outputReport);
+                        if (this.includeReferencedModels)
+                        {
+                            this.ReportGenerator.GenerateCombinedReport(this.inputModel, this.outputReport);
+                        }
+                        else
+                        {
+                            this.ReportGenerator.GenerateReport(this.inputModel, this.outputReport);
+                        }
 
                         AnsiConsole.MarkupLine(
                             $"[grey]LOG:[/] Ecore {this.ReportGenerator.QueryReportType()} report generated at [bold]{this.outputReport.FullName}[/]");
@@ -181,6 +194,7 @@ namespace ECoreNetto.Tools.Commands
             this.inputModel = parseResult.GetValue<FileInfo>("--input-model")!;
             this.autoOpenReport = parseResult.GetValue<bool>("--auto-open-report");
             this.outputReport = parseResult.GetValue<FileInfo>("--output-report")!;
+            this.includeReferencedModels = parseResult.GetValue<bool>("--include-referenced-models");
         }
 
         /// <summary>

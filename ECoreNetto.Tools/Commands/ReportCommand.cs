@@ -62,6 +62,16 @@ namespace ECoreNetto.Tools.Commands
 
             autoOpenReportOption.Aliases.Add("-a");
             this.Add(autoOpenReportOption);
+
+            var includeReferencedModelsOption = new Option<bool>(name: "--include-referenced-models")
+            {
+                Description = "Produce a single combined report that also includes every cross-referenced .ecore model reachable from the input model",
+                DefaultValueFactory = parseResult => false,
+                Required = false
+            };
+
+            includeReferencedModelsOption.Aliases.Add("-r");
+            this.Add(includeReferencedModelsOption);
         }
     }
 }
