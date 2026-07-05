@@ -212,6 +212,30 @@ namespace ECoreNetto.HandleBars
 
                 writer.WriteSafeString($"{typeName}");
             });
+
+            handlebars.RegisterHelper("StructuralFeature.QueryIsId", (_, arguments) =>
+            {
+                if (arguments.Length != 1)
+                {
+                    throw new HandlebarsException("{{#StructuralFeature.QueryIsId}} helper must have exactly one argument");
+                }
+
+                return arguments.Single() is EAttribute eAttribute && eAttribute.ID;
+            });
+
+            handlebars.RegisterHelper("StructuralFeature.WriteOpposite", (writer, _, arguments) =>
+            {
+                if (arguments.Length != 1)
+                {
+                    throw new HandlebarsException("{{StructuralFeature.WriteOpposite}} helper must have exactly one argument");
+                }
+
+                if (arguments.Single() is EReference eReference && eReference.EOpposite != null)
+                {
+                    var opposite = eReference.EOpposite;
+                    writer.WriteSafeString($" {{opposite: <a href=\"#{opposite.QueryAnchorId()}\">{opposite.Name}</a>}}");
+                }
+            });
         }
     }
 }
