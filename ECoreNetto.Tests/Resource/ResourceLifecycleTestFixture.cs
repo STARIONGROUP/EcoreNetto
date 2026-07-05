@@ -53,7 +53,7 @@ namespace ECoreNetto.Tests.Resource
         [Test]
         public void Verify_that_a_demand_loaded_resource_exposes_its_root_package_via_Contents()
         {
-            this.WriteModel("dep-child.ecore", Package("depchild", "<eClassifiers xsi:type=\"ecore:EClass\" name=\"Base\"/>"));
+            WriteModel("dep-child.ecore", Package("depchild", "<eClassifiers xsi:type=\"ecore:EClass\" name=\"Base\"/>"));
             var main = this.CreateResourceForContent(
                 "dep-main.ecore",
                 Package("depmain", "<eClassifiers xsi:type=\"ecore:EClass\" name=\"A\" eSuperTypes=\"dep-child.ecore#//Base\"/>"));
@@ -105,7 +105,7 @@ namespace ECoreNetto.Tests.Resource
         [Test]
         public void Verify_that_creating_and_loading_an_already_demand_loaded_resource_does_not_corrupt_the_set()
         {
-            this.WriteModel("loop-child.ecore", Package("loopchild", "<eClassifiers xsi:type=\"ecore:EClass\" name=\"Base\"/>"));
+            WriteModel("loop-child.ecore", Package("loopchild", "<eClassifiers xsi:type=\"ecore:EClass\" name=\"Base\"/>"));
             var main = this.CreateResourceForContent(
                 "loop-main.ecore",
                 Package("loopmain", "<eClassifiers xsi:type=\"ecore:EClass\" name=\"A\" eSuperTypes=\"loop-child.ecore#//Base\"/>"));
@@ -149,7 +149,7 @@ namespace ECoreNetto.Tests.Resource
         /// <summary>
         /// Writes the provided <paramref name="content"/> to a file in the test directory.
         /// </summary>
-        private void WriteModel(string fileName, string content)
+        private static void WriteModel(string fileName, string content)
         {
             File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, fileName), content);
         }
@@ -160,7 +160,7 @@ namespace ECoreNetto.Tests.Resource
         /// </summary>
         private Resource CreateResourceForContent(string fileName, string content)
         {
-            this.WriteModel(fileName, content);
+            WriteModel(fileName, content);
 
             var uri = new Uri(Path.Combine(TestContext.CurrentContext.TestDirectory, fileName));
 
