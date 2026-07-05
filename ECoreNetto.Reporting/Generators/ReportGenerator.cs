@@ -9,7 +9,9 @@
 
 namespace ECoreNetto.Reporting.Generators
 {
+    using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
 
     using ECoreNetto.Resource;
 
@@ -84,6 +86,85 @@ namespace ECoreNetto.Reporting.Generators
             var rootPackage = resource.Load(null);
 
             return rootPackage;
+        }
+
+        /// <summary>
+        /// Loads the entry Ecore model together with every cross-referenced model that is demand-loaded while
+        /// resolving it, and returns the root <see cref="EPackage"/> of every resource in the resulting
+        /// <see cref="ResourceSet"/>.
+        /// </summary>
+        /// <param name="modelPath">
+        /// the path to the entry Ecore model that is to be loaded.
+        /// </param>
+        /// <returns>
+        /// A read-only list of the root <see cref="EPackage"/>s of the entry model and of every model that is
+        /// reachable from it through cross-references. The entry model's root package is first.
+        /// </returns>
+        protected IReadOnlyList<EPackage> LoadRootPackages(FileInfo modelPath)
+        {
+            if (modelPath == null)
+            {
+                throw new ArgumentNullException(nameof(modelPath));
+            }
+
+            this.logger.LogInformation("Loading Ecore model and referenced models from {0}", modelPath.FullName);
+
+            var resourceSet = new ResourceSet(this.loggerFactory);
+            var uri = new System.Uri(modelPath.FullName);
+            var resource = resourceSet.CreateResource(uri);
+            resource.Load(null);
+
+            return QueryRootPackages(resourceSet);
+        }
+
+        /// <summary>
+        /// Loads every <c>.ecore</c> file in the provided <paramref name="inputDirectory"/> into a single
+        /// <see cref="ResourceSet"/> and returns the root <see cref="EPackage"/> of every resource, so that a
+        /// single report can be produced for a multi-file metamodel.
+        /// </summary>
+        /// <param name="inputDirectory">
+        /// the directory that contains the <c>.ecore</c> files that are to be loaded.
+        /// </param>
+        /// <returns>
+        /// A read-only list of the root <see cref="EPackage"/>s of every loaded model.
+        /// </returns>
+        protected IReadOnlyList<EPackage> LoadRootPackages(DirectoryInfo inputDirectory)
+        {
+            if (inputDirectory == null)
+            {
+                throw new ArgumentNullException(nameof(inputDirectory));
+            }
+
+            this.logger.LogInformation("Loading all Ecore models from directory {0}", inputDirectory.FullName);
+
+            var resourceSet = new ResourceSet(this.loggerFactory);
+
+            foreach (var file in inputDirectory.EnumerateFiles("*.ecore"))
+            {
+                var uri = new System.Uri(file.FullName);
+
+                // demand-load so files already pulled in through cross-references are not loaded twice
+                resourceSet.Resource(uri, true);
+            }
+
+            return QueryRootPackages(resourceSet);
+        }
+
+        /// <summary>
+        /// Queries the root <see cref="EPackage"/> of every resource contained in the provided
+        /// <see cref="ResourceSet"/>.
+        /// </summary>
+        /// <param name="resourceSet">
+        /// the <see cref="ResourceSet"/> whose resources' root packages are collected.
+        /// </param>
+        /// <returns>
+        /// A read-only list of the root <see cref="EPackage"/>s, in resource order.
+        /// </returns>
+        private static IReadOnlyList<EPackage> QueryRootPackages(ResourceSet resourceSet)
+        {
+            return resourceSet.Resources
+                .SelectMany(resource => resource.Contents.OfType<EPackage>())
+                .ToList();
         }
     }
 }

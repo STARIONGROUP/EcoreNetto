@@ -30,6 +30,18 @@ namespace ECoreNetto.Reporting.Generators
         public void GenerateReport(FileInfo modelPath, FileInfo outputPath);
 
         /// <summary>
+        /// Generates a single combined report of the entry model together with every cross-referenced model
+        /// that is reachable from it.
+        /// </summary>
+        /// <param name="modelPath">
+        /// the path to the entry Ecore model of which the combined report is to be generated.
+        /// </param>
+        /// <param name="outputPath">
+        /// the path, including filename, where the output is to be generated.
+        /// </param>
+        public void GenerateCombinedReport(FileInfo modelPath, FileInfo outputPath);
+
+        /// <summary>
         /// Verifies whether the extension of the <paramref name="outputPath"/> is valid or not
         /// </summary>
         /// <param name="outputPath">

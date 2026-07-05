@@ -103,15 +103,75 @@ namespace ECoreNetto.Reporting.Generators
                 throw new ArgumentNullException(nameof(modelPath));
             }
 
+            return this.GenerateReport(new[] { this.LoadRootPackage(modelPath) }, customHtml);
+        }
+
+        /// <summary>
+        /// Generates a single HTML report that aggregates the entry Ecore model together with every
+        /// cross-referenced model that is reachable from it.
+        /// </summary>
+        /// <param name="modelPath">
+        /// the path to the entry Ecore model of which the combined report is to be generated.
+        /// </param>
+        /// <param name="customHtml">
+        /// optional custom HTML that is injected into the report at the custom-HTML injection point.
+        /// </param>
+        /// <returns>
+        /// the content of an HTML report in a string
+        /// </returns>
+        public string GenerateCombinedReport(FileInfo modelPath, string customHtml = "")
+        {
+            if (modelPath == null)
+            {
+                throw new ArgumentNullException(nameof(modelPath));
+            }
+
+            return this.GenerateReport(this.LoadRootPackages(modelPath), customHtml);
+        }
+
+        /// <summary>
+        /// Generates a single HTML report that aggregates every <c>.ecore</c> model in the provided directory.
+        /// </summary>
+        /// <param name="inputDirectory">
+        /// the directory that contains the <c>.ecore</c> models of which the combined report is to be generated.
+        /// </param>
+        /// <param name="customHtml">
+        /// optional custom HTML that is injected into the report at the custom-HTML injection point.
+        /// </param>
+        /// <returns>
+        /// the content of an HTML report in a string
+        /// </returns>
+        public string GenerateCombinedReport(DirectoryInfo inputDirectory, string customHtml = "")
+        {
+            if (inputDirectory == null)
+            {
+                throw new ArgumentNullException(nameof(inputDirectory));
+            }
+
+            return this.GenerateReport(this.LoadRootPackages(inputDirectory), customHtml);
+        }
+
+        /// <summary>
+        /// Generates the HTML report for the provided root <see cref="EPackage"/>s.
+        /// </summary>
+        /// <param name="rootPackages">
+        /// the root <see cref="EPackage"/>s whose classifiers are documented in the report.
+        /// </param>
+        /// <param name="customHtml">
+        /// custom HTML that is injected into the report at the custom-HTML injection point.
+        /// </param>
+        /// <returns>
+        /// the content of an HTML report in a string
+        /// </returns>
+        private string GenerateReport(IReadOnlyList<EPackage> rootPackages, string customHtml)
+        {
             var sw = Stopwatch.StartNew();
 
             this.logger.LogInformation("Start Generating Html report tables");
 
             var template = this.Templates["ecore-to-html-docs"];
 
-            var rootPackage = this.LoadRootPackage(modelPath);
-
-            var payload = CreateHandlebarsPayload(rootPackage);
+            var payload = CreateHandlebarsPayload(rootPackages);
 
             var inheritanceDiagramSvg = this.inheritanceDiagramRenderer.SvgRender(payload);
 
@@ -188,9 +248,74 @@ namespace ECoreNetto.Reporting.Generators
                 throw new ArgumentNullException(nameof(outputPath));
             }
 
-            var sw = Stopwatch.StartNew();
+            this.WriteToFile(this.GenerateReport(modelPath, customHtml), outputPath);
+        }
 
-            var generatedHtml = this.GenerateReport(modelPath, customHtml);
+        /// <summary>
+        /// Generates a single combined HTML report of the entry model and every cross-referenced model that is
+        /// reachable from it, and writes it to the provided <paramref name="outputPath"/>.
+        /// </summary>
+        /// <param name="modelPath">
+        /// the path to the entry Ecore model of which the combined report is to be generated.
+        /// </param>
+        /// <param name="outputPath">
+        /// the path, including filename, where the output is to be generated.
+        /// </param>
+        public void GenerateCombinedReport(FileInfo modelPath, FileInfo outputPath)
+        {
+            if (modelPath == null)
+            {
+                throw new ArgumentNullException(nameof(modelPath));
+            }
+
+            if (outputPath == null)
+            {
+                throw new ArgumentNullException(nameof(outputPath));
+            }
+
+            this.WriteToFile(this.GenerateCombinedReport(modelPath, string.Empty), outputPath);
+        }
+
+        /// <summary>
+        /// Generates a single combined HTML report of every <c>.ecore</c> model in the provided directory and
+        /// writes it to the provided <paramref name="outputPath"/>.
+        /// </summary>
+        /// <param name="inputDirectory">
+        /// the directory that contains the <c>.ecore</c> models of which the combined report is to be generated.
+        /// </param>
+        /// <param name="outputPath">
+        /// the path, including filename, where the output is to be generated.
+        /// </param>
+        /// <param name="customHtml">
+        /// optional custom HTML that is injected into the report at the custom-HTML injection point.
+        /// </param>
+        public void GenerateCombinedReport(DirectoryInfo inputDirectory, FileInfo outputPath, string customHtml = "")
+        {
+            if (inputDirectory == null)
+            {
+                throw new ArgumentNullException(nameof(inputDirectory));
+            }
+
+            if (outputPath == null)
+            {
+                throw new ArgumentNullException(nameof(outputPath));
+            }
+
+            this.WriteToFile(this.GenerateCombinedReport(inputDirectory, customHtml), outputPath);
+        }
+
+        /// <summary>
+        /// Writes the generated HTML to the provided <paramref name="outputPath"/>, overwriting an existing file.
+        /// </summary>
+        /// <param name="generatedHtml">
+        /// the generated HTML content.
+        /// </param>
+        /// <param name="outputPath">
+        /// the path, including filename, where the output is to be written.
+        /// </param>
+        private void WriteToFile(string generatedHtml, FileInfo outputPath)
+        {
+            var sw = Stopwatch.StartNew();
 
             if (outputPath.Exists)
             {

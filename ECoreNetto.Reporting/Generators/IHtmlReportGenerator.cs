@@ -45,5 +45,49 @@ namespace ECoreNetto.Reporting.Generators
         /// <see cref="string.Empty"/> when none is required.
         /// </param>
         public void GenerateReport(FileInfo modelPath, FileInfo outputPath, string customHtml);
+
+        /// <summary>
+        /// Generates a single combined HTML report of the entry model together with every cross-referenced
+        /// model that is reachable from it.
+        /// </summary>
+        /// <param name="modelPath">
+        /// the path to the entry Ecore model of which the combined report is to be generated.
+        /// </param>
+        /// <param name="customHtml">
+        /// optional custom HTML that is injected into the report at the custom-HTML injection point.
+        /// </param>
+        /// <returns>
+        /// the content of an HTML report in a string
+        /// </returns>
+        public string GenerateCombinedReport(FileInfo modelPath, string customHtml = "");
+
+        /// <summary>
+        /// Generates a single combined HTML report of every <c>.ecore</c> model in the provided directory.
+        /// </summary>
+        /// <param name="inputDirectory">
+        /// the directory that contains the <c>.ecore</c> models of which the combined report is to be generated.
+        /// </param>
+        /// <param name="customHtml">
+        /// optional custom HTML that is injected into the report at the custom-HTML injection point.
+        /// </param>
+        /// <returns>
+        /// the content of an HTML report in a string
+        /// </returns>
+        public string GenerateCombinedReport(DirectoryInfo inputDirectory, string customHtml = "");
+
+        /// <summary>
+        /// Generates a single combined HTML report of every <c>.ecore</c> model in the provided directory and
+        /// writes it to the provided <paramref name="outputPath"/>.
+        /// </summary>
+        /// <param name="inputDirectory">
+        /// the directory that contains the <c>.ecore</c> models of which the combined report is to be generated.
+        /// </param>
+        /// <param name="outputPath">
+        /// the path, including filename, where the output is to be generated.
+        /// </param>
+        /// <param name="customHtml">
+        /// optional custom HTML that is injected into the report at the custom-HTML injection point.
+        /// </param>
+        public void GenerateCombinedReport(DirectoryInfo inputDirectory, FileInfo outputPath, string customHtml = "");
     }
 }

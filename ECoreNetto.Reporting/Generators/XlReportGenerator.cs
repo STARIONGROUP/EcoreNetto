@@ -78,17 +78,80 @@ namespace ECoreNetto.Reporting.Generators
                 throw new ArgumentNullException(nameof(outputPath));
             }
 
+            this.GenerateReport(new[] { this.LoadRootPackage(modelPath) }, outputPath);
+        }
+
+        /// <summary>
+        /// Generates a single combined Excel report of the entry model together with every cross-referenced
+        /// model that is reachable from it, and writes it to the provided <paramref name="outputPath"/>.
+        /// </summary>
+        /// <param name="modelPath">
+        /// the path to the entry Ecore model of which the combined report is to be generated.
+        /// </param>
+        /// <param name="outputPath">
+        /// the path, including filename, where the output is to be generated.
+        /// </param>
+        public void GenerateCombinedReport(FileInfo modelPath, FileInfo outputPath)
+        {
+            if (modelPath == null)
+            {
+                throw new ArgumentNullException(nameof(modelPath));
+            }
+
+            if (outputPath == null)
+            {
+                throw new ArgumentNullException(nameof(outputPath));
+            }
+
+            this.GenerateReport(this.LoadRootPackages(modelPath), outputPath);
+        }
+
+        /// <summary>
+        /// Generates a single combined Excel report of every <c>.ecore</c> model in the provided directory and
+        /// writes it to the provided <paramref name="outputPath"/>.
+        /// </summary>
+        /// <param name="inputDirectory">
+        /// the directory that contains the <c>.ecore</c> models of which the combined report is to be generated.
+        /// </param>
+        /// <param name="outputPath">
+        /// the path, including filename, where the output is to be generated.
+        /// </param>
+        public void GenerateCombinedReport(DirectoryInfo inputDirectory, FileInfo outputPath)
+        {
+            if (inputDirectory == null)
+            {
+                throw new ArgumentNullException(nameof(inputDirectory));
+            }
+
+            if (outputPath == null)
+            {
+                throw new ArgumentNullException(nameof(outputPath));
+            }
+
+            this.GenerateReport(this.LoadRootPackages(inputDirectory), outputPath);
+        }
+
+        /// <summary>
+        /// Generates the Excel report for the provided root <see cref="EPackage"/>s and writes it to the
+        /// provided <paramref name="outputPath"/>.
+        /// </summary>
+        /// <param name="rootPackages">
+        /// the root <see cref="EPackage"/>s whose classifiers are documented in the report.
+        /// </param>
+        /// <param name="outputPath">
+        /// the path, including filename, where the output is to be generated.
+        /// </param>
+        private void GenerateReport(IReadOnlyList<EPackage> rootPackages, FileInfo outputPath)
+        {
             var sw = Stopwatch.StartNew();
 
             this.logger.LogInformation("Start Generating Excel report tables");
 
-            var rootPackage = this.LoadRootPackage(modelPath);
-
-            var packages = rootPackage.QueryPackages();
+            var packages = rootPackages.SelectMany(rootPackage => rootPackage.QueryPackages()).ToList();
 
             using (var workbook = new XLWorkbook())
             {
-                this.AddInfoSheet(workbook, rootPackage);
+                this.AddInfoSheet(workbook, rootPackages);
 
                 this.AddClassSheet(workbook, packages);
 
@@ -110,18 +173,21 @@ namespace ECoreNetto.Reporting.Generators
         /// <param name="workbook">
         /// The target <see cref="XLWorkbook"/> to which the info worksheet is added
         /// </param>
-        /// <param name="rootPackage">
-        /// The root <see cref="EPackage"/>
+        /// <param name="rootPackages">
+        /// The root <see cref="EPackage"/>s documented in the report; the first is treated as the primary
+        /// package and every included root package name is listed.
         /// </param>
-        private void AddInfoSheet(XLWorkbook workbook, EPackage rootPackage)
+        private void AddInfoSheet(XLWorkbook workbook, IReadOnlyList<EPackage> rootPackages)
         {
             this.logger.LogDebug("Add info sheet");
+
+            var rootPackage = rootPackages[0];
 
             var infoWorksheet = workbook.Worksheets.Add("Model Info");
 
             infoWorksheet.Cell(1, 1).Value = "ECoreNetto.Reporting Version";
             infoWorksheet.Cell(1, 2).Value = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
-            
+
             infoWorksheet.Cell(2, 1).Value = "Generation Date";
             infoWorksheet.Cell(2, 2).Value =  DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
@@ -133,6 +199,9 @@ namespace ECoreNetto.Reporting.Generators
 
             infoWorksheet.Cell(5, 1).Value = "Root Package - ns uri";
             infoWorksheet.Cell(5, 2).Value = rootPackage.NsUri;
+
+            infoWorksheet.Cell(6, 1).Value = "Included Packages";
+            infoWorksheet.Cell(6, 2).Value = string.Join(", ", rootPackages.Select(package => package.Name));
 
             this.FormatSheet(infoWorksheet);
         }
