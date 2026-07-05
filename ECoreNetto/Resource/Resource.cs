@@ -449,14 +449,22 @@ namespace ECoreNetto.Resource
         /// </exception>
         public EPackage Load(Dictionary<object, object>? options)
         {
+            if (this.isLoaded)
+            {
+                // the resource is already loaded; return its root package without re-parsing (loading twice
+                // would duplicate cache keys). This makes create-then-load loops over a ResourceSet safe.
+                return (EPackage)this.Contents[0];
+            }
+
             var sw = Stopwatch.StartNew();
 
             var parser = new ECoreParser(this, this.loggerFactory);
             var package = parser.ParseXml();
-            
+
+            this.Contents.Add(package);
             this.isLoaded = true;
 
-            this.logger.LogInformation("Package: '{0}' with prefix {1} and uri {2} loaded in {3} [ms]", 
+            this.logger.LogInformation("Package: '{0}' with prefix {1} and uri {2} loaded in {3} [ms]",
                 package.Name, package.NsPrefix, package.NsUri, sw.ElapsedMilliseconds);
 
             return package;

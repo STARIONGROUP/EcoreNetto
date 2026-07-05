@@ -23,6 +23,7 @@ namespace ECoreNetto.Resource
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
 
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Logging.Abstractions;
@@ -83,13 +84,26 @@ namespace ECoreNetto.Resource
         /// the <see cref="Uri"/> of the resource to create.
         /// </param>
         /// <returns>
-        /// a new resource
+        /// a new resource, or the resource already registered for <paramref name="uri"/> when one exists.
         /// </returns>
+        /// <remarks>
+        /// If a resource with the same URI is already contained in the set (for example because it was
+        /// demand-loaded as a dependency of another resource), the existing resource is returned rather than
+        /// registering a duplicate. Duplicate URIs would break URI-based lookups for the whole set.
+        /// </remarks>
         public Resource CreateResource(Uri uri)
         {
             if (uri == null)
             {
                 throw new ArgumentNullException(nameof(uri));
+            }
+
+            var existing = this.Resources.FirstOrDefault(resource => resource.URI != null && resource.URI.AbsoluteUri == uri.AbsoluteUri);
+            if (existing != null)
+            {
+                this.logger.LogInformation("Returning the existing resource for uri: {0}", uri);
+
+                return existing;
             }
 
             this.logger.LogInformation("Creating resource for uri: {0}", uri);
@@ -98,12 +112,12 @@ namespace ECoreNetto.Resource
             {
                 URI = uri
             };
-            
+
             this.Resources.Add(resource);
             resource.ResourceSet = this;
             return resource;
         }
-        
+
         /// <summary>
         /// Returns a tree iterator that iterates over all the direct resources and over the content tree of each.
         /// </summary>
@@ -112,7 +126,7 @@ namespace ECoreNetto.Resource
         /// </returns>
         public IEnumerable<Notifier> AllContents()
         {
-            throw new NotImplementedException();
+            return this.Resources.SelectMany(resource => resource.AllContents());
         }
 
         /// <summary>
