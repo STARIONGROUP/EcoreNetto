@@ -7,8 +7,6 @@ on:
 
 permissions:
   contents: read
-  checks: write          # dorny/test-reporter check run + annotations
-  pull-requests: write   # sticky coverage comment
 
 jobs:
   # SonarCloud analysis. Kept as a single instance on a single OS: running
@@ -61,6 +59,10 @@ jobs:
   # Needs no secrets, so it also produces signal on fork PRs (where SONAR_TOKEN is absent).
   build-test:
     name: Build & Test (${{ matrix.os }})
+    permissions:
+      contents: read
+      checks: write          # dorny/test-reporter check run + annotations
+      pull-requests: write   # sticky coverage comment
     strategy:
       fail-fast: false
       matrix:
