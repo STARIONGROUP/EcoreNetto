@@ -84,6 +84,37 @@ namespace ECoreNetto.Tests.Resource
             });
         }
 
+        [Test]
+        public void Verify_that_a_cross_file_eOpposite_resolves_across_capella_files()
+        {
+            this.LoadCapellaMetamodel();
+
+            // LogicalArchitecture.ecore (package 'la') declares on class LogicalArchitecture:
+            //   <eStructuralFeatures name="allocatedSystemAnalyses"
+            //       eOpposite="ContextArchitecture.ecore#//SystemAnalysis/allocatingLogicalArchitectures"/>
+            // The opposite feature lives in ContextArchitecture.ecore (a different file).
+            var logicalArchitectureUri = new Uri(Path.Combine(this.capellaDirectory, "LogicalArchitecture.ecore"));
+            var logicalArchitectureResource = this.resourceSet.Resource(logicalArchitectureUri, false);
+            Assert.That(logicalArchitectureResource, Is.Not.Null);
+
+            var allocatedSystemAnalyses = logicalArchitectureResource!.AllContents()
+                .OfType<EReference>()
+                .Single(r => r.Name == "allocatedSystemAnalyses" && r.EContainingClass.Name == "LogicalArchitecture");
+
+            Assert.That(allocatedSystemAnalyses.EOpposite, Is.Not.Null, "the cross-file eOpposite did not resolve");
+            Assert.Multiple(() =>
+            {
+                Assert.That(allocatedSystemAnalyses.EOpposite!.Name, Is.EqualTo("allocatingLogicalArchitectures"));
+                Assert.That(allocatedSystemAnalyses.EOpposite!.EContainingClass.Name, Is.EqualTo("SystemAnalysis"));
+                // resolved into ContextArchitecture.ecore, a different file than the referring feature
+                Assert.That(
+                    Path.GetFileName(allocatedSystemAnalyses.EOpposite!.EResource.URI.LocalPath),
+                    Is.EqualTo("ContextArchitecture.ecore"));
+                // the opposite relation is symmetric
+                Assert.That(allocatedSystemAnalyses.EOpposite!.EOpposite, Is.SameAs(allocatedSystemAnalyses));
+            });
+        }
+
         /// <summary>
         /// Loads every <c>.ecore</c> file in the Capella test-data directory into <see cref="resourceSet"/>.
         /// Uses the demand-loading <see cref="ResourceSet.Resource(Uri, bool)"/> so files already pulled in
