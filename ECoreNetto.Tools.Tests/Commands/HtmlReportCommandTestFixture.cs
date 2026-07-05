@@ -91,6 +91,28 @@ namespace ECoreNetto.Tools.Tests.Commands
         }
 
         [Test]
+        public async Task Verify_that_InvokeAsync_generates_a_combined_report_when_include_referenced_models_is_set()
+        {
+            var args = new[]
+            {
+                "html-report",
+                "--no-logo",
+                "--include-referenced-models",
+                "--input-model", Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "recipe.ecore"),
+                "--output-report", Path.Combine(TestContext.CurrentContext.TestDirectory, "html-report.combined.html")
+            };
+
+            var parseResult = this.rootCommand.Parse(args);
+
+            var result = await this.handler.InvokeAsync(parseResult, this.cts.Token);
+
+            this.htmlReportGenerator.Verify(x => x.GenerateCombinedReport(It.IsAny<FileInfo>(), It.IsAny<FileInfo>()), Times.Once);
+            this.htmlReportGenerator.Verify(x => x.GenerateReport(It.IsAny<FileInfo>(), It.IsAny<FileInfo>()), Times.Never);
+
+            Assert.That(result, Is.EqualTo(0), "InvokeAsync should return 0 upon success.");
+        }
+
+        [Test]
         public async Task Verify_that_when_the_input_ecore_model_does_not_exists_returns_not_0()
         {
             var args = new[]
