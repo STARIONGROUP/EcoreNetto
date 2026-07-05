@@ -104,7 +104,7 @@ namespace ECoreNetto.Utils
 
             this.EBigDecimal = new EDataType(resource, loggerFactory) { Name = "EBigDecimal" };
             this.EBigInteger = new EDataType(resource, loggerFactory) { Name = "EBigInteger" };
-            this.EBool = new EDataType(resource, loggerFactory) { Name = "EBool"};
+            this.EBoolean = new EDataType(resource, loggerFactory) { Name = "EBoolean" };
             this.EBooleanObject = new EDataType(resource, loggerFactory) { Name = "EBooleanObject" };
             this.EByte = new EDataType(resource, loggerFactory) { Name = "EByte" };
             this.EByteArray = new EDataType(resource, loggerFactory) { Name = "EByteArray" };
@@ -250,9 +250,9 @@ namespace ECoreNetto.Utils
         public EDataType EBigInteger { get; private set; }
 
         /// <summary>
-        /// Gets the <see cref="EBool"/> instance
+        /// Gets the <see cref="EBoolean"/> instance
         /// </summary>
-        public EDataType EBool { get; private set; }
+        public EDataType EBoolean { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="EBooleanObject"/> instance

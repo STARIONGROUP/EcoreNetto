@@ -126,7 +126,7 @@ namespace ECoreNetto.Tests.Utils
             {
                 Assert.That(this.factory.EBigDecimal?.Name, Is.EqualTo("EBigDecimal"));
                 Assert.That(this.factory.EBigInteger?.Name, Is.EqualTo("EBigInteger"));
-                Assert.That(this.factory.EBool?.Name, Is.EqualTo("EBool"));
+                Assert.That(this.factory.EBoolean?.Name, Is.EqualTo("EBoolean"));
                 Assert.That(this.factory.EBooleanObject?.Name, Is.EqualTo("EBooleanObject"));
                 Assert.That(this.factory.EByte?.Name, Is.EqualTo("EByte"));
                 Assert.That(this.factory.EByteArray?.Name, Is.EqualTo("EByteArray"));
