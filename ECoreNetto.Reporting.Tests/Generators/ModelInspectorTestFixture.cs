@@ -142,8 +142,9 @@ namespace ECoreNetto.Tools.Tests.Generators
         {
             Assert.Multiple(() =>
             {
-                Assert.That(() => this.modelInspector.GenerateCombinedReport(null!, reportFileInfo), Throws.ArgumentNullException);
-                Assert.That(() => this.modelInspector.GenerateCombinedReport(modelFileInfo, null!), Throws.ArgumentNullException);
+                Assert.That(() => this.modelInspector.GenerateCombinedReport((FileInfo)null!, reportFileInfo), Throws.ArgumentNullException);
+                Assert.That(() => this.modelInspector.GenerateCombinedReport(modelFileInfo, (FileInfo)null!), Throws.ArgumentNullException);
+                Assert.That(() => this.modelInspector.GenerateCombinedReport((DirectoryInfo)null!, reportFileInfo), Throws.ArgumentNullException);
             });
         }
 

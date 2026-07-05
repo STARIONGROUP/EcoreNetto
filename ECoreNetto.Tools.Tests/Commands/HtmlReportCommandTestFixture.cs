@@ -113,6 +113,46 @@ namespace ECoreNetto.Tools.Tests.Commands
         }
 
         [Test]
+        public async Task Verify_that_InvokeAsync_generates_a_combined_report_for_a_directory()
+        {
+            var args = new[]
+            {
+                "html-report",
+                "--no-logo",
+                "--input-directory", Path.Combine(TestContext.CurrentContext.TestDirectory, "Data"),
+                "--output-report", Path.Combine(TestContext.CurrentContext.TestDirectory, "html-report.directory.html")
+            };
+
+            var parseResult = this.rootCommand.Parse(args);
+
+            var result = await this.handler.InvokeAsync(parseResult, this.cts.Token);
+
+            this.htmlReportGenerator.Verify(x => x.GenerateCombinedReport(It.IsAny<DirectoryInfo>(), It.IsAny<FileInfo>()), Times.Once);
+            this.htmlReportGenerator.Verify(x => x.GenerateReport(It.IsAny<FileInfo>(), It.IsAny<FileInfo>()), Times.Never);
+            this.htmlReportGenerator.Verify(x => x.GenerateCombinedReport(It.IsAny<FileInfo>(), It.IsAny<FileInfo>()), Times.Never);
+
+            Assert.That(result, Is.EqualTo(0), "InvokeAsync should return 0 upon success.");
+        }
+
+        [Test]
+        public async Task Verify_that_when_the_input_directory_does_not_exist_returns_not_0()
+        {
+            var args = new[]
+            {
+                "html-report",
+                "--no-logo",
+                "--input-directory", Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "does-not-exist"),
+                "--output-report", Path.Combine(TestContext.CurrentContext.TestDirectory, "html-report.directory.html")
+            };
+
+            var parseResult = this.rootCommand.Parse(args);
+
+            var result = await this.handler.InvokeAsync(parseResult, this.cts.Token);
+
+            Assert.That(result, Is.EqualTo(-1), "InvokeAsync should return -1 upon failure.");
+        }
+
+        [Test]
         public async Task Verify_that_when_the_input_ecore_model_does_not_exists_returns_not_0()
         {
             var args = new[]

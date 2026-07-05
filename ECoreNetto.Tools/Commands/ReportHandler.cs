@@ -70,6 +70,12 @@ namespace ECoreNetto.Tools.Commands
         private FileInfo inputModel = null!;
 
         /// <summary>
+        /// The optional <see cref="DirectoryInfo"/> of a directory of <c>.ecore</c> models; when set a single
+        /// combined report is generated for every model in the directory.
+        /// </summary>
+        private DirectoryInfo? inputDirectory;
+
+        /// <summary>
         /// The <see cref="FileInfo"/> where the inspection report is to be generated
         /// </summary>
         private FileInfo outputReport = null!;
@@ -137,7 +143,11 @@ namespace ECoreNetto.Tools.Commands
 
                         await Task.Delay(this.StatusDelay, cancellationToken);
 
-                        if (this.includeReferencedModels)
+                        if (this.inputDirectory != null)
+                        {
+                            this.ReportGenerator.GenerateCombinedReport(this.inputDirectory, this.outputReport);
+                        }
+                        else if (this.includeReferencedModels)
                         {
                             this.ReportGenerator.GenerateCombinedReport(this.inputModel, this.outputReport);
                         }
@@ -195,6 +205,7 @@ namespace ECoreNetto.Tools.Commands
             this.autoOpenReport = parseResult.GetValue<bool>("--auto-open-report");
             this.outputReport = parseResult.GetValue<FileInfo>("--output-report")!;
             this.includeReferencedModels = parseResult.GetValue<bool>("--include-referenced-models");
+            this.inputDirectory = parseResult.GetValue<DirectoryInfo?>("--input-directory");
         }
 
         /// <summary>
@@ -208,6 +219,20 @@ namespace ECoreNetto.Tools.Commands
             if (!this.noLogo)
             {
                 AnsiConsole.Markup($"[blue]{ResourceLoader.QueryLogo()}[/]");
+            }
+
+            if (this.inputDirectory != null)
+            {
+                if (!this.inputDirectory.Exists)
+                {
+                    AnsiConsole.WriteLine("");
+                    AnsiConsole.MarkupLine($"[red]The specified input directory does not exist[/]");
+                    AnsiConsole.MarkupLine($"[purple]{this.inputDirectory.FullName}[/]");
+                    AnsiConsole.WriteLine("");
+                    return false;
+                }
+
+                return true;
             }
 
             if (!this.inputModel.Exists)

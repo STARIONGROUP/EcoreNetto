@@ -50,17 +50,5 @@ namespace ECoreNetto.Reporting.Generators
         /// the content of a Markdown report in a string
         /// </returns>
         public string GenerateCombinedReport(DirectoryInfo inputDirectory);
-
-        /// <summary>
-        /// Generates a single combined Markdown report of every <c>.ecore</c> model in the provided directory
-        /// and writes it to the provided <paramref name="outputPath"/>.
-        /// </summary>
-        /// <param name="inputDirectory">
-        /// the directory that contains the <c>.ecore</c> models of which the combined report is to be generated.
-        /// </param>
-        /// <param name="outputPath">
-        /// the path, including filename, where the output is to be generated.
-        /// </param>
-        public void GenerateCombinedReport(DirectoryInfo inputDirectory, FileInfo outputPath);
     }
 }

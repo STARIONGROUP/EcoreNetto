@@ -47,11 +47,21 @@ namespace ECoreNetto.Tools.Commands
             {
                 Description = "The path to the ecore file",
                 DefaultValueFactory = parseResult => new FileInfo("model.ecore"),
-                Required = true
+                Required = false
             };
 
             inputModelFileOption.Aliases.Add("-i");
             this.Add(inputModelFileOption);
+
+            var inputDirectoryOption = new Option<DirectoryInfo?>(name: "--input-directory")
+            {
+                Description = "The path to a directory of .ecore files; produces a single combined report for every model in the directory",
+                DefaultValueFactory = parseResult => null,
+                Required = false
+            };
+
+            inputDirectoryOption.Aliases.Add("-d");
+            this.Add(inputDirectoryOption);
 
             var autoOpenReportOption = new Option<bool>(name: "--auto-open-report")
             {

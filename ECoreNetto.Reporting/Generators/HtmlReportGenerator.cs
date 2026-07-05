@@ -286,10 +286,26 @@ namespace ECoreNetto.Reporting.Generators
         /// <param name="outputPath">
         /// the path, including filename, where the output is to be generated.
         /// </param>
-        /// <param name="customHtml">
-        /// optional custom HTML that is injected into the report at the custom-HTML injection point.
+        public void GenerateCombinedReport(DirectoryInfo inputDirectory, FileInfo outputPath)
+        {
+            this.GenerateCombinedReport(inputDirectory, outputPath, string.Empty);
+        }
+
+        /// <summary>
+        /// Generates a single combined HTML report of every <c>.ecore</c> model in the provided directory and
+        /// writes it to the provided <paramref name="outputPath"/>.
+        /// </summary>
+        /// <param name="inputDirectory">
+        /// the directory that contains the <c>.ecore</c> models of which the combined report is to be generated.
         /// </param>
-        public void GenerateCombinedReport(DirectoryInfo inputDirectory, FileInfo outputPath, string customHtml = "")
+        /// <param name="outputPath">
+        /// the path, including filename, where the output is to be generated.
+        /// </param>
+        /// <param name="customHtml">
+        /// custom HTML that is injected into the report at the custom-HTML injection point; pass
+        /// <see cref="string.Empty"/> when none is required.
+        /// </param>
+        public void GenerateCombinedReport(DirectoryInfo inputDirectory, FileInfo outputPath, string customHtml)
         {
             if (inputDirectory == null)
             {

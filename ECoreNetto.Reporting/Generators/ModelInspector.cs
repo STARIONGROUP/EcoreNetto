@@ -534,6 +534,54 @@ namespace ECoreNetto.Reporting.Generators
         }
 
         /// <summary>
+        /// Generates a single combined inspection report of every <c>.ecore</c> model in the provided directory.
+        /// </summary>
+        /// <param name="inputDirectory">
+        /// the directory that contains the <c>.ecore</c> models of which the combined report is to be generated.
+        /// </param>
+        /// <param name="outputPath">
+        /// the path, including filename, where the output is to be generated.
+        /// </param>
+        public void GenerateCombinedReport(DirectoryInfo inputDirectory, FileInfo outputPath)
+        {
+            if (inputDirectory == null)
+            {
+                throw new ArgumentNullException(nameof(inputDirectory));
+            }
+
+            if (outputPath == null)
+            {
+                throw new ArgumentNullException(nameof(outputPath));
+            }
+
+            var sw = Stopwatch.StartNew();
+
+            this.logger.LogInformation("Start Generating combined Inspection Report for directory {0}", inputDirectory.FullName);
+
+            var rootPackages = this.LoadRootPackages(inputDirectory);
+
+            var result = new StringBuilder();
+
+            result.Append(this.ReportHeader());
+
+            foreach (var rootPackage in rootPackages)
+            {
+                result.Append(this.Inspect(rootPackage, true));
+                result.Append(this.AnalyzeDocumentation(rootPackage, true));
+            }
+
+            if (outputPath.Exists)
+            {
+                outputPath.Delete();
+            }
+
+            using var writer = outputPath.CreateText();
+            writer.Write(result);
+
+            this.logger.LogInformation("Generated combined inspection report in {0} [ms]", sw.ElapsedMilliseconds);
+        }
+
+        /// <summary>
         /// Generates the report header that is the first part of the text report
         /// </summary>
         /// <returns>

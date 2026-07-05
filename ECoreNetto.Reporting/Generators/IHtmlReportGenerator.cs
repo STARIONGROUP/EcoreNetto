@@ -86,8 +86,9 @@ namespace ECoreNetto.Reporting.Generators
         /// the path, including filename, where the output is to be generated.
         /// </param>
         /// <param name="customHtml">
-        /// optional custom HTML that is injected into the report at the custom-HTML injection point.
+        /// custom HTML that is injected into the report at the custom-HTML injection point; pass
+        /// <see cref="string.Empty"/> when none is required.
         /// </param>
-        public void GenerateCombinedReport(DirectoryInfo inputDirectory, FileInfo outputPath, string customHtml = "");
+        public void GenerateCombinedReport(DirectoryInfo inputDirectory, FileInfo outputPath, string customHtml);
     }
 }
