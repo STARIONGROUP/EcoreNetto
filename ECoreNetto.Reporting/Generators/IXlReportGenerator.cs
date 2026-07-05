@@ -11,7 +11,7 @@ namespace ECoreNetto.Reporting.Generators
 {
     /// <summary>
     /// The purpose of the <see cref="IXlReportGenerator"/> is to generate reports of an
-    /// Ecore Model
+    /// Ecore Model. The combined (multi-file) report members are inherited from <see cref="IReportGenerator"/>.
     /// </summary>
     public interface IXlReportGenerator : IReportGenerator
     {

@@ -103,7 +103,23 @@ namespace ECoreNetto.Reporting.Generators
         /// </returns>
         protected static HandlebarsPayload CreateHandlebarsPayload(EPackage rootPackage)
         {
-            var packages = rootPackage.QueryPackages();
+            return CreateHandlebarsPayload(new[] { rootPackage });
+        }
+
+        /// <summary>
+        /// Creates a <see cref="HandlebarsPayload"/> that aggregates the classifiers of all the provided root
+        /// <see cref="EPackage"/>s, so that a single report can document a multi-file metamodel.
+        /// </summary>
+        /// <param name="rootPackages">
+        /// the subject root <see cref="EPackage"/>s; the first is used as the primary package for the report
+        /// title and metadata.
+        /// </param>
+        /// <returns>
+        /// an instance of <see cref="HandlebarsPayload"/>
+        /// </returns>
+        protected static HandlebarsPayload CreateHandlebarsPayload(IReadOnlyList<EPackage> rootPackages)
+        {
+            var packages = rootPackages.SelectMany(rootPackage => rootPackage.QueryPackages());
 
             var enums = new List<EEnum>();
             var dataTypes = new List<EDataType>();
@@ -130,7 +146,7 @@ namespace ECoreNetto.Reporting.Generators
             var orderedClasses = eClasses.OrderBy(x => x.Name);
             var orderedInterfaces = eClasses.Where(x => x.Interface).OrderBy(x => x.Name);
 
-            var payload = new HandlebarsPayload(rootPackage, orderedEnums, orderedPrimitiveTypes, orderedDataTypes, orderedClasses, orderedInterfaces);
+            var payload = new HandlebarsPayload(rootPackages[0], orderedEnums, orderedPrimitiveTypes, orderedDataTypes, orderedClasses, orderedInterfaces);
 
             return payload;
         }

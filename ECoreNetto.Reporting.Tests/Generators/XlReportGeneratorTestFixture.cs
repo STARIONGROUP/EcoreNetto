@@ -84,6 +84,20 @@ namespace ECoreNetto.Reporting.Tests.Generators
         }
 
         [Test]
+        public void Verify_that_combined_excel_report_methods_throw_when_arguments_are_null()
+        {
+            var validDirectory = new DirectoryInfo(TestContext.CurrentContext.TestDirectory);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(() => this.generator.GenerateCombinedReport((FileInfo)null!, this.reportFileInfo), Throws.ArgumentNullException);
+                Assert.That(() => this.generator.GenerateCombinedReport(this.modelFileInfo, (FileInfo)null!), Throws.ArgumentNullException);
+                Assert.That(() => this.generator.GenerateCombinedReport((DirectoryInfo)null!, this.reportFileInfo), Throws.ArgumentNullException);
+                Assert.That(() => this.generator.GenerateCombinedReport(validDirectory, null!), Throws.ArgumentNullException);
+            });
+        }
+
+        [Test]
         public void Verify_that_IsValidReportExtension_returns_expected_results()
         {
             Assert.Multiple(() =>

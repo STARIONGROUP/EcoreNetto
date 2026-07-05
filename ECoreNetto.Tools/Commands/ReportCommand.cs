@@ -47,11 +47,21 @@ namespace ECoreNetto.Tools.Commands
             {
                 Description = "The path to the ecore file",
                 DefaultValueFactory = parseResult => new FileInfo("model.ecore"),
-                Required = true
+                Required = false
             };
 
             inputModelFileOption.Aliases.Add("-i");
             this.Add(inputModelFileOption);
+
+            var inputDirectoryOption = new Option<DirectoryInfo?>(name: "--input-directory")
+            {
+                Description = "The path to a directory of .ecore files; produces a single combined report for every model in the directory",
+                DefaultValueFactory = parseResult => null,
+                Required = false
+            };
+
+            inputDirectoryOption.Aliases.Add("-d");
+            this.Add(inputDirectoryOption);
 
             var autoOpenReportOption = new Option<bool>(name: "--auto-open-report")
             {
@@ -62,6 +72,16 @@ namespace ECoreNetto.Tools.Commands
 
             autoOpenReportOption.Aliases.Add("-a");
             this.Add(autoOpenReportOption);
+
+            var includeReferencedModelsOption = new Option<bool>(name: "--include-referenced-models")
+            {
+                Description = "Produce a single combined report that also includes every cross-referenced .ecore model reachable from the input model",
+                DefaultValueFactory = parseResult => false,
+                Required = false
+            };
+
+            includeReferencedModelsOption.Aliases.Add("-r");
+            this.Add(includeReferencedModelsOption);
         }
     }
 }

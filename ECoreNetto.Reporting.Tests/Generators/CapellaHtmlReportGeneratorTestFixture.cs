@@ -89,6 +89,49 @@ namespace ECoreNetto.Tools.Tests.Generators
             });
         }
 
+        [Test]
+        public void Verify_that_a_single_combined_html_report_is_generated_for_the_whole_capella_metamodel()
+        {
+            var inputDirectory = new DirectoryInfo(CapellaDirectory);
+
+            var reportFileInfo = new FileInfo(Path.Combine(
+                TestContext.CurrentContext.TestDirectory,
+                "html-report.capella.combined.html"));
+
+            Assert.That(() => this.htmlReportGenerator.GenerateCombinedReport(inputDirectory, reportFileInfo), Throws.Nothing);
+
+            reportFileInfo.Refresh();
+            Assert.That(reportFileInfo.Exists, Is.True);
+
+            var html = File.ReadAllText(reportFileInfo.FullName);
+
+            Assert.Multiple(() =>
+            {
+                // a single document must contain classifiers that originate from several different .ecore files
+                Assert.That(html, Does.Contain("CapellaElement"));       // CapellaCore.ecore
+                Assert.That(html, Does.Contain("LogicalArchitecture"));  // LogicalArchitecture.ecore
+                Assert.That(html, Does.Contain("SystemAnalysis"));       // ContextArchitecture.ecore
+                Assert.That(html, Does.Contain("PhysicalArchitecture")); // PhysicalArchitecture.ecore
+                Assert.That(html, Does.Contain("OperationalAnalysis"));  // OperationalAnalysis.ecore
+            });
+        }
+
+        [Test]
+        public void Verify_that_a_combined_report_from_an_entry_file_includes_reachable_models()
+        {
+            // LogicalArchitecture.ecore references classifiers that live in other files (e.g. its super type
+            // ComponentArchitecture lives in CompositeStructure.ecore); the combined report must include them.
+            var modelFileInfo = new FileInfo(Path.Combine(CapellaDirectory, "LogicalArchitecture.ecore"));
+
+            var html = this.htmlReportGenerator.GenerateCombinedReport(modelFileInfo);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(html, Does.Contain("LogicalArchitecture"));
+                Assert.That(html, Does.Contain("ComponentArchitecture"));
+            });
+        }
+
         /// <summary>
         /// Enumerates the Capella <c>.ecore</c> file names available in the test output directory.
         /// </summary>

@@ -63,6 +63,22 @@ namespace ECoreNetto.Tools.Tests.Generators
         }
 
         [Test]
+        public void Verify_that_combined_markdown_report_methods_throw_when_arguments_are_null()
+        {
+            var validModel = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "recipe.ecore"));
+            var validOutput = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "markdown-report.null.md"));
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(() => this.markdownReportGenerator.GenerateCombinedReport((FileInfo)null!), Throws.ArgumentNullException);
+                Assert.That(() => this.markdownReportGenerator.GenerateCombinedReport((DirectoryInfo)null!), Throws.ArgumentNullException);
+                Assert.That(() => this.markdownReportGenerator.GenerateCombinedReport((FileInfo)null!, validOutput), Throws.ArgumentNullException);
+                Assert.That(() => this.markdownReportGenerator.GenerateCombinedReport(validModel, null!), Throws.ArgumentNullException);
+                Assert.That(() => this.markdownReportGenerator.GenerateCombinedReport(new DirectoryInfo(TestContext.CurrentContext.TestDirectory), null!), Throws.ArgumentNullException);
+            });
+        }
+
+        [Test]
         public void Verify_that_the_generated_markdown_contains_the_expected_content()
         {
             var modelFileInfo = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "recipe.ecore"));

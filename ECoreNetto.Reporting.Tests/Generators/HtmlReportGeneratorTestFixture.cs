@@ -195,5 +195,24 @@ namespace ECoreNetto.Tools.Tests.Generators
         {
             Assert.That(() => this.htmlReportGenerator.IsValidReportExtension(null!), Throws.ArgumentNullException);
         }
+
+        [Test]
+        public void Verify_that_combined_report_methods_throw_when_arguments_are_null()
+        {
+            FileInfo? modelFileInfo = null;
+            DirectoryInfo? directory = null;
+            var validModel = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "recipe.ecore"));
+            var validOutput = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "html-report.combined-null.html"));
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(() => this.htmlReportGenerator.GenerateCombinedReport(modelFileInfo!), Throws.ArgumentNullException);
+                Assert.That(() => this.htmlReportGenerator.GenerateCombinedReport(directory!), Throws.ArgumentNullException);
+                Assert.That(() => this.htmlReportGenerator.GenerateCombinedReport(modelFileInfo!, validOutput), Throws.ArgumentNullException);
+                Assert.That(() => this.htmlReportGenerator.GenerateCombinedReport(validModel, (FileInfo)null!), Throws.ArgumentNullException);
+                Assert.That(() => this.htmlReportGenerator.GenerateCombinedReport(directory!, validOutput), Throws.ArgumentNullException);
+                Assert.That(() => this.htmlReportGenerator.GenerateCombinedReport(new DirectoryInfo(TestContext.CurrentContext.TestDirectory), (FileInfo)null!), Throws.ArgumentNullException);
+            });
+        }
     }
 }

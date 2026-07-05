@@ -126,6 +126,29 @@ namespace ECoreNetto.Tools.Tests.Generators
         }
 
         [Test]
+        public void Verify_that_a_combined_inspection_report_is_generated_for_a_multi_file_metamodel()
+        {
+            var capellaEntry = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "capella", "LogicalArchitecture.ecore"));
+            var output = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "inspection.capella.combined.txt"));
+
+            Assert.That(() => this.modelInspector.GenerateCombinedReport(capellaEntry, output), Throws.Nothing);
+
+            output.Refresh();
+            Assert.That(output.Exists, Is.True);
+        }
+
+        [Test]
+        public void Verify_that_GenerateCombinedReport_throws_when_arguments_are_null()
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(() => this.modelInspector.GenerateCombinedReport((FileInfo)null!, reportFileInfo), Throws.ArgumentNullException);
+                Assert.That(() => this.modelInspector.GenerateCombinedReport(modelFileInfo, (FileInfo)null!), Throws.ArgumentNullException);
+                Assert.That(() => this.modelInspector.GenerateCombinedReport((DirectoryInfo)null!, reportFileInfo), Throws.ArgumentNullException);
+            });
+        }
+
+        [Test]
         public void Verify_that_IsValidExcelReportExtension_returns_false_when_invalid()
         {
             var inValidFileName = new FileInfo("output-report.invalid");

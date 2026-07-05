@@ -10,6 +10,7 @@
 namespace ECoreNetto.Reporting.Generators
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
 
@@ -65,15 +66,66 @@ namespace ECoreNetto.Reporting.Generators
                 throw new ArgumentNullException(nameof(modelPath));
             }
 
+            return this.GenerateReport(new[] { this.LoadRootPackage(modelPath) });
+        }
+
+        /// <summary>
+        /// Generates a single combined Markdown report of the entry model together with every cross-referenced
+        /// model that is reachable from it.
+        /// </summary>
+        /// <param name="modelPath">
+        /// the path to the entry Ecore model of which the combined report is to be generated.
+        /// </param>
+        /// <returns>
+        /// the content of a Markdown report in a string
+        /// </returns>
+        public string GenerateCombinedReport(FileInfo modelPath)
+        {
+            if (modelPath == null)
+            {
+                throw new ArgumentNullException(nameof(modelPath));
+            }
+
+            return this.GenerateReport(this.LoadRootPackages(modelPath));
+        }
+
+        /// <summary>
+        /// Generates a single combined Markdown report of every <c>.ecore</c> model in the provided directory.
+        /// </summary>
+        /// <param name="inputDirectory">
+        /// the directory that contains the <c>.ecore</c> models of which the combined report is to be generated.
+        /// </param>
+        /// <returns>
+        /// the content of a Markdown report in a string
+        /// </returns>
+        public string GenerateCombinedReport(DirectoryInfo inputDirectory)
+        {
+            if (inputDirectory == null)
+            {
+                throw new ArgumentNullException(nameof(inputDirectory));
+            }
+
+            return this.GenerateReport(this.LoadRootPackages(inputDirectory));
+        }
+
+        /// <summary>
+        /// Generates the Markdown report for the provided root <see cref="EPackage"/>s.
+        /// </summary>
+        /// <param name="rootPackages">
+        /// the root <see cref="EPackage"/>s whose classifiers are documented in the report.
+        /// </param>
+        /// <returns>
+        /// the content of a Markdown report in a string
+        /// </returns>
+        private string GenerateReport(IReadOnlyList<EPackage> rootPackages)
+        {
             var sw = Stopwatch.StartNew();
 
             this.logger.LogInformation("Start Generating Markdown report");
 
             var template = this.Templates["ecore-to-markdown-docs"];
 
-            var rootPackage = this.LoadRootPackage(modelPath);
-
-            var payload = CreateHandlebarsPayload(rootPackage);
+            var payload = CreateHandlebarsPayload(rootPackages);
 
             var generatedMarkdown = template(payload);
 
@@ -103,9 +155,71 @@ namespace ECoreNetto.Reporting.Generators
                 throw new ArgumentNullException(nameof(outputPath));
             }
 
-            var sw = Stopwatch.StartNew();
+            this.WriteToFile(this.GenerateReport(modelPath), outputPath);
+        }
 
-            var generatedMarkdown = this.GenerateReport(modelPath) ;
+        /// <summary>
+        /// Generates a single combined Markdown report of the entry model together with every cross-referenced
+        /// model that is reachable from it, and writes it to the provided <paramref name="outputPath"/>.
+        /// </summary>
+        /// <param name="modelPath">
+        /// the path to the entry Ecore model of which the combined report is to be generated.
+        /// </param>
+        /// <param name="outputPath">
+        /// the path, including filename, where the output is to be generated.
+        /// </param>
+        public void GenerateCombinedReport(FileInfo modelPath, FileInfo outputPath)
+        {
+            if (modelPath == null)
+            {
+                throw new ArgumentNullException(nameof(modelPath));
+            }
+
+            if (outputPath == null)
+            {
+                throw new ArgumentNullException(nameof(outputPath));
+            }
+
+            this.WriteToFile(this.GenerateCombinedReport(modelPath), outputPath);
+        }
+
+        /// <summary>
+        /// Generates a single combined Markdown report of every <c>.ecore</c> model in the provided directory
+        /// and writes it to the provided <paramref name="outputPath"/>.
+        /// </summary>
+        /// <param name="inputDirectory">
+        /// the directory that contains the <c>.ecore</c> models of which the combined report is to be generated.
+        /// </param>
+        /// <param name="outputPath">
+        /// the path, including filename, where the output is to be generated.
+        /// </param>
+        public void GenerateCombinedReport(DirectoryInfo inputDirectory, FileInfo outputPath)
+        {
+            if (inputDirectory == null)
+            {
+                throw new ArgumentNullException(nameof(inputDirectory));
+            }
+
+            if (outputPath == null)
+            {
+                throw new ArgumentNullException(nameof(outputPath));
+            }
+
+            this.WriteToFile(this.GenerateCombinedReport(inputDirectory), outputPath);
+        }
+
+        /// <summary>
+        /// Writes the generated Markdown to the provided <paramref name="outputPath"/>, overwriting an existing file.
+        /// </summary>
+        /// <param name="generatedMarkdown">
+        /// the generated Markdown content.
+        /// </param>
+        /// <param name="outputPath">
+        /// the path, including filename, where the output is to be written.
+        /// </param>
+        private void WriteToFile(string generatedMarkdown, FileInfo outputPath)
+        {
+            var sw = Stopwatch.StartNew();
 
             if (outputPath.Exists)
             {
@@ -117,7 +231,7 @@ namespace ECoreNetto.Reporting.Generators
 
             this.logger.LogInformation("Generated Markdown report in {ElapsedTime} [ms]", sw.ElapsedMilliseconds);
         }
-        
+
         /// <summary>
         /// Verifies whether the extension of the <paramref name="outputPath"/> is valid or not
         /// </summary>
