@@ -91,7 +91,7 @@ These differ from default .NET conventions — match them:
 - `using` directives go **inside** the namespace.
 - Use `var` unless the inferred type is non-obvious; use C# type aliases (`int`, `string`).
 - Long, descriptive names; no Hungarian notation. Always brace `if`/`else`/`using` blocks even when single-line.
-- Every type and member carries an XML-doc comment with the standard Apache-2.0 copyright header block (`Copyright 2017-{year} Starion Group S.A.`). Copy the header from any existing file.
+- Every type and member carries an XML-doc comment. Every file starts with the **short-form** SPDX copyright header (`Copyright 2017-{year} Starion Group S.A.` followed by `SPDX-License-Identifier: Apache-2.0`), not the verbose Apache license text. Copy the header from any existing file.
 
 ## Git workflow
 

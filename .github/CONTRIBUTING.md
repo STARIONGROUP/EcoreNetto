@@ -133,7 +133,19 @@ The SonarCloud check is required and must pass before a pull request can be merg
 - Put `using` statements inside namespace.
 - Pay attention to whitespace and extra blank lines
 - Absolutely **no** regions
+- Start every `.cs` file with the **short-form** copyright header shown below. Use the SPDX identifier rather than embedding the full Apache License text, keep the `file="..."` attribute equal to the actual file name, and set the copyright range to the current year:
 
-> If you use **ReSharper** or **Rider**, the repository ships an `EcoreNetto.sln.DotSettings` file that is applied automatically when you open the solution. It covers many of the guidelines above — such as `this.` qualification, placing `using` statements inside the namespace, naming rules, and the Apache copyright file header. There may be some style guidelines which are not covered by the file, so please pay attention to the style of existing code.
+```csharp
+// ------------------------------------------------------------------------------------------------
+// <copyright file="MyClass.cs" company="Starion Group S.A.">
+//
+//   Copyright 2017-2026 Starion Group S.A.
+//   SPDX-License-Identifier: Apache-2.0
+//
+// </copyright>
+// ------------------------------------------------------------------------------------------------
+```
+
+> If you use **ReSharper** or **Rider**, the repository ships an `EcoreNetto.sln.DotSettings` file that is applied automatically when you open the solution. It covers many of the guidelines above — such as `this.` qualification, placing `using` statements inside the namespace, naming rules, and the short-form SPDX copyright file header. There may be some style guidelines which are not covered by the file, so please pay attention to the style of existing code.
 >
 > If you do not use ReSharper or Rider, note that the repository does not currently provide an `.editorconfig`; please follow the guidelines above manually and match the style of the surrounding code.
