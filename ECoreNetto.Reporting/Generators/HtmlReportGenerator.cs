@@ -10,8 +10,13 @@
 namespace ECoreNetto.Reporting.Generators
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
+    using System.Linq;
+
+    using ECoreNetto.Extensions;
+    using ECoreNetto.Reporting.Drawing;
 
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Logging.Abstractions;
@@ -28,14 +33,44 @@ namespace ECoreNetto.Reporting.Generators
         private readonly ILogger<HtmlReportGenerator> logger;
 
         /// <summary>
+        /// The <see cref="IInheritanceDiagramRenderer"/> used to render the inheritance diagrams
+        /// </summary>
+        private readonly IInheritanceDiagramRenderer inheritanceDiagramRenderer;
+
+        /// <summary>
+        /// The <see cref="IAssociationDiagramRenderer"/> used to render the per-class association diagrams
+        /// </summary>
+        private readonly IAssociationDiagramRenderer associationDiagramRenderer;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="HtmlReportGenerator"/> class.
         /// </summary>
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
-        public HtmlReportGenerator(ILoggerFactory? loggerFactory = null) : base(loggerFactory)
+        public HtmlReportGenerator(ILoggerFactory? loggerFactory = null)
+            : this(null, null, loggerFactory)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HtmlReportGenerator"/> class.
+        /// </summary>
+        /// <param name="inheritanceDiagramRenderer">
+        /// The (injected) <see cref="IInheritanceDiagramRenderer"/>; a default instance is used when null.
+        /// </param>
+        /// <param name="associationDiagramRenderer">
+        /// The (injected) <see cref="IAssociationDiagramRenderer"/>; a default instance is used when null.
+        /// </param>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </param>
+        public HtmlReportGenerator(IInheritanceDiagramRenderer? inheritanceDiagramRenderer, IAssociationDiagramRenderer? associationDiagramRenderer, ILoggerFactory? loggerFactory = null) : base(loggerFactory)
         {
             this.logger = loggerFactory == null ? NullLogger<HtmlReportGenerator>.Instance : loggerFactory.CreateLogger<HtmlReportGenerator>();
+
+            this.inheritanceDiagramRenderer = inheritanceDiagramRenderer ?? new InheritanceDiagramRenderer(loggerFactory);
+            this.associationDiagramRenderer = associationDiagramRenderer ?? new AssociationDiagramRenderer(loggerFactory);
         }
 
         /// <summary>
@@ -53,12 +88,15 @@ namespace ECoreNetto.Reporting.Generators
         /// Generates a table that contains all classes, attributes and their documentation
         /// </summary>
         /// <param name="modelPath">
-        /// /// the path to the Ecore model of which the report is to be generated.
+        /// the path to the Ecore model of which the report is to be generated.
+        /// </param>
+        /// <param name="customHtml">
+        /// optional custom HTML that is injected into the report at the custom-HTML injection point.
         /// </param>
         /// <returns>
         /// the content of an HTML report in a string
         /// </returns>
-        public string GenerateReport(FileInfo modelPath)
+        public string GenerateReport(FileInfo modelPath, string customHtml = "")
         {
             if (modelPath == null)
             {
@@ -75,7 +113,36 @@ namespace ECoreNetto.Reporting.Generators
 
             var payload = CreateHandlebarsPayload(rootPackage);
 
-            var generatedHtml = template(payload);
+            var inheritanceDiagramSvg = this.inheritanceDiagramRenderer.SvgRender(payload);
+
+            var classInheritanceDiagrams = new Dictionary<string, string>();
+            var classAssociationDiagrams = new Dictionary<string, string>();
+
+            foreach (var eClass in payload.Classes)
+            {
+                var anchor = eClass.QueryAnchorId();
+
+                // a per-class inheritance tree is only meaningful when the class participates in a hierarchy
+                if (eClass.ESuperTypes.Any() || eClass.QuerySpecializations(payload.Classes).Any())
+                {
+                    classInheritanceDiagrams[anchor] = this.inheritanceDiagramRenderer.SvgRenderForClass(eClass, payload);
+                }
+
+                var associationSvg = this.associationDiagramRenderer.SvgRenderForClass(eClass, payload);
+                if (!string.IsNullOrEmpty(associationSvg))
+                {
+                    classAssociationDiagrams[anchor] = associationSvg;
+                }
+            }
+
+            var generatedHtml = template(new
+            {
+                Payload = payload,
+                InheritanceDiagramSvg = inheritanceDiagramSvg,
+                ClassInheritanceDiagrams = classInheritanceDiagrams,
+                ClassAssociationDiagrams = classAssociationDiagrams,
+                CustomHtml = customHtml
+            });
 
             this.logger.LogInformation("Generated HTML report in {ElapsedTime} [ms]", sw.ElapsedMilliseconds);
 
@@ -93,6 +160,24 @@ namespace ECoreNetto.Reporting.Generators
         /// </param>
         public void GenerateReport(FileInfo modelPath, FileInfo outputPath)
         {
+            this.GenerateReport(modelPath, outputPath, string.Empty);
+        }
+
+        /// <summary>
+        /// Generates an HTML report and writes it to the provided <paramref name="outputPath"/>.
+        /// </summary>
+        /// <param name="modelPath">
+        /// the path to the Ecore model of which the report is to be generated.
+        /// </param>
+        /// <param name="outputPath">
+        /// the path, including filename, where the output is to be generated.
+        /// </param>
+        /// <param name="customHtml">
+        /// custom HTML that is injected into the report at the custom-HTML injection point; pass
+        /// <see cref="string.Empty"/> when none is required.
+        /// </param>
+        public void GenerateReport(FileInfo modelPath, FileInfo outputPath, string customHtml)
+        {
             if (modelPath == null)
             {
                 throw new ArgumentNullException(nameof(modelPath));
@@ -105,7 +190,7 @@ namespace ECoreNetto.Reporting.Generators
 
             var sw = Stopwatch.StartNew();
 
-            var generatedHtml = this.GenerateReport(modelPath);
+            var generatedHtml = this.GenerateReport(modelPath, customHtml);
 
             if (outputPath.Exists)
             {
