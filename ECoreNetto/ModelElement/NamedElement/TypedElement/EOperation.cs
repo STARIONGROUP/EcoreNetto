@@ -59,6 +59,8 @@ namespace ECoreNetto
 
             this.EParameters = new ContainerList<EParameter>(this);
             this.EExceptions = new List<EClassifier>();
+            this.ETypeParameters = new ContainerList<ETypeParameter>(this);
+            this.EGenericExceptions = new ContainerList<EGenericType>(this);
         }
 
         /// <summary>
@@ -70,6 +72,21 @@ namespace ECoreNetto
         /// Gets the exceptions that may be thrown by this <see cref="EOperation"/>
         /// </summary>
         public List<EClassifier> EExceptions { get; private set; }
+
+        /// <summary>
+        /// Gets the type parameters (type variables) declared by this <see cref="EOperation"/>.
+        /// </summary>
+        public ContainerList<ETypeParameter> ETypeParameters { get; private set; }
+
+        /// <summary>
+        /// Gets the generic exceptions that may be thrown by this <see cref="EOperation"/> (exceptions
+        /// expressed generically).
+        /// </summary>
+        /// <remarks>
+        /// The raw <see cref="EClassifier"/> of each generic exception is also added to
+        /// <see cref="EExceptions"/>, so the erased exception view remains complete.
+        /// </remarks>
+        public ContainerList<EGenericType> EGenericExceptions { get; private set; }
 
         /// <summary>
         /// Gets the containing <see cref="EClass"/>
@@ -88,6 +105,36 @@ namespace ECoreNetto
         public bool IsOverrideOf(EOperation someOperation)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Read the attributes of the current node
+        /// </summary>
+        internal override void SetProperties()
+        {
+            this.logger.LogTrace("setting properties of EOperation {0}:{1}", this.Identifier, this.Name);
+
+            base.SetProperties();
+
+            if (this.Attributes.TryGetValue("eExceptions", out var output))
+            {
+                var exceptionNames = output.Split(' ');
+                foreach (var exceptionName in exceptionNames)
+                {
+                    this.EExceptions.Add(this.EResource.GetEObject<EClassifier>(exceptionName));
+                }
+            }
+
+            foreach (var genericException in this.EGenericExceptions)
+            {
+                genericException.SetProperties();
+
+                // keep the erased exception view complete: add the raw classifier of each generic exception
+                if (genericException.EClassifier != null && !this.EExceptions.Contains(genericException.EClassifier))
+                {
+                    this.EExceptions.Add(genericException.EClassifier);
+                }
+            }
         }
 
         /// <summary>
@@ -123,6 +170,20 @@ namespace ECoreNetto
                 var parameter = new EParameter(this.EResource, this.loggerFactory);
                 this.EParameters.Add(parameter);
                 parameter.ReadXml(reader);
+            }
+
+            if (reader.Name == "eTypeParameters" && reader.NodeType == XmlNodeType.Element)
+            {
+                var typeParameter = new ETypeParameter(this.EResource, this.loggerFactory);
+                this.ETypeParameters.Add(typeParameter);
+                typeParameter.ReadXml(reader);
+            }
+
+            if (reader.Name == "eGenericExceptions" && reader.NodeType == XmlNodeType.Element)
+            {
+                var genericException = new EGenericType(this.EResource, this.loggerFactory);
+                this.EGenericExceptions.Add(genericException);
+                genericException.ReadXml(reader);
             }
         }
     }

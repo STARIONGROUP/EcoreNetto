@@ -20,7 +20,9 @@
 
 namespace ECoreNetto
 {
+    using System;
     using System.Collections.Generic;
+    using System.Xml;
 
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Logging.Abstractions;
@@ -30,6 +32,11 @@ namespace ECoreNetto
     /// </summary>
     public abstract class EClassifier : ENamedElement
     {
+        /// <summary>
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </summary>
+        private readonly ILoggerFactory? loggerFactory;
+
         /// <summary>
         /// The <see cref="ILogger"/> used to log
         /// </summary>
@@ -46,13 +53,22 @@ namespace ECoreNetto
         /// </param>
         protected EClassifier(Resource.Resource resource, ILoggerFactory? loggerFactory = null) : base(resource, loggerFactory)
         {
+            this.loggerFactory = loggerFactory;
+
             this.logger = loggerFactory == null ? NullLogger<EClassifier>.Instance : loggerFactory.CreateLogger<EClassifier>();
+
+            this.ETypeParameters = new ContainerList<ETypeParameter>(this);
         }
 
         /// <summary>
         /// Gets the instance class name.
         /// </summary>
         public string? InstanceClassName { get; private set; }
+
+        /// <summary>
+        /// Gets the type parameters (type variables) declared by this <see cref="EClassifier"/>.
+        /// </summary>
+        public ContainerList<ETypeParameter> ETypeParameters { get; }
 
         /// <summary>
         /// Gets the containing <see cref="EPackage"/>
@@ -91,6 +107,30 @@ namespace ECoreNetto
             if (this.Attributes.TryGetValue("instanceClassName", out var output))
             {
                 this.InstanceClassName = output;
+            }
+        }
+
+        /// <summary>
+        /// Instantiate the type parameters declared by this <see cref="EClassifier"/> from the current node
+        /// of the <see cref="XmlNode"/>
+        /// </summary>
+        /// <param name="reader">
+        /// The <see cref="XmlNode"/>
+        /// </param>
+        protected override void DeserializeChildNode(XmlNode reader)
+        {
+            if (reader == null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
+            base.DeserializeChildNode(reader);
+
+            if (reader.Name == "eTypeParameters" && reader.NodeType == XmlNodeType.Element)
+            {
+                var typeParameter = new ETypeParameter(this.EResource, this.loggerFactory);
+                this.ETypeParameters.Add(typeParameter);
+                typeParameter.ReadXml(reader);
             }
         }
 

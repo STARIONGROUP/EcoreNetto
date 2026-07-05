@@ -20,7 +20,9 @@
 
 namespace ECoreNetto
 {
+    using System;
     using System.Linq;
+    using System.Xml;
 
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Logging.Abstractions;
@@ -30,6 +32,11 @@ namespace ECoreNetto
     /// </summary>
     public abstract class ETypedElement : ENamedElement
     {
+        /// <summary>
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
+        /// </summary>
+        private readonly ILoggerFactory? loggerFactory;
+
         /// <summary>
         /// The <see cref="ILogger"/> used to log
         /// </summary>
@@ -46,6 +53,8 @@ namespace ECoreNetto
         /// </param>
         protected ETypedElement(Resource.Resource resource, ILoggerFactory? loggerFactory = null) : base(resource, loggerFactory)
         {
+            this.loggerFactory = loggerFactory;
+
             this.logger = loggerFactory == null ? NullLogger<ETypedElement>.Instance : loggerFactory.CreateLogger<ETypedElement>();
 
             // set the default value
@@ -93,6 +102,34 @@ namespace ECoreNetto
         public EClassifier? EType { get; private set; }
 
         /// <summary>
+        /// Gets the generic type of this <see cref="ETypedElement"/>, when the type is expressed generically
+        /// (e.g. a parameterized or type-variable type), or null otherwise.
+        /// </summary>
+        public EGenericType? EGenericType { get; private set; }
+
+        /// <summary>
+        /// Instantiate the generic type child of the current node of the <see cref="XmlNode"/>
+        /// </summary>
+        /// <param name="reader">
+        /// The <see cref="XmlNode"/>
+        /// </param>
+        protected override void DeserializeChildNode(XmlNode reader)
+        {
+            if (reader == null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
+            base.DeserializeChildNode(reader);
+
+            if (reader.Name == "eGenericType" && reader.NodeType == XmlNodeType.Element)
+            {
+                this.EGenericType = new EGenericType(this.EResource, this.loggerFactory) { EContainer = this };
+                this.EGenericType.ReadXml(reader);
+            }
+        }
+
+        /// <summary>
         /// Read the attributes of the current node
         /// </summary>
         internal override void SetProperties()
@@ -137,6 +174,15 @@ namespace ECoreNetto
                 var typeName = parts[parts.Length - 1];
 
                 this.EType = this.EResource.GetEObject<EClassifier>(typeName);
+            }
+
+            this.EGenericType?.SetProperties();
+
+            // when the type is expressed only generically, derive the erased EType from the generic type's
+            // raw classifier so consumers reading EType still see the type of a generically-typed element
+            if (this.EType == null && this.EGenericType?.EClassifier != null)
+            {
+                this.EType = this.EGenericType.EClassifier;
             }
         }
     }
