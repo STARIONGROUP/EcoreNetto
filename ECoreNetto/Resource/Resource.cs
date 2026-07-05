@@ -316,11 +316,11 @@ namespace ECoreNetto.Resource
                 return @object;
             }
 
-            // resolve a built-in Ecore type by exact key. References to these types appear either as the bare
-            // '//EName' fragment or in the fully-qualified 'http://www.eclipse.org/emf/2002/Ecore#//EName' form;
-            // normalize the latter to the bare fragment so a single exact lookup covers both. Substring matching
-            // would mis-resolve '//EBoolean' onto a '//EBool' key and throw on ambiguous prefixes such as
-            // '//EClass'/'//EClassifier' or '//EString'/'//EStringToStringMapEntry'.
+            // resolve a built-in Ecore type by exact key. A reference to such a type is either a bare
+            // fragment (the type name preceded by a double slash) or the same fragment prefixed with the
+            // Ecore namespace URI. Stripping that namespace prefix lets one exact lookup cover both forms.
+            // The previous substring match mis-resolved the boolean type and threw on type names that share
+            // a prefix, for example EClass versus EClassifier, or EString versus EStringToStringMapEntry.
             var ecoreTypeKey = uriFragment.StartsWith(EcoreNamespacePrefix, StringComparison.Ordinal)
                 ? uriFragment.Substring(EcoreNamespacePrefix.Length)
                 : uriFragment;
