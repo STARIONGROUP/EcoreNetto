@@ -82,8 +82,23 @@ namespace ECoreNetto
         public override void ReadXml(XmlNode element)
         {
             this.SetName(element);
-            this.EResource.Cache.Add(this.Identifier, this);
-            
+
+            // Register in the resource cache, disambiguating duplicate identifiers the way EMF does: the
+            // first occurrence keeps its identifier; a subsequent sibling that would collide gets a '.N'
+            // suffix (e.g. two overloaded operations -> '.../getX' and '.../getX.1'). Ecore permits
+            // same-named EOperations, so an unguarded Dictionary.Add would throw and abort the load.
+            var baseIdentifier = this.BuildIdentifier();
+            var uniqueIdentifier = baseIdentifier;
+            var duplicateCount = 0;
+            while (this.EResource.Cache.ContainsKey(uniqueIdentifier))
+            {
+                duplicateCount++;
+                uniqueIdentifier = $"{baseIdentifier}.{duplicateCount}";
+            }
+
+            this.identifier = uniqueIdentifier;
+            this.EResource.Cache.Add(uniqueIdentifier, this);
+
             base.ReadXml(element);
         }
         
