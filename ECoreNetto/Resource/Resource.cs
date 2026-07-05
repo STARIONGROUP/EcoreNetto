@@ -155,6 +155,14 @@ namespace ECoreNetto.Resource
                 { "//EInvocationTargetException", ecoreObjectFactory.EInvocationTargetException}
             };
 
+            // register the XMLType data types (keyed by their fully-qualified nsURI reference) so that
+            // references into the 'http://www.eclipse.org/emf/2003/XMLType' namespace resolve without a
+            // backing file, the way EMF resolves them through its package registry.
+            foreach (var xmlType in XmlTypeObjectFactory.CreateDataTypes(this, this.loggerFactory))
+            {
+                this.eCoreTypes.Add(xmlType.Key, xmlType.Value);
+            }
+
             this.Cache = new Dictionary<string, EObject>();
 
             this.isLoaded = false;
