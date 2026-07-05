@@ -18,6 +18,12 @@ namespace ECoreNetto.Extensions
     public static class AnchorExtensions
     {
         /// <summary>
+        /// The <see cref="Regex"/> that matches every run of characters that are not valid in an HTML
+        /// fragment identifier. A match timeout guards against pathological input.
+        /// </summary>
+        private static readonly Regex NonAnchorCharacters = new Regex("[^A-Za-z0-9]+", RegexOptions.None, TimeSpan.FromSeconds(1));
+
+        /// <summary>
         /// Queries a stable, unique HTML anchor identifier for the provided <see cref="EObject"/>, derived
         /// from its (unique) <see cref="EObject.Identifier"/> by replacing every run of characters that are
         /// not valid in an HTML fragment with a single dash.
@@ -47,7 +53,7 @@ namespace ECoreNetto.Extensions
                 ? detachedClassifier.Name ?? string.Empty
                 : eObject.Identifier ?? string.Empty;
 
-            var sanitized = Regex.Replace(identifier, "[^A-Za-z0-9]+", "-").Trim('-');
+            var sanitized = NonAnchorCharacters.Replace(identifier, "-").Trim('-');
 
             return string.IsNullOrEmpty(sanitized) ? "anchor" : sanitized;
         }
