@@ -78,6 +78,7 @@ namespace ECoreNetto
             this.logger = this.loggerFactory == null ? NullLogger<EClass>.Instance : this.loggerFactory.CreateLogger<EClass>();
 
             this.ESuperTypes = new List<EClass>();
+            this.EGenericSuperTypes = new ContainerList<EGenericType>(this);
             this.EOperations = new ContainerList<EOperation>(this);
             this.EStructuralFeatures = new ContainerList<EStructuralFeature>(this);
         }
@@ -96,6 +97,16 @@ namespace ECoreNetto
         /// Gets the collection of super <see cref="EClass"/>
         /// </summary>
         public List<EClass> ESuperTypes { get; private set; }
+
+        /// <summary>
+        /// Gets the collection of generic super types of this <see cref="EClass"/> (super types expressed
+        /// generically, e.g. a parameterized super type).
+        /// </summary>
+        /// <remarks>
+        /// The raw <see cref="EClass"/> of each generic super type is also added to <see cref="ESuperTypes"/>,
+        /// so the erased super-type view remains complete.
+        /// </remarks>
+        public ContainerList<EGenericType> EGenericSuperTypes { get; private set; }
 
         /// <summary>
         /// Gets the collection of <see cref="EOperation"/>
@@ -186,6 +197,17 @@ namespace ECoreNetto
                     this.ESuperTypes.Add(this.EResource.GetEObject<EClass>(typeName));
                 }
             }
+
+            foreach (var genericSuperType in this.EGenericSuperTypes)
+            {
+                genericSuperType.SetProperties();
+
+                // keep the erased super-type view complete: add the raw class of each generic super type
+                if (genericSuperType.EClassifier is EClass superClass && !this.ESuperTypes.Contains(superClass))
+                {
+                    this.ESuperTypes.Add(superClass);
+                }
+            }
         }
 
         /// <summary>
@@ -230,6 +252,13 @@ namespace ECoreNetto
                 var ecoreOperation = new EOperation(this.EResource, this.loggerFactory);
                 this.EOperations.Add(ecoreOperation);
                 ecoreOperation.ReadXml(reader);
+            }
+
+            if (reader.Name == "eGenericSuperTypes" && reader.NodeType == XmlNodeType.Element)
+            {
+                var genericSuperType = new EGenericType(this.EResource, this.loggerFactory);
+                this.EGenericSuperTypes.Add(genericSuperType);
+                genericSuperType.ReadXml(reader);
             }
         }
     }

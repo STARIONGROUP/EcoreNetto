@@ -468,7 +468,7 @@ namespace ECoreNetto
         /// The names of the reference attributes whose values may contain implicit references
         /// that need to be rewritten to point at the current top package.
         /// </summary>
-        private static readonly string[] ReferenceAttributes = { "eType", "eSuperTypes", "eOpposite" };
+        private static readonly string[] ReferenceAttributes = { "eType", "eSuperTypes", "eOpposite", "eClassifier", "eTypeParameter", "eExceptions" };
 
         /// <summary>
         /// Process the attribute value and rewrite if required.
