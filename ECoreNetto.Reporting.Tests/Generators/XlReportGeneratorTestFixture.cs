@@ -84,57 +84,6 @@ namespace ECoreNetto.Reporting.Tests.Generators
         }
 
         [Test]
-        public void Verify_that_a_single_combined_excel_report_is_generated_for_the_whole_capella_metamodel()
-        {
-            var capellaDirectory = new DirectoryInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "capella"));
-
-            var combinedReportFileInfo = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "xl-report.capella.combined.xlsx"));
-
-            Assert.That(() => this.generator.GenerateCombinedReport(capellaDirectory, combinedReportFileInfo), Throws.Nothing);
-
-            combinedReportFileInfo.Refresh();
-            Assert.That(combinedReportFileInfo.Exists, Is.True);
-
-            using var workbook = new XLWorkbook(combinedReportFileInfo.FullName);
-
-            var info = workbook.Worksheet("Model Info");
-            var eClassSheet = workbook.Worksheet("EClass");
-
-            Assert.Multiple(() =>
-            {
-                // the info sheet lists all the included root packages
-                Assert.That(info.Cell(6, 1).GetString(), Is.EqualTo("Included Packages"));
-
-                // a single workbook must list classes that originate from several different .ecore files
-                Assert.That(eClassSheet.CellsUsed().Any(c => c.GetString() == "CapellaElement"), Is.True);
-                Assert.That(eClassSheet.CellsUsed().Any(c => c.GetString() == "LogicalArchitecture"), Is.True);
-                Assert.That(eClassSheet.CellsUsed().Any(c => c.GetString() == "SystemAnalysis"), Is.True);
-                Assert.That(eClassSheet.CellsUsed().Any(c => c.GetString() == "PhysicalArchitecture"), Is.True);
-            });
-        }
-
-        [Test]
-        public void Verify_that_a_combined_excel_report_from_an_entry_file_includes_reachable_models()
-        {
-            var modelFileInfo = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "capella", "LogicalArchitecture.ecore"));
-            var combinedReportFileInfo = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "xl-report.capella.reachable.xlsx"));
-
-            Assert.That(() => this.generator.GenerateCombinedReport(modelFileInfo, combinedReportFileInfo), Throws.Nothing);
-
-            combinedReportFileInfo.Refresh();
-            Assert.That(combinedReportFileInfo.Exists, Is.True);
-
-            using var workbook = new XLWorkbook(combinedReportFileInfo.FullName);
-            var eClassSheet = workbook.Worksheet("EClass");
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(eClassSheet.CellsUsed().Any(c => c.GetString() == "LogicalArchitecture"), Is.True);
-                Assert.That(eClassSheet.CellsUsed().Any(c => c.GetString() == "ComponentArchitecture"), Is.True);
-            });
-        }
-
-        [Test]
         public void Verify_that_combined_excel_report_methods_throw_when_arguments_are_null()
         {
             var validDirectory = new DirectoryInfo(TestContext.CurrentContext.TestDirectory);

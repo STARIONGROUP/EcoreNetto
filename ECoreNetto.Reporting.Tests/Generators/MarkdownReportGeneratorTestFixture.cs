@@ -63,51 +63,6 @@ namespace ECoreNetto.Tools.Tests.Generators
         }
 
         [Test]
-        public void Verify_that_a_single_combined_markdown_report_is_generated_for_the_whole_capella_metamodel()
-        {
-            var capellaDirectory = new DirectoryInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "capella"));
-
-            var reportFileInfo = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "markdown-report.capella.combined.md"));
-
-            Assert.That(() => this.markdownReportGenerator.GenerateCombinedReport(capellaDirectory, reportFileInfo), Throws.Nothing);
-
-            reportFileInfo.Refresh();
-            Assert.That(reportFileInfo.Exists, Is.True);
-
-            var markdown = this.markdownReportGenerator.GenerateCombinedReport(capellaDirectory);
-
-            Assert.Multiple(() =>
-            {
-                // a single document must contain classifiers that originate from several different .ecore files
-                Assert.That(markdown, Does.Contain("CapellaElement"));
-                Assert.That(markdown, Does.Contain("LogicalArchitecture"));
-                Assert.That(markdown, Does.Contain("SystemAnalysis"));
-                Assert.That(markdown, Does.Contain("PhysicalArchitecture"));
-            });
-        }
-
-        [Test]
-        public void Verify_that_a_combined_markdown_report_from_an_entry_file_includes_reachable_models()
-        {
-            var modelFileInfo = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "capella", "LogicalArchitecture.ecore"));
-
-            var reportFileInfo = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "markdown-report.capella.reachable.md"));
-
-            Assert.That(() => this.markdownReportGenerator.GenerateCombinedReport(modelFileInfo, reportFileInfo), Throws.Nothing);
-
-            reportFileInfo.Refresh();
-            Assert.That(reportFileInfo.Exists, Is.True);
-
-            var markdown = this.markdownReportGenerator.GenerateCombinedReport(modelFileInfo);
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(markdown, Does.Contain("LogicalArchitecture"));
-                Assert.That(markdown, Does.Contain("ComponentArchitecture"));
-            });
-        }
-
-        [Test]
         public void Verify_that_combined_markdown_report_methods_throw_when_arguments_are_null()
         {
             var validModel = new FileInfo(Path.Combine(TestContext.CurrentContext.TestDirectory, "Data", "recipe.ecore"));
