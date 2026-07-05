@@ -66,6 +66,12 @@ namespace ECoreNetto
         public string? InstanceClassName { get; private set; }
 
         /// <summary>
+        /// Gets the instance type name (the <c>instanceTypeName</c> feature), which may include type
+        /// arguments and differs from <see cref="InstanceClassName"/> for parameterized instance types.
+        /// </summary>
+        public string? InstanceTypeName { get; private set; }
+
+        /// <summary>
         /// Gets the type parameters (type variables) declared by this <see cref="EClassifier"/>.
         /// </summary>
         public ContainerList<ETypeParameter> ETypeParameters { get; }
@@ -107,6 +113,11 @@ namespace ECoreNetto
             if (this.Attributes.TryGetValue("instanceClassName", out var output))
             {
                 this.InstanceClassName = output;
+            }
+
+            if (this.Attributes.TryGetValue("instanceTypeName", out output))
+            {
+                this.InstanceTypeName = output;
             }
         }
 
