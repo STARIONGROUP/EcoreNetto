@@ -17,7 +17,7 @@
     <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.9" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
     <PackageVersion Include="Microsoft.Msagl" Version="1.1.6" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.6.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.7.0" />
     <PackageVersion Include="Microsoft.Sbom.Targets" Version="4.1.5" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.300" />
     <PackageVersion Include="Moq" Version="4.20.72" />
@@ -28,7 +28,7 @@
     <PackageVersion Include="Serilog.Extensions.Logging" Version="10.0.0" />
     <PackageVersion Include="Serilog.Sinks.Console" Version="6.1.1" />
     <PackageVersion Include="Serilog.Sinks.File" Version="7.0.0" />
-    <PackageVersion Include="Spectre.Console" Version="0.57.0" />
+    <PackageVersion Include="Spectre.Console" Version="0.57.2" />
     <PackageVersion Include="Svg" Version="3.4.7" />
     <PackageVersion Include="System.CommandLine" Version="2.0.9" />
     <PackageVersion Include="System.IO.Packaging" Version="10.0.9" />
