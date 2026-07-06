@@ -14,18 +14,12 @@
         <ApplicationIcon>icon.ico</ApplicationIcon>
         <PackageTags>Ecore HandleBars Reporting modeltopia</PackageTags>
         <PackageReleaseNotes>
-            [Fix] VersionChecker logging, timeout, URL and tag-name parsing; fixes #33
-            [Fix] correct copy-paste XML-doc errors in report commands; fixes #43
-            [Improve] make ReportHandler properly async and testable; fixes #41
-            [Update] write log file as ecorenetto.logs; fixes #42
-            [Update] enable nullable reference types; fixes #49
-            [Update] adopt central package management; fixes #47
-            [Update] ECoreNetto.Reporting to version 9.0.0
-            [Update] Autofac.Extensions.DependencyInjection to version 11.0.1
-            [Update] Microsoft.Extensions.Hosting to version 10.0.9
-            [Update] Microsoft.Extensions.Http to version 10.0.9
-            [Update] System.CommandLine to version 2.0.9
-            [Update] Spectre.Console to version 0.57.0
+            [Update] enable nullable reference types solution-wide; resolve all nullable warnings; fixes #49
+            [Fix] correct copy-paste XML-doc errors in report commands/generators; rename generatedHtml; fixes #43
+            [Make] ReportHandler properly async and testable; fixes #41
+            [Fix] make VersionChecker URL/timeout configurable, improve logging, and parse tags safely; fixes #33
+            [Feature] Bring the HTML report generator to parity with uml4net; fixes #112
+            [Feature] Generate a single combined report across multiple .ecore files; #113
         </PackageReleaseNotes>
     </PropertyGroup>
 

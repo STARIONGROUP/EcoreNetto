@@ -10,11 +10,8 @@
         <AssemblyTitle>EcoreNetto.HandleBars</AssemblyTitle>
         <PackageTags>Ecore HandleBars modeltopia</PackageTags>
         <PackageReleaseNotes>
-            [Fix] add guard/null checks in HandleBars helpers; correct NameEqualsEnclosingType arity; fixes #45
-            [Update] enable nullable reference types; fixes #49
-            [Update] adopt central package management; fixes #47
-            [Update] ECoreNetto.Extensions to version 9.0.0
-            [Update] Microsoft.SourceLink.GitHub to version 10.0.300
+            [Fix] add guard/null checks in HandleBars helpers and extensions; correct NameEqualsEnclosingType arity; fixes #45
+            [Feature] Bring the HTML report generator to parity with uml4net; fixes #112
         </PackageReleaseNotes>
     </PropertyGroup>
 

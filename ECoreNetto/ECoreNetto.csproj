@@ -13,14 +13,27 @@
         <AssemblyTitle>EcoreNetto</AssemblyTitle>
         <PackageTags>Ecore modeltopia</PackageTags>
         <PackageReleaseNotes>
-            [Feature] populate Resource.Errors with diagnostics during parse; fixes #35
-            [Fix] harden ECore XML parsing against XXE (prohibit DTDs, null XmlResolver); fixes #29
-            [Fix] guard unsafe casts on GetEObject(...) results; fixes #32
-            [Fix] correct EEnumLiteral removal and EStringToStringMapEntry handling; fixes #52
-            [Update] enable nullable reference types; fixes #49
-            [Update] adopt central package management; fixes #47
-            [Update] lower Microsoft.Extensions.Logging.Abstractions floor to version 6.0.0
-            [Update] Microsoft.SourceLink.GitHub to version 10.0.300
+            [Add] tests for ContainmentUpdater and EcoreObjectFactory; fix EEnumLiteral removal and EStringToStringMapEntry; fixes #52
+            [Update] enable nullable reference types solution-wide; resolve all nullable warnings; fixes #49
+            [Fix] harden ECore XML parsing against XXE (prohibit DTDs, null XmlResolver); #29
+            [Fix] Guard unsafe casts on GetEObject(...) results; fixes #32
+            [Feature] Populate Resource.Errors with diagnostics during parse; fixes #35
+            [Fix] validate attribute values before parsing; fixes #37
+            [Feature] implement Resource.GetURIFragment as the inverse of GetEObject; fixes #76
+            [Feature] implement EObject.EClass() (return the meta class); fixes #10
+            [Feature] add error handling around parse/load; fixes #36
+            [Fix] honor loadOnDemand in ResourceSet.Resource; fixes #39
+            [Fix] resolve cross-file .ecore references when file name differs from package name; fixes #79
+            [Fix] guarantee Resource.GetEObject terminates on unresolvable fragments; fixes #80
+            [Fix] remove static TopPackageName and harden URI-based reference handling; fixes #31
+            [Fix] populate Resource.Contents on load and dedup ResourceSet.CreateResource; fixes #82, fixes #84
+            [Fix] resolve built-in Ecore types by exact key; fixes #83
+            [Fix] disambiguate duplicate ENamedElement identifiers so overloaded EOperations load; fixes #96
+            [Feature] read Ecore generics and operation exceptions; fixes #97
+            [Fix] resolve references into the XMLType namespace; fixes #98
+            [Feature] read eKeys/instanceTypeName/literal/annotation references and unwrap xmi:XMI; fixes #99
+            [Feature] resolve positional @feature.index and bare xmi:id URI fragments; fixes #106
+            [Feature] Bring the HTML report generator to parity with uml4net; fixes #112
         </PackageReleaseNotes>
     </PropertyGroup>
 

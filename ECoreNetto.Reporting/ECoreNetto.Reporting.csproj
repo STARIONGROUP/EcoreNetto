@@ -10,14 +10,11 @@
         <AssemblyTitle>EcoreNetto.Reporting</AssemblyTitle>
         <PackageTags>Ecore HandleBars Reporting modeltopia</PackageTags>
         <PackageReleaseNotes>
-            [Feature] consolidate duplicated ResourceLoader into shared Reporting implementation; fixes #44
+            [Update] enable nullable reference types solution-wide; resolve all nullable warnings; fixes #49
             [Fix] write Excel info-sheet ns-uri to its own row so ns-prefix is not overwritten; fixes #30
-            [Fix] correct copy-paste XML-doc errors in report generators; fixes #43
-            [Update] enable nullable reference types; fixes #49
-            [Update] adopt central package management; fixes #47
-            [Update] ECoreNetto.HandleBars to version 9.0.0
-            [Update] System.IO.Packaging to version 10.0.9
-            [Update] Microsoft.SourceLink.GitHub to version 10.0.300
+            [Feature] Consolidate duplicated ResourceLoader into shared Reporting implementation; fixes #44
+            [Fix] Resolve cross-file .ecore references when file name differs from package name; fixes #79
+            [Feature] Bring the HTML report generator to parity with uml4net; fixes #112
         </PackageReleaseNotes>
     </PropertyGroup>
 
